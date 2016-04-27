@@ -1,0 +1,20 @@
+ValidatorImpl
+	validationOrderGenerator:生成一个验证请求DefaultValidationOrder
+		DefaultValidationOrder
+		1.groupList：所有接口及父类（Group）
+		2.接口的@GroupSequence所有Group(Sequence)
+	constraintValidatorFactory:约束验证工厂
+	messageInterpolator:
+	traversableResolver：
+	beanMetaDataManager:
+	
+validateInContext
+	valueContext(对象的值)
+	validationOrder（）
+	context
+	
+	
+	BeanMetaData
+	
+	
+	validateConstraintsForCurrentGroup

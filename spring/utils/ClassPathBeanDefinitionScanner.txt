@@ -1,0 +1,29 @@
+ClassPathBeanDefinitionScanner
+1.BeanDefinitionRegistry  容器
+2.BeanNameGenerator
+3.ScopeMetadataResolver
+4.ResourcePatternResolver   根据它得到class的Resource
+5.MetadataReaderFactory     根据resource得到MetadataReader
+6.MetadataReader  =====AnnotationMetadataReadingVisitor  (数据最终产物)
+		Resource,ClassMetadata,AnnotationMetadata
+		
+	isCandidateComponent
+	根据MetadataReader,MetadataReaderFactory,typeFilter做验证，最终conditionEvaluator做判断
+	最终产物
+	1.ScannedGenericBeanDefinition(MetadataReader)  parent(AnnotatedBeanDefinition)
+	2.ScopeMetadata(proxyMode,scop)-->AnnotatedBeanDefinition->AnnotationMetadata(AnnotationConfigUtils,AnnotationAttributes)
+	3.beanNameGenerator->beanName(Component,default)
+	4.分层解析ScannedGenericBeanDefinition
+			ps:BeanDefinition(AnnotatedBeanDefinition-xml,AbstractBeanDefinition-annotation) 两个大分类
+	5.BeanDefinitionHolder
+	ConfigurationClassPostProcessor,AutowiredAnnotationBeanPostProcessor,RequiredAnnotationBeanPostProcessor
+	CommonAnnotationBeanPostProcessor,PersistenceAnnotationBeanPostProcessor,EventListenerMethodProcessor
+	DefaultEventListenerFactory  七大类注解
+	
+	ObjectFactory
+		1.自动注解，是无法注入
+		2.ref（取得对象，然后getObject获取最终对象）
+	
+	ClassPathMapperScanner 代码就很简单
+	由于它实现SqlSessionDaoSupport 所以可以自动注解
+	

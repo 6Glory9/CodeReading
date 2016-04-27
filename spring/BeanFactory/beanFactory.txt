@@ -1,0 +1,120 @@
+DefaultSingletonBeanRegistry
+	singletonObjects:最终产物(beanName,singleton)
+	singletonFactories:创建过程的产物(beanName,FactoryBean)
+	earlySingletonObjects:singletonFactories的产物FactoryBean.getObject(beanName,ref)
+	registeredSingletons:注册的beanName set
+	singletonsCurrentlyInCreation:在创建时放入，防止循环创建
+	inCreationCheckExclusions:创建排除检查
+
+	singletonsCurrentlyInDestruction:标示容器当前是不是Destruction状态
+	suppressedExceptions:把异常收集起一下释放
+	disposableBeans:注册毁灭的bean(特殊的bean)
+	containedBeanMap:bean与内部bean的关系（bean,nestBeans）
+	A->B
+	dependentBeanMap:(A,B)
+	dependenciesForBeanMap(B,A) 注册的时候反的注册的
+
+
+FactoryBeanRegistrySupport
+	factoryBeanObjectCache:factoryBean 缓存
+	重写removeSingleton
+
+AbstractBeanFactory
+	parentBeanFactory:fatherBeanFactory
+	mergedBeanDefinitions:BeanDefinition最终产产物，数据源()
+	beanClassLoader
+	tempClassLoader
+	cacheBeanMetadata 缓存RootBeanDefine
+	prototypesCurrentlyInCreation:prototypes创建循环依赖
+	alreadyCreated:beanName是否已经创建了，如果存在就不清理mergedBeanDefinitions
+	scopes:scope名字和scope的关系,相应的singleton处理方式
+	
+	typeConverter：转换器工具
+	conversionService：新的转换服务
+	
+	propertyEditorRegistrars:属性注册器
+	customEditors:用户自定义转换器（提供registerCustomEditors服务为PropertyEditorRegistry提供属性注册）
+	
+	beanExpressionResolver：spEL表达式
+	embeddedValueResolvers: $表达式
+	
+AbstractAutowireCapableBeanFactory
+	instantiationStrategy:创建策略
+	parameterNameDiscoverer:名字生成工具
+	allowCircularReferences:环形引用
+	allowRawInjectionDespiteWrapping:
+	ignoredDependencyTypes:忽略依赖类型
+	ignoredDependencyInterfaces:忽略依赖接口
+	factoryBeanInstanceCache:缓存BeanWrapper
+	filteredPropertyDescriptorsCache:排查忽略依赖所有PropertyDescriptors的缓存
+	
+
+DefaultListableBeanFactory
+	beanDefinitionNames：原始数据
+	allBeanNamesByType:类型,names all
+	singletonBeanNamesByType：singletonBean
+	manualSingletonNames
+	frozenBeanDefinitionNames
+	configurationFrozen
+	serializationId：ID
+	dependencyComparator:依赖比较器
+	autowireCandidateResolver：自动注入解析器
+	resolvableDependencies：解析依赖MAP
+	
+	
+	
+
+AbstractBeanDefinition
+	beanClass:
+	scope:作用域
+	abstractFlag:抽象标示
+	lazyInit:延迟标示
+	autowireMode:自动加载方式(byName,ByType)
+	dependencyCheck:
+	dependsOn:依赖对象集合
+	autowireCandidate:是否为自动加载候选人
+	primary:多个候选人时,此标示优先
+	qualifiers:当前类@qualifiers(typeName,AutowireCandidateQualifier)
+	nonPublicAccessAllowed:标示是否允许访问不是public constructors and methods
+	lenientConstructorResolution:true(lenient,是找最匹配的)，strict直接抛异常
+	constructorArgumentValues:构造方法或工厂方法参数
+	propertyValues:参数
+	methodOverrides:重写的方法
+	factoryBeanName:工厂beanName
+	factoryMethodName:工厂方法
+	initMethodName:初始化方法
+	destroyMethodName:销毁方法
+	enforceInitMethod:初始化方法存在标示
+	enforceDestroyMethod:销毁方法存在标示
+	synthetic:综合配置(true),用户配置(false,需要后处理)。
+	description:描述
+	role:
+	ROLE_APPLICATION 用户定义
+	ROLE_SUPPORT     应用配置
+	ROLE_INFRASTRUCTURE:内部定义bean，完全使用者无关
+	
+	resource：xml,class
+	
+	allowCaching:是否缓存参数
+	decoratedDefinition:BeanDefinitionHolder(有别名),targetBean
+	targetType:如果工厂方法，表示它的类型
+	isFactoryMethodUnique：表示FactoryMethod是唯一的，没有重载的
+	constructorArgumentLock：constructor和方法参数lock
+	
+	resolvedConstructorOrFactoryMethod:解析之后方法或构造方法
+	resolvedFactoryMethodReturnType：解析之后方法返回值
+	resolvedConstructorArguments:解析之后方法参数值
+	preparedConstructorArguments:解析之前参数值
+	constructorArgumentsResolved:构造方法或方式参数是否解析标示
+	
+	postProcessingLock:处理器的锁
+	postProcessed:MergedBeanDefinitionPostProcessor处理标示
+	beforeInstantiationResolved:InstantiationAwareBeanPostProcessors处理标示
+	externallyManagedConfigMembers:外部管理成员变量(field,method,Constructor)
+	externallyManagedInitMethods:外部管理initMethods
+	externallyManagedDestroyMethods:外部管理DestroyMethods
+	
+	
+			
+	
+	

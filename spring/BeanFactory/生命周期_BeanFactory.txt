@@ -1,0 +1,29 @@
+resolveBeforeInstantiation (实例化对象前)
+	aop proxy代理对象可以这里生成
+	1.beanPostProcessorsBeforeInstantiation 实例化之前
+	2.beanPostProcessorsAfterInitialization 初始化之后
+	
+createBeanInstance (实例化对象)
+	 1.方法实例化(静态，动态)
+	 2.构造方法实例化
+
+MergedBeanDefinitionPostProcessor(修改BeanDefinition)
+	 
+InstantiationAwareBeanPostProcessor(实例化对象后)
+	 postProcessAfterInstantiation
+	 
+自动加载autowireByName和autowireByType
+
+InstantiationAwareBeanPostProcessor(实例化属性处理)
+	 postProcessPropertyValues 每个属性处理(注解注入就在这里处理，xml配置在后面可以重载)
+	 
+population属性
+	 
+invokeAwareMethods
+
+applyBeanPostProcessorsBeforeInitialization(初始化前处理)
+afterPropertiesSet,initMethod
+applyBeanPostProcessorsAfterInitialization(初始化后处理)
+
+Singleton registerDisposableBean
+scope.registerDestructionCallback

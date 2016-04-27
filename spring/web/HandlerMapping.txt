@@ -1,0 +1,56 @@
+HandlerMapping
+	AbstractHandlerMapping
+		setApplicationContext()
+			initInterceptors(MappedInterceptor(修饰),WebRequestHandlerInterceptorAdapter)
+			子类注册相应hanlder(hanlder,handleMethod),根据不同类型注册相应处理器
+		getHandler(HttpServletRequest request) 模板方法
+			1.根据request找到相应处理handler,如不存在返回默认处理器
+			2.匹配HandlerInterceptor，组装返回HandlerExecutionChain
+			3.根据request是否跨域请求，增加(跨域预请求处理器,跨域请求拦截)
+				HandlerAdapter（HttpRequestHandlerAdapter,PreFlightHandler）
+				回写一些信息（https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)
+		
+		
+		AbstractHandlerMethodMapping
+			afterPropertiesSet
+				detectHandlerMethods(handlerType)
+				
+				MethodIntrospector 方法内省
+					selectMethods(Class<?> targetType, final MetadataLookup<T> metadataLookup)
+						ClassUtils.getMostSpecificMethod 寻找覆盖的方法 
+						方法过滤处理
+					BridgeMethodResolver
+						findBridgedMethod(如果获取到桥接方法对应的实际的方法) 寻找被桥接方法
+						
+					register(T mapping, Object handler, Method method)
+					
+					T->Comparator<T>
+					Collections.sort(matches, comparator); 找出匹配最精确
+					request.setAttribute(BEST_MATCHING_PATTERN_ATTRIBUTE,URI_TEMPLATE_VARIABLES_ATTRIBUTE,
+					                     PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE,PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE
+					                     MATRIX_VARIABLES_ATTRIBUTE())
+					                     
+					/owners/{ownerId}/pets/{petId}
+					@MatrixVariable(pathVar = "petId") Map<String, String> petMatrixVars
+					http://localhost:8080/owners/44/pets/55;q=22,33;s=23
+					
+					MatrixVariableMapMethodArgumentResolver
+					PathVariableMapMethodArgumentResolver
+					
+					CorsUtils.isPreFlightRequest  ->PREFLIGHT_AMBIGUOUS_MATCH
+		
+		
+		
+		AbstractUrlHandlerMapping
+			 / ->rootHandler
+			 null ->defaultHandler
+			 
+			 handlerMap-->subClass
+			 
+			 validateHandler(requestMethod,Params,Headers)
+			 
+			 PathExposingHandlerInterceptor(BEST_MATCHING_PATTERN_ATTRIBUTE,PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)
+			 UriTemplateVariablesHandlerInterceptor(URI_TEMPLATE_VARIABLES_ATTRIBUTE)
+			 
+			 最终匹配（validateHandler,best path）
+		

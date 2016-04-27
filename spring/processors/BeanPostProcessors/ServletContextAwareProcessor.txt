@@ -1,0 +1,7 @@
+ServletContextAwareProcessor
+	if (getServletContext() != null && bean instanceof ServletContextAware) {
+			((ServletContextAware) bean).setServletContext(getServletContext());
+		}
+		if (getServletConfig() != null && bean instanceof ServletConfigAware) {
+			((ServletConfigAware) bean).setServletConfig(getServletConfig());
+		}

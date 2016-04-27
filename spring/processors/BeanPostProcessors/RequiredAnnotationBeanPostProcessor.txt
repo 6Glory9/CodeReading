@@ -1,0 +1,3 @@
+RequiredAnnotationBeanPostProcessor
+	postProcessPropertyValues
+	 validate @required

@@ -1,0 +1,74 @@
+ProxyConfig 代理配置
+	proxyTargetClass:代理方式(true-cglib,false=interface)
+	optimize:优化
+	opaque:是否Advised标示,false转换Advised
+	exposeProxy:是否暴露proxy于当前线程(AopContext)
+	frozen:
+	
+	optimize 优化|proxyTargetClass true|没有用户接口
+			及时这么设置target是接口或者是proxy还是jdk
+		
+
+AdvisedSupport
+	preFiltered：false表示需要Class filter 验证
+	advisorChainFactory：切面链创建工厂（method->(class filter,method match)advisor->list MethodInterceptor）
+	methodCache:方法对应的切面缓存(methodkey,MethodInterceptorList)
+	interfaces：接口
+	advisors：切面LIST
+	advisorArray：切面数组
+	targetSource：目标源
+	
+ProxyCreatorSupport
+	aopProxyFactory:创建代理工厂
+	listeners:
+	active:标示代理是否被创建
+
+ProxyFactoryBean
+	interceptorNames：
+	targetName：目标名字
+	autodetectInterfaces:自动发现接口标示(interceptorNames.length==0&&proxyTargetClass=false)
+	singleton:单列标示
+	advisorAdapterRegistry:
+	freezeProxy：冻结配置标示
+	beanFactory
+	advisorChainInitialized:链路初始化标示
+	singletonInstance
+	
+	
+
+
+JdkDynamicAopProxy
+	advised:代理所有东西
+	equalsDefined：接口是否定义equals方法标示
+	hashCodeDefined:接口是否定义hashCode方法标示
+	
+	invoke方法
+		1.根据equalsDefined为false，又是equal方法。直接调用本地方法
+		2.配置本身方法调用，是否暴露proxy
+		3.根据方法查找所有的匹配的List[MethodInterceptor,Interceptor]
+				PointcutAdvisor->MethodInterceptor
+											 ->InterceptorAndDynamicMethodMatcher(动态匹配)
+			  IntroductionAdvisor—>Interceptor
+			  				Interceptor->Interceptor
+		4.上步为空，直接调用本地方法(变量的量，弄好)
+	  5.ReflectiveMethodInvocation 使用
+	  6.释放proxy
+	  ReflectiveMethodInvocation
+	  	proceed()
+	  	
+
+CglibAopProxy
+	advised:代理所有东西
+	advisedDispatcher:切面分发器
+	validatedClasses：验证的类缓存
+	fixedInterceptorMap：(method,i)方法对应的坐标
+	fixedInterceptorOffset:坐标开始位置
+	
+	getProxy()
+	
+
+
+ObjenesisCglibAopProxy
+	可以创建无构造方法
+	
+	

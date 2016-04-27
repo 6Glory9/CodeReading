@@ -1,0 +1,27 @@
+BeanWrapperImpl
+	AbstractPropertyAccessor(TypeConverter,PropertyEditorRegistry,
+													PropertyAccessor,ConfigurablePropertyAccessor)
+	AbstractNestablePropertyAccessor
+	
+setPropertyValues(PropertyValues pvs, boolean ignoreUnknown, boolean ignoreInvalid)
+	ignoreUnknown->NotWritablePropertyException
+	NullValueInNestedPathException->ignoreInvalid
+	PropertyBatchUpdateException
+AbstractNestablePropertyAccessor
+	setPropertyValue(PropertyValue pv)
+			PropertyTokenHolder(actualName,canonicalName,keys)
+			"a[i]"===>a(actualName),a[i](canonicalName),i(keys)
+	getPropertyAccessorForPropertyPath(path)
+		1.判断是否存在a.b这样场景
+		2.如果存在寻找childAbstractNestablePropertyAccessor
+			构建当前a对应AbstractNestablePropertyAccessor
+			getNestedPropertyAccessor(String nestedProperty),当keys为空时,actualName==canonicalName
+				getPropertyValue(PropertyTokenHolder tokens) 获取相应值
+					PropertyHandler(propertyType,readable,writable)
+					1.keys == null  return objects
+					2.keys != null   new Objects return Object
+				如果值为空可能会设置默认值
+				setDefaultValue(PropertyTokenHolder tokens) 
+				setPropertyValue(PropertyTokenHolder tokens, PropertyValue pv)
+				设置当前AbstractNestablePropertyAccessor缓存中。
+	

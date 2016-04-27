@@ -1,0 +1,171 @@
+DefaultWebSubjectContext(统一存在MAP。直接访问或者间接访问)
+	SERVLET_REQUEST(1.local 2.subject.getRequest)
+	SERVLET_RESPONSE(1.local 2.subject.getReponse)
+	
+	
+	SECURITY_MANAGER(1.local 2.线程)
+	SESSION_ID(local)
+	AUTHENTICATION_TOKEN
+	AUTHENTICATION_INFO
+	SUBJECT
+	PRINCIPALS
+	SESSION
+	AUTHENTICATED
+	HOST
+	SESSION_CREATION_ENABLED
+	PRINCIPALS_SESSION_KEY
+	AUTHENTICATED_SESSION_KEY
+	
+WebDelegatingSubject
+	servletRequest
+	servletResponse
+	
+	principals
+	authenticated
+	host
+	session
+	sessionCreationEnabled
+	securityManager
+
+DefaultWebSecurityManager
+	sessionMode
+	
+	rememberMeManager
+	subjectDAO
+	subjectFactory
+	
+	sessionManager
+	
+	authorizer
+	
+	authenticator
+	
+	realms
+	
+	cacheManager
+	
+	principal:负责人
+	Authorization:授权
+	Authentication：认证信息
+	authenticator：认证者
+	authenticate：认证
+	
+login(AuthenticationToken token)
+	1.清理session负责人
+		securityManager认证
+		2.认证返回AuthenticationInfo
+		3.认证失败RememberMeManager的onFailedLogin处理
+		4.创建一个新的Subject
+			SubjectContext(Authenticated,AuthenticationToken,AuthenticationInfo,subject)
+			1.copy subjectContext
+			2.解析SecurityManager
+			3.解析Session
+				(subjectContext(不存在),subject(存在),cookie)
+			4.解析身份
+				(subjectContext(不存在),AuthenticationInfo(存在),subject(身份),session(身份),getRememberedIdentity(身份))
+			5.create subject
+			6.save subject
+		5.认证成功RememberMeManager的onSuccessfulLogin处理
+	6.subject同步（身份,认证标示，host，包装Session)
+
+logout()
+	1.清理session负责人
+	  securityManager.logout
+	  1.beforeLogout（rememberMeLogout）
+	  2.如果有身份要notify(清除缓存人身，通知)
+	  3.删除subject(subject.delete)
+	  4.stopSession.stop(通过sessionManager删除session)
+	2.subject清除（身份,认证标示，包装Session)
+	
+
+SpringShiroFilter
+	WebSecurityManager
+	filters:数据源来自spring
+	filterChainDefinitionMap
+	
+	
+	
+	
+	1.beanPost-bean处理器
+		把所有filter进入filters(beanName,Filter),全局设置(loginUrl,SuccessUrl,UnauthorizedUrl)
+	
+	2.createInstance创建实例
+		FilterChainManager：过滤器链路管理器
+			1.filter的操作
+			2.chain的操作
+			3.proxy(FilterChain original, String chainName)
+			
+		1.添加默认的过滤器，不需要重载和init,全局设置(loginUrl,SuccessUrl,UnauthorizedUrl)
+		2.添加自定义过滤器，不init,重载filter,全局设置(loginUrl,SuccessUrl,UnauthorizedUrl),在这里可以干掉默认filter
+			keyURL(chainName)=authc(filterName),roles[admin,user(chainSpecificFilterConfig)],perms[file:edit]
+		3.filterChains 添加（chainName) 对PathConfigProcessor配置处理
+		
+	FilterChainResolver 寻找匹配的filterChain+原始filterChain
+		ps:快速寻找
+		
+	DefaultFilter 枚举
+		anon(AnonymousFilter.class),
+    authc(FormAuthenticationFilter.class),
+    authcBasic(BasicHttpAuthenticationFilter.class),
+    logout(LogoutFilter.class),
+    noSessionCreation(NoSessionCreationFilter.class),
+    perms(PermissionsAuthorizationFilter.class),
+    port(PortFilter.class),
+    rest(HttpMethodPermissionFilter.class),
+    roles(RolesAuthorizationFilter.class),
+    ssl(SslFilter.class),
+    user(UserFilter.class);
+    
+    doFilterInternal(filter中包链路)
+    		1.
+		    HttpServletRequest 会进行包装成ShiroHttpServletRequest(httpSession标示)
+		    ServletResponse 如果是web是不会包装
+		    
+		    2.创建subject
+		    	 1.subjectContext(request,response,SecurityManager)
+		    	 2.resolveSession
+		    	 		local,subject,(SessionKey->Session)
+		    	 		DelegatingSession[AbstractNativeSessionManager->数据库去查询]
+		    	 		HttpSession[ServletContainerSessionManager->request.getSession(false)]
+		    	 3.resolvePrincipals
+		    	 		local,AuthenticationInfo,Subject,session,getRememberedIdentity
+		    	 4.subject.save
+		    3.bind thread subject
+		    4.session.touch 更新session的updateTime
+		    
+		   
+		   OncePerRequestFilter
+		   	1.两个排除Filter方式
+		   		 1.alreadyFilteredAttributeName（name,fileConfig,getClass）+.FILTERED
+		   		 2.!isEnabled(request, response) || shouldNotFilter(request
+		   	2.过滤器模板
+		   	
+		   AdviceFilter
+		   	doFilterInternal模版方法
+		   	1.preHandle 返回继续标示
+		   	2.executeChain
+		   	3.postHandle
+		   	4.cleanup
+		   	
+		 LogoutFilter
+		 		subject.logout();
+		 		issueRedirect:发行跳转
+		 		
+		 PathMatchingFilter
+		 		1.appliedPaths匹配request.URL
+		    2.isEnabled
+		    3.onPreHandle
+		    
+		 NoSessionCreationFilter
+		 		不创建session标示
+		 AnonymousFilter
+		 		匿名通过
+		AccessControlFilter
+			isAccessAllowed（权限判断）||onAccessDenied(拒绝处理)
+			
+			redirectToSavedRequest
+			saveRequest  把相应的请求存在session中
+		 	 		
+		    	
+		    
+		    

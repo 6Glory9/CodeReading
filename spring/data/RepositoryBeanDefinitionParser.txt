@@ -1,0 +1,35 @@
+
+JpaRepositoryConfigExtension
+
+	RepositoryInterfaceAwareBeanPostProcessor(repositoryInterface)
+	EntityManagerBeanDefinitionRegistrarPostProcessor(SharedEntityManagerCreator)
+	JpaMetamodelMappingContextFactoryBean
+	PersistenceAnnotationBeanPostProcessor
+
+RepositoryConfigurationSource
+	RepositoryConfigurationSourceSupport
+		1.getCandidates
+				getExcludeFilters,getBasePackages 由子类获取相应配置
+	AnnotationRepositoryConfigurationSource
+	XmlRepositoryConfigurationSource
+	
+RepositoryConfigurationDelegate
+		ClassPathScanningCandidateComponentProvider
+		
+		inMultiStoreMode=true (JpaRepositoryFactory)
+		LenientAssignableTypeFilter
+			AssignableTypeFilter  ->RepositoryFactorySupport
+				AbstractTypeHierarchyTraversingFilter
+				match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)
+				1.matchSelf(metadataReader)
+				2.matchClassName
+				3.matchSuperClass  match Type
+				4.matchInterface match Type
+				
+		
+		registerRepositoriesIn(BeanDefinitionRegistry registry,RepositoryConfigurationExtension extension)
+			
+			
+			
+			RepositoryConfigurationSource(BeanDefinition,RepositoryConfigurationSource)
+			->JpaRepositoryFactoryBean

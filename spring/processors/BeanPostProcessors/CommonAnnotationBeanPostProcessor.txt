@@ -1,0 +1,16 @@
+CommonAnnotationBeanPostProcessor
+  与相似AutowiredAnnotationBeanPostProcessor 
+  WebServiceRef
+  EJB
+  PostConstruct
+  PreDestroy
+  Resource
+  
+  具体内容没看
+	
+
+			
+			
+
+
+

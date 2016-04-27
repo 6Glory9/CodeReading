@@ -1,0 +1,23 @@
+GenericConversionService
+	converters:数据源
+	converterCache:缓存
+	
+	Converters数据源类
+		add
+		
+		converter的ConvertibleTypes为空，直接视为globalConverters,(globalConverters)
+		ConvertersForPair 是这一个List<Converter>,ConvertersForPair(converters)
+		
+		find
+		1.先根据key找到ConvertersForPair
+		2.ConvertersForPair里面Converter是条件或直接返回
+		3.全局
+		
+	
+	addConverter(Class<?> sourceType, Class<?> targetType, Converter<?, ?> converter)
+	ConverterAdapter
+		converter:
+		ConvertiblePair(sourceType,targetType)
+	
+	ConverterFactoryAdapter
+		

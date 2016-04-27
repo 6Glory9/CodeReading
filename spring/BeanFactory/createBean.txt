@@ -1,0 +1,139 @@
+AbstractBeanFactory
+	doGetBean
+			1.transformedBeanName(name)
+				&name->name and alias->beanName
+      2.getSingleton(String beanName, boolean allowEarlyReference)
+      	singletonObjects:最终singletonObject存放地
+      	singletonsCurrentlyInCreation：正在创建的容器
+      	earlySingletonObjects:SingletonObject引用缓存
+      	singletonFactories:singletonFactory存的真实容器
+      	
+      3.getObjectForBeanInstance(Object beanInstance, String name, String beanName, RootBeanDefinition mbd)
+				  1.查询beanFactory对象，但beanInstance不是beanFactory类型的
+				  2.singletonObject或FactoryBean对象，就直接返回
+				  	factoryBeanObjectCache:用于缓存FactoryBean
+				  3.getMergedLocalBeanDefinition(beanName)
+				  	beanName->RootBeanDefinition最终产物
+				  	mergedBeanDefinitions:用于缓存RootBeanDefinition最终产物
+				  4.getObjectFromFactoryBean(FactoryBean<?> factory, String beanName, boolean shouldPostProcess)
+				  	单例处理方式
+				  		重复取值:说是解决循环依赖，但前面有一把锁，除非是父类？？？
+				  		applyBeanPostProcessorsAfterInitialization(BeanPostProcessor)
+				  	原型处理方式
+				  	
+				  	BeanPostProcessor
+				  		DestructionAwareBeanPostProcessor
+				  		InstantiationAwareBeanPostProcessor
+				  		MergedBeanDefinitionPostProcessor
+				
+				4.检查原始创建中的问题
+					 prototypesCurrentlyInCreation:线程变量
+				5.从父类寻找相应的&beanName和beanName
+				6.markBeanAsCreated
+					alreadyCreated：清理mergedBeanDefinitions
+				7.获取最最终数据RootBeanDefinition,抽象类检查
+				8.依赖bean获取dependsOn
+						isDependent(String beanName, String dependentBeanName, Set<String> alreadySeen)
+							dependentBeanMap<beanName,dependentBeanNames>:
+								beanName表示当前bean,dependentBeanName表示当前bean依赖的dependentBeanName
+								dependentBeanNames表示依赖是beanName所有集合
+								dependentBeanNamesB->dependentBeanNamesA->beanName
+								递归查检dependentBeanNamesB,dependentBeanNamesA是否存在dependentBeanName
+				9.注册依赖《名字相反》
+					 dependentBeanMap<beanName,dependentBeanNames> add（dependentBeanName，beanName）
+					 dependenciesForBeanMap<dependentBeanName,beanNames> add(beanName,dependentBeanName)
+				
+				10.创建单例
+						getSingleton(String beanName, ObjectFactory<?> singletonFactory)
+						1.如果singletonsCurrentlyInDestruction为true说明都在InDestruction
+						2.beforeSingletonCreation
+							singletonsCurrentlyInCreation.add
+							inCreationCheckExclusions.检查排除beanName
+						
+						3.创建bean
+								1.resolvedClass
+								2.prepareMethodOverride
+								3.resolveBeforeInstantiation(beanName, mbdToUse),创建代理
+									 PS:
+									 1.!Boolean.FALSE.equals(mbd.beforeInstantiationResolved),
+									  beforeInstantiationResolved=null
+									 2.determineTargetType(beanName, mbd)
+									 			targetType,beanClass|factoryMethodReturnType
+									 applyBeanPostProcessorsBeforeInstantiation
+									   第一次返回bean就开始stop(InstantiationAwareBeanPostProcessor)
+									 applyBeanPostProcessorsAfterInitialization
+									   第一次返回null就开始stop(BeanPostProcessor)
+							  4.doCreateBean()
+							  		1.createBeanInstance
+							  				1.FactoryMethod->BeanWrapper
+							  						RootBeanDefinition:
+							  						resolvedConstructorOrFactoryMethod,解析好方法或构造方法
+							  						constructorArgumentsResolved:参数解析标示
+							  						resolvedConstructorArguments:解析好参数
+							  						preparedConstructorArguments:准备解析参数
+							  				
+							  				
+							  				resolvePreparedArguments
+							  					1.resolveAutowiredArgument
+							  							Optional->isRequired=false
+							  							ObjectFactory->DependencyObjectFactory
+							  							Provider->DependencyProvider(ObjectFactory)
+							  							@Lazy->ProxyFactory
+							  							
+							  							doResolveDependency()
+							  								@value(感觉field的处理)
+							  								1.${}->StringValueResolver ==setEmbeddedValueResolver
+							  								2.#{}->beanExpressionResolver ==spring EL表达式
+							  								3.类型转换
+							  							
+							  							【array】
+							  									1.beaFactory根据类型取值，然后类型比对 或者 @Qualifier
+							  									2.resolvableDependencies根据类型取值
+							  									3.fallbackDescriptor
+							  							【Collection interface】
+							  							【Map interface】
+							  							【type】
+							  									primary
+							  									fallbackDescriptor
+							  					2.valueResolver.resolveValueIfNecessary
+							  							BeanMetadataElement spring定义数据类型处理
+							  					3.beanFactory.evaluateBeanDefinitionString
+							  							spring EL表达式处理
+							  				2.autowireConstructor->BeanWrapper
+							  				3.instantiateBean(beanName, mbd)->BeanWrapper(无参数)
+							  		4.applyMergedBeanDefinitionPostProcessors->MergedBeanDefinitionPostProcessor
+							  			 常用注解注入的准备
+							  		5.addSingletonFactory
+							  			提前暴露SingletonFactory
+							  		6.postProcessAfterInstantiation的处理->InstantiationAwareBeanPostProcessor
+							  		7.autowireByName,autowireByType
+							  			配置自动设置,会把AbstractBeanDefinition.PropertyValues+bw.setter方法相应过滤值
+							  			感觉有点危险哈，依赖的对象会先getBean，但没有做相应setter，这个操作后续填充
+							  		8.postProcessPropertyValues->InstantiationAwareBeanPostProcessor
+							  			 annotation注入方式
+							  		9.applyPropertyValues 最终填充
+							  		10.initializeBean
+							  				1.invokeAwareMethods
+							  				2.applyBeanPostProcessorsBeforeInitialization->BeanPostProcessor
+							  				3.invokeInitMethods->afterPropertiesSet
+							  				4.applyBeanPostProcessorsAfterInitialization->BeanPostProcessor
+							  		11.registerDisposableBean
+							  				
+						4.afterSingletonCreation
+							singletonsCurrentlyInCreation.remove
+							inCreationCheckExclusions.检查排除beanName
+						5.addSingleton
+								singletonObjects,singletonFactories,earlySingletonObjects,registeredSingletons
+						
+				11.创建单例失败
+						destroySingleton(String beanName)
+							removeSingleton(beanName)
+							disposableBeans:从这里取出相应的bean
+							containedBeanMap:内部的bean对应的Map
+							 1.依赖此beanName都执行destroySingleton方法
+							 2.如果是disposableBean执行相应的方法
+							 3.内部bean都执行destroySingleton方法
+							 4.清理dependentBeanMap,dependenciesForBeanMap
+							 5.最终抛异常出来,只是单个异常，最终会被上层捕捉被getSingleton
+      	
+				

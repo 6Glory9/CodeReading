@@ -1,0 +1,67 @@
+ConfigurationClassPostProcessor
+	1.add ImportAwareBeanPostProcessor
+	2.add EnhancedConfigurationBeanPostProcessor
+	BeanDefinition 转成 AnnotationMetadata
+	1.@Configuration  beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, full);
+	2.@Component,@ComponentScan,@Import,@ImportResource,methods have @Bean
+			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, full); lite
+	3.beanDef.setAttribute(ORDER_ATTRIBUTE, orderAttributes.get(AnnotationUtils.VALUE));
+	
+	ConfigurationClassParser
+		processConfigurationClass(ConfigurationClass)
+	ConfigurationClass 
+		1.AnnotationMetadata
+		2.beanName
+		3.resource
+		4.beanMethods  @bean 方法
+		5.importedBy  @Import class 被哪些Class引进
+		6.importedResources @importedResources 引进Resources
+		7.skippedBeanMethods 跳过方法
+		8.ImportBeanDefinitionRegistrar  引进BeanDefinitionRegistrar
+		
+		ConfigurationClass(class容器),SourceClass(数据工具)
+		
+		Imported()关系还没有看明白，一会儿再看
+		被谁加载 a->b->c   所有c被加载集合存在a,b
+		
+		doProcessConfigurationClass(ConfigurationClass configClass, SourceClass sourceClass) 
+		1.processMemberClasses   nestedClasses(public static class && @Configuration)==> (class（importedBy）,内部产生的bean)
+		2.processPropertySource   直接加载环境变量引用，进行处理
+		3.processComponentScan (@Component) 直接通过ComponentScan注册，然后再生一个ConfigurationClass进行解析
+		4.processImports(@Import value值)
+				ImportSelector(直接加载bean),
+					deferredImportSelectors,
+					ImportBeanDefinitionRegistrar(setBeanFacotry),
+				ImportBeanDefinitionRegistrar
+				processConfigurationClass(加载 ImportSelector产生的bean)，(class（importedBy）,内部产生的bean)
+		5.processImportResource
+		6.processBeans
+		7.processInterfaceBeans
+		8.processSuperclass
+		
+	ConfigurationClassBeanDefinitionReader
+		TrackedConditionEvaluator
+			ConditionEvaluator
+			1.configClass.getImportedBy() 被引入类全部skip,当前这个类直接skip
+			2.ConditionEvaluator(registry, environment, resourceLoader).skip()的结果
+			
+			
+		ConditionEvaluator
+			1.判断这个类是否有Conditional
+			2.如果ConfigurationPhase根据metadata判断
+			3.把类上所有@Conditional的value取出来 interface(Condition)
+			4.如果是ConfigurationCondition取ConfigurationPhase做判断
+			5.Condition.matches(ConditionContext context, AnnotatedTypeMetadata metadata)
+			ProfileCondition
+				环境变量与metadata的值做对比
+			ConfigurationCondition 系列（增加ConfigurationPhase）
+				
+			SpringBootCondition 系列
+				模板方法
+				1.getClassOrMethodName 取得名字
+				2.子类得到最终判断
+				3.log
+				4.ConditionEvaluationReport 记录
+				
+				
+		
