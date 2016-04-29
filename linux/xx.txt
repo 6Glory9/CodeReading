@@ -1,0 +1,24 @@
+##软件控制面板
+rpm -ivh filename.rpm ##安装软件
+rpm -Uvh filename.rpm ##升级软件
+rpm -e filename.rpm   ##卸载软件
+rpm -qpi filename.rpm ##查询软件的描述信息
+rpm -qpl filename.rpm ##列出软件的信息
+rpm -qf fiename       ##查询文件属于那个RPM
+
+##yum软件仓库
+yum仓库的文件均需.repo结尾并存放在/etc/yum.respos.d/目录中
+yum仓库格式
+[rhel-media]:yum源的名称，可自定义
+baseurl:提供方式包括FTP
+enabled=1:设置此源否可用
+gpgcheck=1:设置此源是否检验文件
+gpgkey:key
+
+
+yum repolist all
+yum list all
+yum info      软件包名称
+yum install   软件包名称
+yum reinstall 软件包名称
+yum update    软件包名称
