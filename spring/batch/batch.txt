@@ -107,8 +107,6 @@ ChunkTransactionCallback
 ChunkOrientedTasklet（导向任务器）
 		任务处理模板
 			1.ChunkProvider重复读取数据
-			
-		
 		
 		
 			

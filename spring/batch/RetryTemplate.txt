@@ -1,5 +1,5 @@
-backOffPolicy:补偿策略
-retryPolicy：重试策略
+retryPolicy：重试策略。执行失败，决定到底是否再执行(次数,时间)
+backOffPolicy:补偿策略。在异常时，补偿操作(暂停一段时间)
 listeners:重试监听
 retryContextCache：重试上下文缓存
 
@@ -16,10 +16,12 @@ doExecute(RetryCallback<T, E> retryCallback,RecoveryCallback<T> recoveryCallback
 5.再试操作 return;
 	 异常
 	     1.监听器生命周期onError
-	     2.注册异常
+	     2.注册异常（次数增加）
 			 3.补偿处理
-	6.判断是否抛异常(rollbackFor) return;
-	7.如果疲惫状态，抛异常 return;
-	8.handleRetryExhausted
-		     重试失败恢复操作
+			 4.判断是否抛异常(rollbackFor) return;
+			 5.如果疲惫状态，抛异常 return;
+			 6.handleRetryExhausted
+			 			1.删除缓存RetryContext
+					  2.重试失败恢复操作 return;
+					  3.抛出异常
 	 
