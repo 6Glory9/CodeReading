@@ -1,6 +1,6 @@
 ConfigurationClassPostProcessor
-	1.add ImportAwareBeanPostProcessor
-	2.add EnhancedConfigurationBeanPostProcessor
+	1.add ImportAwareBeanPostProcessor setImportMetadata
+	2.add EnhancedConfigurationBeanPostProcessor  setBeanFactory
 	BeanDefinition 转成 AnnotationMetadata
 	1.@Configuration  beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, full);
 	2.@Component,@ComponentScan,@Import,@ImportResource,methods have @Bean
@@ -29,11 +29,12 @@ ConfigurationClassPostProcessor
 		2.processPropertySource   直接加载环境变量引用，进行处理
 		3.processComponentScan (@Component) 直接通过ComponentScan注册，然后再生一个ConfigurationClass进行解析
 		4.processImports(@Import value值)
-				ImportSelector(直接加载bean),
-					deferredImportSelectors,
-					ImportBeanDefinitionRegistrar(setBeanFacotry),
-				ImportBeanDefinitionRegistrar
-				processConfigurationClass(加载 ImportSelector产生的bean)，(class（importedBy）,内部产生的bean)
+				1.ImportSelector(直接加载bean),
+					deferredImportSelectors(延时执行)
+					ImportSelector(selector.selectImports(metadata)引进所有classes,然后processImports)
+				2.ImportBeanDefinitionRegistrar
+					addImportBeanDefinitionRegistrar
+				3.processConfigurationClass(加载 ImportSelector产生的bean)，(class（importedBy）,内部产生的bean)
 		5.processImportResource
 		6.processBeans
 		7.processInterfaceBeans
@@ -44,7 +45,13 @@ ConfigurationClassPostProcessor
 			ConditionEvaluator
 			1.configClass.getImportedBy() 被引入类全部skip,当前这个类直接skip
 			2.ConditionEvaluator(registry, environment, resourceLoader).skip()的结果
-			
+			PS:1.类所有Conditional的annotation找到，取里面的Value
+			   2.所有value值都是Condition的子类
+			   3.condition.matches(this.context, metadata)
+			   		metadata,Conditional所在类所有信息
+			   		context(environment,resourceLoader,BeanDefinitionRegistry,ConfigurableListableBeanFactory)
+			   4.参数传入方式
+			   			@ConditionalOnClass(这里传入参数),ConditionalOnClass的头上却是@condition值
 			
 		ConditionEvaluator
 			1.判断这个类是否有Conditional

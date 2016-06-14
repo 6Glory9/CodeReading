@@ -1,0 +1,43 @@
+SpringApplication
+		1.sources  数据源头
+		2.mainApplicationClass  main.class（通过new RuntimeException().getStackTrace()）
+		3.webEnvironment  web标示(Servlet&&ConfigurableWebApplicationContext)
+		4.initializers ApplicationContextInitializer
+		5.listeners   ApplicationListener,监听相应的事件。
+		6.additionalProfiles   运用设置策略
+		
+		1)StopWatch 积累每个模块总花费时间stopWatch.start("模块名");stopWatch.stop();
+    2)StartupInfoLogger 打印出不同的样式
+    
+
+		SpringApplication.run(Main.class);
+		 		1.setHeadlessFlat  				                    headless标示		     
+		 		2.getSpringApplicationRunListeners            springboot启动生命周期RunListeners，其中有触发事件
+		 		3.Listeners.start()
+		 		4.createAndRefreshContext()
+		 			1)create environment，configureEnvironment  1.根据标示创建环境变量 2.设置激活策略
+		 			2)configurePropertySources                  1.defaultProperties last  2.CommandLineProperties fist
+		 			3)listeners.environmentPrepared()
+		 			4)createApplicationContext and postProcessApplicationContext
+		 			5)initializers
+		 			6)listeners.contextPrepared(context);
+		 			7)load(context, sources.toArray(new Object[sources.size()]));
+		 			8)listeners.contextLoaded(context);
+		 			9)refresh(context);
+		 		 10)context.registerShutdownHook();
+		 		5.Listeners.finished()
+		 		6.exception handler
+		 		
+PS:环境变量顺序
+StubPropertySource [name='servletConfigInitParams']
+StubPropertySource [name='servletContextInitParams']
+MapPropertySource [name='systemProperties']
+SystemEnvironmentPropertySource [name='systemEnvironment']
+--getOrCreateEnvironment() new StandardServletEnvironment()
+
+HeraPropertySource [name='hera']
+RandomValuePropertySource [name='random']
+PropertiesPropertySource [name='applicationConfig: [classpath:/application.properties]']
+MapPropertySource [name='refresh']
+		 		
+		

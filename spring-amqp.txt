@@ -1,0 +1,20 @@
+spring-amqp
+	1.Message
+	2.Exchange:交换器
+			exchangeType:Direct,Topic,Fanout,Headers
+			durable:持久性标示
+			autoDelete:自动删除标示
+	3.Queue
+			durable:持久性标示
+			autoDelete:自动删除标示
+			exclusive:独立唯一标示
+	4.Binding
+			new Binding(someQueue, someDirectExchange, "foo.bar");
+			new Binding(someQueue, someTopicExchange, "foo.*");
+			new Binding(someQueue, someFanoutExchange);
+			Binding b = BindingBuilder.bind(someQueue).to(someTopicExchange).with("foo.*");
+	5.connection
+			1.SingleConnectionFactory 
+			2.CachingConnectionFactory
+			3.SSLConnectionFactory
+			4.RoutingConnectionFactory
