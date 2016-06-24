@@ -1,0 +1,43 @@
+﻿##查看权限
+ls  -alh               ##查看所有的权限
+ls  -alh --full-time   ##查看权限和时间
+ls  -alh --full-time -S
+
+##七属性字段
+drwxrwxr-x. 2 payengine payengine 4.0K 2016-03-28 14:11:39.469966859 +0800 dubbo
+1.权限
+2.i-node连接数（文案的权限和属性记录在i-node中，而目录记录在文档名）
+3.拥有者名称
+4.组的名称
+5.文案大小
+6.最近修改时间
+7.文案名称
+
+
+##修改权限
+chgrp -R newGroup dir   ##修改新的组名
+chown -R www-data dir   ##修改拥有者
+chown -R www-data:www-data dir ##修改拥有者和组
+
+##两种修改权限方式
+1.r=4 w=2 x=1
+chmod -R 777  dir
+
+2.[u,g,o,a][=,+,-][r,w,x]
+chmod u=rwx,go=rx .bashrc
+chmod -R u+rwx,go=rx .bashrc
+
+##权限对应目录和文档说明
+1.文档
+r=只能读,不能修改
+w=只有w权限，是无法修改的。必须同时拥有rw权限才能修改
+x=执行权限
+
+2.目录
+r=查看目录下文件权限
+w=对于目录下文件的操作权限
+	1.文件直接都操作权限
+	2.目录,如有r权限可以删除目录（目录下没有文件直接可以删除）
+				 如有x权限才能目录下的文件
+x=进入目录的权限
+
