@@ -1,0 +1,26 @@
+﻿Bootstrap
+
+1.init()
+initClassLoaders();##初始化ClassLoaders  
+Catalina.newInstance();====org.apache.catalina.startup.Catalina
+setParentClassLoader();
+
+2.setAwait()   ##设置等待标示
+
+3.load()
+	1.initDirs()   ##check tmpdir,java.io.tmpdir
+	2.initNaming() ##catalina.useNaming,java.naming.factory.initial
+	3.createServer ##1.conf/server.xml 2.server-embed.xml 
+	4.initStreams  ##指定输入输出
+	5.init    
+			1.StandardServer.init
+			2.NamingResourcesImpl.init
+			3.StandardService.init
+			4.Container.init
+			5.Executor.init
+			6.MapperListener.init
+			7.Connector.init
+				 1.ProtocolHandler.init
+				 2.AbstractEndpoint.init
+			
+
