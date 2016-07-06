@@ -1,0 +1,17 @@
+View
+	AbstractView
+	1.beanName
+	2.contentType(text/html;charset=ISO-8859-1)
+	3.requestContextAttribute(Model的名字key)
+	4.staticAttributes(静态属性)【csv】
+	5.exposePathVariables(暴露PathVariables标示)
+	6.exposeContextBeansAsAttributes(application context 作为属性标示)
+	7.exposedContextBeanNames(application context of bean names 作为属性标示)
+	用:render
+	 1.createMergedOutputModel
+	 		mergedModel(staticAttributes+model+pathVars(if)+RequestContext(if))
+	 2.prepareResponse
+	 3.renderMergedOutputModel(抽象方法)
+	 
+	 FastJsonJsonView
+	 	

@@ -1,0 +1,7 @@
+﻿1.请求封闭成一个Service
+2.只会存在一个TicketGrantingTicket
+3.ServiceTicket(TicketGrantingTicket(Services(ServiceTicketId,Service)))
+4.TicketGrantingTicket保存的Services以(ServiceTicketId)的标示，这样达到关联关系
+5.TicketGrantingTicket----ServiceTicket（1:n）双向
+
+

@@ -1,56 +1,90 @@
 HandlerMapping
 	AbstractHandlerMapping
-		setApplicationContext()
-			initInterceptors(MappedInterceptor(修饰),WebRequestHandlerInterceptorAdapter)
-			子类注册相应hanlder(hanlder,handleMethod),根据不同类型注册相应处理器
-		getHandler(HttpServletRequest request) 模板方法
+	  1.setsetServletContext()
+		2.setApplicationContext()
+		3.initApplicationContext()
+			  加载Interceptors
+			  
+			  
+	 用:getHandler(HttpServletRequest request) 模板方法
 			1.根据request找到相应处理handler,如不存在返回默认处理器
 			2.匹配HandlerInterceptor，组装返回HandlerExecutionChain
 			3.根据request是否跨域请求，增加(跨域预请求处理器,跨域请求拦截)
-				HandlerAdapter（HttpRequestHandlerAdapter,PreFlightHandler）
-				回写一些信息（https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)
+				PS（https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)
+				1.PreFlightHandler(跨域预请求处理器),回写几个头字段。
+				2.CorsInterceptor（跨域预请求处理器）,处理返回是否正确。
 		
 		
 		AbstractHandlerMethodMapping
-			afterPropertiesSet
+			afterPropertiesSet(三个模板方法)
+				isHandler(beanType)
+				getMappingForMethod(method, userType)
+				getMappingPathPatterns(T mapping)
+				
 				detectHandlerMethods(handlerType)
 				
-				MethodIntrospector 方法内省
-					selectMethods(Class<?> targetType, final MetadataLookup<T> metadataLookup)
-						ClassUtils.getMostSpecificMethod 寻找覆盖的方法 
-						方法过滤处理
-					BridgeMethodResolver
-						findBridgedMethod(如果获取到桥接方法对应的实际的方法) 寻找被桥接方法
-						
-					register(T mapping, Object handler, Method method)
-					
-					T->Comparator<T>
-					Collections.sort(matches, comparator); 找出匹配最精确
-					request.setAttribute(BEST_MATCHING_PATTERN_ATTRIBUTE,URI_TEMPLATE_VARIABLES_ATTRIBUTE,
-					                     PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE,PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE
-					                     MATRIX_VARIABLES_ATTRIBUTE())
-					                     
-					/owners/{ownerId}/pets/{petId}
-					@MatrixVariable(pathVar = "petId") Map<String, String> petMatrixVars
-					http://localhost:8080/owners/44/pets/55;q=22,33;s=23
-					
-					MatrixVariableMapMethodArgumentResolver
-					PathVariableMapMethodArgumentResolver
-					
-					CorsUtils.isPreFlightRequest  ->PREFLIGHT_AMBIGUOUS_MATCH
+				
+		 用:getHandlerInternal(HttpServletRequest request)
+		 			lookupHandlerMethod(String lookupPath, HttpServletRequest request)(两个模板方法)
+		 				getMatchingMapping(T mapping, HttpServletRequest request)
+		 				getMappingComparator(HttpServletRequest request)
+		 				
+		 				T->Comparator<T>
+					  Collections.sort(matches, comparator); 找出匹配最精确
+		 				
+		 	RequestMappingInfoHandlerMapping
+					实现：getMappingPathPatterns
+								getMatchingMapping
+								getMappingComparator
+								
+					覆盖:handleMatch
+							BEST_MATCHING_PATTERN_ATTRIBUTE,URI_TEMPLATE_VARIABLES_ATTRIBUTE
+					    MATRIX_VARIABLES_ATTRIBUTE,PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE
+					    
+					    /owners/{ownerId}/pets/{petId}
+							@MatrixVariable(pathVar = "petId") Map<String, String> petMatrixVars
+							http://localhost:8080/owners/44/pets/55;q=22,33;s=23
+							
+							BEST_MATCHING_PATTERN_ATTRIBUTE:http://localhost:8080/owners/44/pets/ 55;q=22,33;s=23
+							URI_TEMPLATE_VARIABLES_ATTRIBUTE:{[ownerId=44],[petId=55]}
+							MATRIX_VARIABLES_ATTRIBUTE:{[q=22,33],[s=23]}
+					    
+					    handleNoMatch
+					    抛相应的异常
+			RequestMappingHandlerMapping
+							setEmbeddedValueResolver()
+							覆盖：afterPropertiesSet()，initCorsConfiguration()
+							实现：isHandler(Class<?> beanType)
+							      getMappingForMethod(Method method, Class<?> handlerType)
 		
 		
 		
 		AbstractUrlHandlerMapping
-			 / ->rootHandler
-			 null ->defaultHandler
+		   用：getHandlerInternal
+		   1.mappedHandler
+			 2./ ->rootHandler
+			 3.null ->defaultHandler
+			 4.validateHandler(requestMethod,Params,Headers)
+			 5.通过Interceptor暴露(BEST_MATCHING_PATTERN_ATTRIBUTE,URI_TEMPLATE_VARIABLES_ATTRIBUTE)
 			 
-			 handlerMap-->subClass
+			 registerHandler(String urlPath, Object handler)(子类使用注册)
+			 		setRootHandler
+			 		setDefaultHandler
+			
+			
+			SimpleUrlHandlerMapping
+			  覆盖：initApplicationContext()，使用registerHandlers
+			  
+			
+			AbstractDetectingUrlHandlerMapping
+			  覆盖：initApplicationContext(),detectHandlers()
+			  			
+			  			determineUrlsForHandler（模板方法,由子类实现）
 			 
-			 validateHandler(requestMethod,Params,Headers)
-			 
-			 PathExposingHandlerInterceptor(BEST_MATCHING_PATTERN_ATTRIBUTE,PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE)
-			 UriTemplateVariablesHandlerInterceptor(URI_TEMPLATE_VARIABLES_ATTRIBUTE)
-			 
-			 最终匹配（validateHandler,best path）
-		
+			DefaultAnnotationHandlerMapping
+					覆盖：determineUrlsForHandler
+									RequestMapping解析
+									url<->handler
+								validateHandler
+			BeanNameUrlHandlerMapping
+					覆盖：determineUrlsForHandler

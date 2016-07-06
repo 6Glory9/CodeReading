@@ -1,0 +1,11 @@
+﻿logout
+	1.根据TGTC查找相应TicketGrantingTicket
+	2.根据TicketGrantingTicket的services删除相应的值通知client
+	3. putLogoutRequests
+	
+	doLogout
+		保存需要跳转的logoutRedirectUrl
+		1.没有执行
+		  front
+		2.成功
+			

@@ -1,0 +1,51 @@
+login.html
+	1.initialFlowSetupAction(从缓存获取ticketGrantingTicketId,warnCookieValue,request中service,都存在flowScop)
+		URL:http://marmot.yjpay.hk/cas/login?
+		service=http%3A%2F%2Fboss.yjpay.hk%2Fboss%2Fboss%2Fauth%2FauthPermission.htm&redirect=4131025JL
+		1.warnCookieGenerator
+		2.ticketGrantingTicketCookieGenerator
+		3.pathPopulated 设置domain
+		4.flowScop(null,null,SimpleWebApplicationServiceImpl('http%3A%2F%2Fboss.yjpay.hk%2Fboss%2Fboss%2Fauth%2FauthPermission.htm&redirect=4131025JL','http%3A%2F%2Fboss.yjpay.hk%2Fboss%2Fboss%2Fauth%2FauthPermission.htm&redirect=4131025JL',null))
+		
+	2.ticketGrantingTicketCheck(检查ticketGrantingTicketId有效性)
+		1.notExists 不存在
+				gatewayRequestCheck
+		2.invalid
+			  terminateSession
+			  根据ticketGrantingTicketId找到相应TicketGrantingTicket
+			  TicketGrantingTicket==>loginOut service  把ServiceTicketId相关信息发送过去
+			  再走重新登陆哈。generateLoginTicket
+		3.valid
+				renewRequestCheck
+				1.if renew is not serviceAuthorizationCheck
+						重新登陆，更新相应的值
+				2.generateServiceTicket 直接跳转回去，带着相应的数据。
+  3.gatewayRequestCheck(两种方式)
+  	1.gatewayServicesManagementCheck方式（requestParameters.gateway != '' and requestParameters.gateway != null）
+  		   check service 是否存在,直接跳转回家,什么都留下（可以采用不登陆，gataway想点办法）
+  	2.serviceAuthorizationCheck 方式
+  			 check service 是否存在和开启，然后生成loginToken（输入账号和密码）-->realSubmit
+  			 
+  4.realSubmit 登陆验证
+  	1.ticketGrantingTicketId && service存在 && renew ,ticketGrantingTicketId是从request取出，但cookie失效。
+  	   1.生成ServiceTicket保存serviceTicketRegistry,ServiceTicketId保存request，是一个新的ServiceTicketID
+  	   2.if生成warnCookieGenerator  
+  	   ===>最终带有ServiceTicketId返回请求端
+  	   
+  	2.ticketGrantingTicketId  不存在
+  	   1.生成ticketGrantingTicket。保存flowscop的ticketGrantingTicketId
+  	   2.if生成warnCookieGenerator
+  	   
+  	   SUCCESS_WITH_WARNINGS==>有一个审核的过程===>sendTicketGrantingTicket(难道授权就是这样处理)
+  	   SUCCESS==>sendTicketGrantingTicket
+  	   
+  5.sendTicketGrantingTicket 成功
+  		sendTicketGrantingTicketAction
+  			生成TGTC(cookie)
+  		1.存在service
+  				generateServiceTicket
+  		2.不存在service
+  				不用跳转
+  				
+ 6.generateServiceTicket
+ 根据ticketGrantingTicket生成ServiceTicket,ServiceTicketId保存request,最终跳转回客服端

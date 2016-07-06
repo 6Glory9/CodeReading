@@ -1,0 +1,23 @@
+HandlerExceptionResolver
+	1.ModelAndViewDefiningException 抛这个异常，里面相应ModelAndView
+	2.DefaultErrorAttributes  request.setAttribute(ERROR_ATTRIBUTE, ex);
+	3.AbstractHandlerExceptionResolver
+		用:resolveException，模板方法
+		1.判断是否捕捉异常
+		2.打印日志
+		3.初始化Response
+		4.doResolveException
+		SimpleMappingExceptionResolver
+		  1.exceptionMappings(Exception)-->viewName
+		  2.if determineStatusCode-->statusCodes(viewName)
+		  3.ModelAndView
+		  
+		DefaultHandlerExceptionResolver
+			各种异常
+			
+		ResponseStatusExceptionResolver(@ResponseStatus)
+		
+		AbstractHandlerMethodExceptionResolver
+			1.shouldApplyTo 处理
+		
+		ExceptionHandlerExceptionResolver 这个类真没有怎么看懂
