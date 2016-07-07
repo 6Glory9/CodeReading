@@ -1,0 +1,28 @@
+﻿AbstractCasFilter
+	1.artifactParameterName：ticket的名字可配
+	2.serviceParameterName:  service的名字可配
+	3.serverName：{protocol}:{hostName}:{port}，自己项目
+	4.service：完整的地址
+	
+AuthenticationFilter
+	1.casServerLoginUrl:登陆的地址
+	2.renew:标示更新ST标示
+	3.gateway：网关
+	用：1.当session存在Assertion直接通过。
+	    2.当session存在gateway或request存在ticket,让其它Filter去处理
+	    3.没有Assertion,ticket,gateway直接登陆
+
+AbstractTicketValidationFilter
+	1.ticketValidator：验证器
+	2.exceptionOnValidationFailure:验证失败是否抛异常标示
+	3.useSession ：是否用session标示
+	4.redirectAfterValidation:验证过后是否移出ticket
+		用：1.request没有存在ticket直接通过
+		    2.request存在ticket，要进行ticketValidator，得到相应Assertion（断言）
+		    3.可能保存在Session,也可以去掉ticket
+
+SingleSignOutFilter
+	1.用：1.request存在ticket，直接保存(ST,httpSession|sid)
+	      2.method:post&&request存在logoutRequest参数 &&非下载
+	      	销毁session
+	
