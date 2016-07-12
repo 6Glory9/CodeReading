@@ -1,4 +1,5 @@
-BeanWrapperImpl
+BeanWrapperImpl(PropertyAccessorFactory创建beanWrapper)
+	1.BeanPropertyHandler 对set,get方法包装
 	AbstractPropertyAccessor(TypeConverter,PropertyEditorRegistry,
 													PropertyAccessor,ConfigurablePropertyAccessor)
 	AbstractNestablePropertyAccessor
@@ -12,7 +13,7 @@ AbstractNestablePropertyAccessor
 			PropertyTokenHolder(actualName,canonicalName,keys)
 			"a[i]"===>a(actualName),a[i](canonicalName),i(keys)
 	getPropertyAccessorForPropertyPath(path)
-		1.判断是否存在a.b这样场景
+		1.判断是否存在a[key].b|a.b|a[key][key2].b这样场景
 		2.如果存在寻找childAbstractNestablePropertyAccessor
 			构建当前a对应AbstractNestablePropertyAccessor
 			getNestedPropertyAccessor(String nestedProperty),当keys为空时,actualName==canonicalName
@@ -24,4 +25,6 @@ AbstractNestablePropertyAccessor
 				setDefaultValue(PropertyTokenHolder tokens) 
 				setPropertyValue(PropertyTokenHolder tokens, PropertyValue pv)
 				设置当前AbstractNestablePropertyAccessor缓存中。
+				
+T convertIfNecessary(String propertyName, Object oldValue, Object newValue,Class<T> requiredType, TypeDescriptor typeDescriptor)
 	
