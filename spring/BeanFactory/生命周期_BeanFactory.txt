@@ -27,3 +27,10 @@ applyBeanPostProcessorsAfterInitialization(初始化后处理)
 
 Singleton registerDisposableBean
 scope.registerDestructionCallback
+
+1.注解的注入，不会被忽略，及时你设置过AbstractAutowireCapableBeanFactory(ignoredDependencyTypes,ignoredDependencyInterfaces)
+2.依赖的注入resolveDependency->findAutowireCandidates->beanNamesForTypeIncludingAncestors->getBeanNamesForType
+						1.如果BeanFactory存在FactoryBean会先创建起才取得对象的类型，最终进行匹配。最终匹配成功再创建。
+							只会保存一个factoryBeanInstanceCache(BeanWrapper)
+						2.如果非BeanFactory,直接根据BeanDefine判断类型，匹配成功再创建。
+						3.注意是否有BeanPostProcessor

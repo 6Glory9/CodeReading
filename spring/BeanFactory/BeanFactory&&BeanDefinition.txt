@@ -2,7 +2,7 @@ DefaultSingletonBeanRegistry
 	singletonObjects:最终产物(beanName,singleton)
 	singletonFactories:创建过程的产物(beanName,FactoryBean)
 	earlySingletonObjects:singletonFactories的产物FactoryBean.getObject(beanName,ref)
-	registeredSingletons:注册的beanName set
+	registeredSingletons:注册的set<beanName>
 	singletonsCurrentlyInCreation:在创建时放入，防止循环创建
 	inCreationCheckExclusions:创建排除检查
 
@@ -11,8 +11,10 @@ DefaultSingletonBeanRegistry
 	disposableBeans:注册毁灭的bean(特殊的bean)
 	containedBeanMap:bean与内部bean的关系（bean,nestBeans）
 	A->B
-	dependentBeanMap:(A,B)
-	dependenciesForBeanMap(B,A) 注册的时候反的注册的
+	dependentBeanMap:(B,A)  依赖的对象，被依赖的对象  
+	dependenciesForBeanMap(A,B)被依赖的对象，依赖的对象
+	dependentBeanName:表示被依赖对象
+	beanName:依赖对象
 
 
 FactoryBeanRegistrySupport
@@ -21,17 +23,17 @@ FactoryBeanRegistrySupport
 
 AbstractBeanFactory
 	parentBeanFactory:fatherBeanFactory
-	mergedBeanDefinitions:BeanDefinition最终产产物，数据源()
+	mergedBeanDefinitions:BeanDefinition最终产产物，数据源(RootBeanDefinition)
 	beanClassLoader
 	tempClassLoader
-	cacheBeanMetadata 缓存RootBeanDefine
+	cacheBeanMetadata:缓存RootBeanDefine
 	prototypesCurrentlyInCreation:prototypes创建循环依赖
 	alreadyCreated:beanName是否已经创建了，如果存在就不清理mergedBeanDefinitions
 	scopes:scope名字和scope的关系,相应的singleton处理方式
 	
-	typeConverter：转换器工具
-	conversionService：新的转换服务
+	typeConverter：转换器工具(conversionService,propertyEditorRegistrars,customEditors)
 	
+	conversionService：新的转换服务
 	propertyEditorRegistrars:属性注册器
 	customEditors:用户自定义转换器（提供registerCustomEditors服务为PropertyEditorRegistry提供属性注册）
 	
@@ -86,7 +88,8 @@ AbstractBeanDefinition
 	destroyMethodName:销毁方法
 	enforceInitMethod:初始化方法存在标示
 	enforceDestroyMethod:销毁方法存在标示
-	synthetic:综合配置(true),用户配置(false,需要后处理)。
+	synthetic:true(用户自己),false默认程序自己,决定是否后处理器
+	
 	description:描述
 	role:
 	ROLE_APPLICATION 用户定义
@@ -95,6 +98,7 @@ AbstractBeanDefinition
 	
 	resource：xml,class
 	
+RootBeanDefinition
 	allowCaching:是否缓存参数
 	decoratedDefinition:BeanDefinitionHolder(有别名),targetBean
 	targetType:如果工厂方法，表示它的类型
