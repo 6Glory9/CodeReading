@@ -34,7 +34,7 @@ GenericApplicationContext系列
 	  	1.增加servletContext,themeSource
 	  	2.重写
 	  		1.createEnvironment==>StandardServletEnvironment
-	  		2.postProcessBeanFactory==>(ServletContextAwareProcessor,)
+	  		2.postProcessBeanFactory==>(ServletContextAwareProcessor,ServletContextAware)
 				
 				EmbeddedWebApplicationContext	
 						1.embeddedServletContainer:嵌入式容器
@@ -42,5 +42,24 @@ GenericApplicationContext系列
 						3.重写
 							1.refresh() 增加刷新失败停止嵌入式容器
 							2.onRefresh() 创建嵌入式容器
+									1.EmbeddedServletContainerFactory->EmbeddedServletContainer(Tomcat)
+									2.注入回调函数getSelfInitializer,添加web组件(servlet,filter,Listener)
+											selfInitialize:注册web组件,scop,application,WebEnvironment
+									3.增加PropertySource
 							3.finishRefresh() 启动容器
 							4.onClose()  增加停止嵌入式容器
+							
+
+
+
+AbstractRefreshableApplicationContext系列
+	重写:refreshBeanFactory()
+		加上锁的控制启动，loadBeanDefinitions,留给子类实现
+		
+		AbstractRefreshableConfigApplicationContext 入口
+		  设置资源入口
+		 afterPropertiesSet
+		 
+		AbstractRefreshableWebApplicationContext 加入web元素
+			servletContext，servletConfig，themeSource
+		

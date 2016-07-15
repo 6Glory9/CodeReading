@@ -1,0 +1,79 @@
+ProxyConfig
+	1.proxyTargetClass：代理是否所有所有接口
+	2.optimize
+	3.opaque
+	4.exposeProxy
+	5.frozen
+
+ProxyProcessorSupport(AopInfrastructureBean)
+	1.AopInfrastructureBean这个是AopInfrastructureBean标示
+	2.evaluateProxyInterfaces
+		 1.获取被代理对象所有接口,设置代理标示proxyTargetClass=true
+
+AbstractAutoProxyCreator系列
+	1.advisedBeans：advisedBeans->Map,true标示代理的,false表示advisor
+	2.applyCommonInterceptorsFirst:公共拦截器首先标示
+	3.freezeProxy:冻结配置标示
+	4.interceptorNames:拦截器名称集合
+	5.proxyTypes:代理对象的类型(重写predictBeanType)
+	6.TargetSourceCreator:自定义TargetSource创建器
+	7.targetSourcedBeans：targetSource的名字集合
+	8.earlyProxyReferences:代理早期引用对象
+	9.AdvisorAdapterRegistry:advice->Advisor,Advisor->MethodInterceptor
+	
+	两个入口:
+		1.postProcessBeforeInstantiation(自己定义TargetSource)
+			PS:shouldSkip,要遍历所有beanName,如果是FactoryBean小心依赖注入
+			一般都不会这个入口进入
+			
+		2.postProcessAfterInitialization  初始完成
+				wrapIfNecessary
+					1.targetSourcedBeans,adviseBeans 对象直接返回
+					2.判断是否针对此对象存在相应advice,Advisors(getAdvicesAndAdvisorsForBean)，子类实现
+						getAdvicesAndAdvisorsForBean
+					3.createProxy
+							1.在代理对象添加一个属性(ORIGINAL_TARGET_CLASS_ATTRIBUTE,originalTarget)
+							2.设置proxyTargetClass标示(1.BeanDefine存在preserveTargetClass属性值为true  2.存在接口)	
+							3.把所有拦截器，advice,advisor做相应的转换及添加
+							4.自定义代理工厂，留给用户
+							5.proxyFactory.getProxy
+									DefaultAopProxyFactory
+									1.ObjenesisCglibAopProxy
+									2.JdkDynamicAopProxy
+									
+						JdkDynamicAopProxy
+							1.add两个接口(SpringProxy,Advised)
+							2.look up equalsDefined,hashCodeDefined  这个方法写得可以
+							3.Proxy.newProxyInstance(InvocationHandler)  动态生成一个对象，实现所有接口，
+							每个接口都回用InvocationHandler，因此调用每个接口，其实就调用InvocationHandler.invoke
+							4.根据相应的方法查找相应的拦截器(advisor->Interceptors,advices)
+							5.组成ReflectiveMethodInvocation.proceed
+									1.最后一个调用target方法
+									2.InterceptionAdvice判断处理
+									3.MethodInterceptor处理
+					
+					ObjenesisCglibAopProxy
+							1.ProxyCallbackFilter cglib回调入口,实现原理有点好笑<Map>
+							2.getCallbacks
+							
+				AbstractAdvisorAutoProxyCreator
+					1.BeanFactoryAdvisorRetrievalHelper:Advisor查询工具
+					重写：getAdvicesAndAdvisorsForBean
+						  1. 通过BeanFactoryAdvisorRetrievalHelper 查看所有Advisor并且缓存起
+						  		使用isEligibleBean进行过滤，子类实现
+						  2.Advisors匹配相应的类的方法
+						  		IntroductionAdvisor
+						  		PointcutAdvisor(1.IntroductionAwareMethodMatcher 2.MethodMatcher)
+						  3.额外的增加Advisors 留给子类
+				
+				DefaultAdvisorAutoProxyCreator
+				      重写:isEligibleAdvisorBean,通过前涰过滤
+				
+				AspectJAwareAdvisorAutoProxyCreator
+							重写：1.shouldSkip
+										2.extendAdvisors
+												foundAspectJAdvice，增加一个
+				
+							
+						
+				
