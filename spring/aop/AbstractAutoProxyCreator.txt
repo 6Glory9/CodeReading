@@ -1,78 +1,82 @@
-ProxyConfig
-	1.proxyTargetClass£º´úÀíÊÇ·ñËùÓĞËùÓĞ½Ó¿Ú
+ï»¿ProxyConfig
+	1.proxyTargetClassï¼šä»£ç†æ˜¯å¦æ‰€æœ‰æ‰€æœ‰æ¥å£
 	2.optimize
 	3.opaque
 	4.exposeProxy
 	5.frozen
 
 ProxyProcessorSupport(AopInfrastructureBean)
-	1.AopInfrastructureBeanÕâ¸öÊÇAopInfrastructureBean±êÊ¾
+	1.AopInfrastructureBeanè¿™ä¸ªæ˜¯AopInfrastructureBeanæ ‡ç¤º
 	2.evaluateProxyInterfaces
-		 1.»ñÈ¡±»´úÀí¶ÔÏóËùÓĞ½Ó¿Ú,ÉèÖÃ´úÀí±êÊ¾proxyTargetClass=true
+		 1.è·å–è¢«ä»£ç†å¯¹è±¡æ‰€æœ‰æ¥å£,è®¾ç½®ä»£ç†æ ‡ç¤ºproxyTargetClass=true
 
-AbstractAutoProxyCreatorÏµÁĞ
-	1.advisedBeans£ºadvisedBeans->Map,true±êÊ¾´úÀíµÄ,false±íÊ¾advisor
-	2.applyCommonInterceptorsFirst:¹«¹²À¹½ØÆ÷Ê×ÏÈ±êÊ¾
-	3.freezeProxy:¶³½áÅäÖÃ±êÊ¾
-	4.interceptorNames:À¹½ØÆ÷Ãû³Æ¼¯ºÏ
-	5.proxyTypes:´úÀí¶ÔÏóµÄÀàĞÍ(ÖØĞ´predictBeanType)
-	6.TargetSourceCreator:×Ô¶¨ÒåTargetSource´´½¨Æ÷
-	7.targetSourcedBeans£ºtargetSourceµÄÃû×Ö¼¯ºÏ
-	8.earlyProxyReferences:´úÀíÔçÆÚÒıÓÃ¶ÔÏó
+AbstractAutoProxyCreatorç³»åˆ—
+	1.advisedBeansï¼šadvisedBeans->Map,trueæ ‡ç¤ºä»£ç†çš„,falseè¡¨ç¤ºadvisor
+	2.applyCommonInterceptorsFirst:å…¬å…±æ‹¦æˆªå™¨é¦–å…ˆæ ‡ç¤º
+	3.freezeProxy:å†»ç»“é…ç½®æ ‡ç¤º
+	4.interceptorNames:æ‹¦æˆªå™¨åç§°é›†åˆ
+	5.proxyTypes:ä»£ç†å¯¹è±¡çš„ç±»å‹(é‡å†™predictBeanType)
+	6.TargetSourceCreator:è‡ªå®šä¹‰TargetSourceåˆ›å»ºå™¨
+	7.targetSourcedBeansï¼štargetSourceçš„åå­—é›†åˆ
+	8.earlyProxyReferences:ä»£ç†æ—©æœŸå¼•ç”¨å¯¹è±¡
 	9.AdvisorAdapterRegistry:advice->Advisor,Advisor->MethodInterceptor
 	
-	Á½¸öÈë¿Ú:
-		1.postProcessBeforeInstantiation(×Ô¼º¶¨ÒåTargetSource)
-			PS:shouldSkip,Òª±éÀúËùÓĞbeanName,Èç¹ûÊÇFactoryBeanĞ¡ĞÄÒÀÀµ×¢Èë
-			Ò»°ã¶¼²»»áÕâ¸öÈë¿Ú½øÈë
+	ä¸¤ä¸ªå…¥å£:
+		1.postProcessBeforeInstantiation(è‡ªå·±å®šä¹‰TargetSource)
+			PS:shouldSkip,è¦éå†æ‰€æœ‰beanName,å¦‚æœæ˜¯FactoryBeanå°å¿ƒä¾èµ–æ³¨å…¥
+			ä¸€èˆ¬éƒ½ä¸ä¼šè¿™ä¸ªå…¥å£è¿›å…¥
 			
-		2.postProcessAfterInitialization  ³õÊ¼Íê³É
+		2.postProcessAfterInitialization  åˆå§‹å®Œæˆ
 				wrapIfNecessary
-					1.targetSourcedBeans,adviseBeans ¶ÔÏóÖ±½Ó·µ»Ø
-					2.ÅĞ¶ÏÊÇ·ñÕë¶Ô´Ë¶ÔÏó´æÔÚÏàÓ¦advice,Advisors(getAdvicesAndAdvisorsForBean)£¬×ÓÀàÊµÏÖ
+					1.targetSourcedBeans,adviseBeans å¯¹è±¡ç›´æ¥è¿”å›
+					2.åˆ¤æ–­æ˜¯å¦é’ˆå¯¹æ­¤å¯¹è±¡å­˜åœ¨ç›¸åº”advice,Advisors(getAdvicesAndAdvisorsForBean)ï¼Œå­ç±»å®ç°
 						getAdvicesAndAdvisorsForBean
 					3.createProxy
-							1.ÔÚ´úÀí¶ÔÏóÌí¼ÓÒ»¸öÊôĞÔ(ORIGINAL_TARGET_CLASS_ATTRIBUTE,originalTarget)
-							2.ÉèÖÃproxyTargetClass±êÊ¾(1.BeanDefine´æÔÚpreserveTargetClassÊôĞÔÖµÎªtrue  2.´æÔÚ½Ó¿Ú)	
-							3.°ÑËùÓĞÀ¹½ØÆ÷£¬advice,advisor×öÏàÓ¦µÄ×ª»»¼°Ìí¼Ó
-							4.×Ô¶¨Òå´úÀí¹¤³§£¬Áô¸øÓÃ»§
+							1.åœ¨ä»£ç†å¯¹è±¡æ·»åŠ ä¸€ä¸ªå±æ€§(ORIGINAL_TARGET_CLASS_ATTRIBUTE,originalTarget)
+							2.è®¾ç½®proxyTargetClassæ ‡ç¤º(1.BeanDefineå­˜åœ¨preserveTargetClasså±æ€§å€¼ä¸ºtrue  2.å­˜åœ¨æ¥å£)	
+							3.æŠŠæ‰€æœ‰æ‹¦æˆªå™¨ï¼Œadvice,advisoråšç›¸åº”çš„è½¬æ¢åŠæ·»åŠ 
+							4.è‡ªå®šä¹‰ä»£ç†å·¥å‚ï¼Œç•™ç»™ç”¨æˆ·
 							5.proxyFactory.getProxy
 									DefaultAopProxyFactory
 									1.ObjenesisCglibAopProxy
 									2.JdkDynamicAopProxy
 									
 						JdkDynamicAopProxy
-							1.addÁ½¸ö½Ó¿Ú(SpringProxy,Advised)
-							2.look up equalsDefined,hashCodeDefined  Õâ¸ö·½·¨Ğ´µÃ¿ÉÒÔ
-							3.Proxy.newProxyInstance(InvocationHandler)  ¶¯Ì¬Éú³ÉÒ»¸ö¶ÔÏó£¬ÊµÏÖËùÓĞ½Ó¿Ú£¬
-							Ã¿¸ö½Ó¿Ú¶¼»ØÓÃInvocationHandler£¬Òò´Ëµ÷ÓÃÃ¿¸ö½Ó¿Ú£¬ÆäÊµ¾Íµ÷ÓÃInvocationHandler.invoke
-							4.¸ù¾İÏàÓ¦µÄ·½·¨²éÕÒÏàÓ¦µÄÀ¹½ØÆ÷(advisor->Interceptors,advices)
-							5.×é³ÉReflectiveMethodInvocation.proceed
-									1.×îºóÒ»¸öµ÷ÓÃtarget·½·¨
-									2.InterceptionAdviceÅĞ¶Ï´¦Àí
-									3.MethodInterceptor´¦Àí
+							1.addä¸¤ä¸ªæ¥å£(SpringProxy,Advised)
+							2.look up equalsDefined,hashCodeDefined  è¿™ä¸ªæ–¹æ³•å†™å¾—å¯ä»¥
+							3.Proxy.newProxyInstance(InvocationHandler)  åŠ¨æ€ç”Ÿæˆä¸€ä¸ªå¯¹è±¡ï¼Œå®ç°æ‰€æœ‰æ¥å£ï¼Œ
+							æ¯ä¸ªæ¥å£éƒ½å›ç”¨InvocationHandlerï¼Œå› æ­¤è°ƒç”¨æ¯ä¸ªæ¥å£ï¼Œå…¶å®å°±è°ƒç”¨InvocationHandler.invoke
+							4.æ ¹æ®ç›¸åº”çš„æ–¹æ³•æŸ¥æ‰¾ç›¸åº”çš„æ‹¦æˆªå™¨(advisor->Interceptors,advices)
+							5.ç»„æˆReflectiveMethodInvocation.proceed
+									1.æœ€åä¸€ä¸ªè°ƒç”¨targetæ–¹æ³•
+									2.InterceptionAdviceåˆ¤æ–­å¤„ç†
+									3.MethodInterceptorå¤„ç†
 					
-					ObjenesisCglibAopProxy
-							1.ProxyCallbackFilter cglib»Øµ÷Èë¿Ú,ÊµÏÖÔ­ÀíÓĞµãºÃĞ¦<Map>
-							2.getCallbacks
+						ObjenesisCglibAopProxy
+								1.ProxyCallbackFilter cglibå›è°ƒå…¥å£,å®ç°åŸç†æœ‰ç‚¹å¥½ç¬‘<Map>
+								2.getCallbacks
 							
 				AbstractAdvisorAutoProxyCreator
-					1.BeanFactoryAdvisorRetrievalHelper:Advisor²éÑ¯¹¤¾ß
-					ÖØĞ´£ºgetAdvicesAndAdvisorsForBean
-						  1. Í¨¹ıBeanFactoryAdvisorRetrievalHelper ²é¿´ËùÓĞAdvisor²¢ÇÒ»º´æÆğ
-						  		Ê¹ÓÃisEligibleBean½øĞĞ¹ıÂË£¬×ÓÀàÊµÏÖ
-						  2.AdvisorsÆ¥ÅäÏàÓ¦µÄÀàµÄ·½·¨
+					1.BeanFactoryAdvisorRetrievalHelper:AdvisoræŸ¥è¯¢å·¥å…·
+					é‡å†™ï¼šgetAdvicesAndAdvisorsForBean
+						  1. é€šè¿‡BeanFactoryAdvisorRetrievalHelper æŸ¥çœ‹æ‰€æœ‰Advisorå¹¶ä¸”ç¼“å­˜èµ·
+						  		ä½¿ç”¨isEligibleBeanè¿›è¡Œè¿‡æ»¤ï¼Œå­ç±»å®ç°
+						  2.AdvisorsåŒ¹é…ç›¸åº”çš„ç±»çš„æ–¹æ³•
 						  		IntroductionAdvisor
 						  		PointcutAdvisor(1.IntroductionAwareMethodMatcher 2.MethodMatcher)
-						  3.¶îÍâµÄÔö¼ÓAdvisors Áô¸ø×ÓÀà
+						  3.é¢å¤–çš„å¢åŠ Advisors ç•™ç»™å­ç±»
 				
 				DefaultAdvisorAutoProxyCreator
-				      ÖØĞ´:isEligibleAdvisorBean,Í¨¹ıÇ°›í¹ıÂË
+				    é‡å†™:isEligibleAdvisorBean,é€šè¿‡å‰æ¶°è¿‡æ»¤
 				
 				AspectJAwareAdvisorAutoProxyCreator
-							ÖØĞ´£º1.shouldSkip
-										2.extendAdvisors
-												foundAspectJAdvice£¬Ôö¼ÓÒ»¸ö
+					é‡å†™ï¼š1.shouldSkip
+						  2.extendAdvisors  foundAspectJAdvice,å¢åŠ ä¸€ä¸ªadvisor
+
+				AnnotationAwareAspectJAutoProxyCreator
+					1.aspectJAdvisorsBuilder:aspectåˆ›å»ºå·¥å…·
+					é‡å†™: 1.findCandidateAdvisors
+						  å¢åŠ ä¸€ä¸ªé€»è¾‘aspectJAdvisorsBuilder.buildAspectJAdvisors()
 				
 							
 						

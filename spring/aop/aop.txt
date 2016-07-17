@@ -1,74 +1,79 @@
-ProxyConfig ´úÀíÅäÖÃ
-	proxyTargetClass:´úÀí·½Ê½(true-cglib,false=interface)
-	optimize:ÓÅ»¯
-	opaque:ÊÇ·ñAdvised±êÊ¾,false×ª»»Advised
-	exposeProxy:ÊÇ·ñ±©Â¶proxyÓÚµ±Ç°Ïß³Ì(AopContext)
-	frozen:
+ï»¿ProxyConfig(ä»£ç†é…ç½®æ•°æ®æº)
+	proxyTargetClass:ä»£ç†æ–¹å¼(true-cglib,false=interface)
+	optimize:ä¼˜åŒ–
+	opaque:æ˜¯å¦Advisedæ ‡ç¤º,falseè½¬æ¢Advised
+	exposeProxy:æ˜¯å¦æš´éœ²proxyäºå½“å‰çº¿ç¨‹(AopContext)
+	frozen:å†»ç»“é…ç½®æ ‡ç¤º
 	
-	optimize ÓÅ»¯|proxyTargetClass true|Ã»ÓĞÓÃ»§½Ó¿Ú
-			¼°Ê±ÕâÃ´ÉèÖÃtargetÊÇ½Ó¿Ú»òÕßÊÇproxy»¹ÊÇjdk
-		
+	optimizeä¼˜åŒ–|proxyTargetClass true|æ²¡æœ‰ç”¨æˆ·æ¥å£
+			PS:åŠæ—¶è¿™ä¹ˆè®¾ç½®targetæ˜¯æ¥å£æˆ–è€…æ˜¯proxyè¿˜æ˜¯jdk
 
-AdvisedSupport
-	preFiltered£ºfalse±íÊ¾ĞèÒªClass filter ÑéÖ¤
-	advisorChainFactory£ºÇĞÃæÁ´´´½¨¹¤³§£¨method->(class filter,method match)advisor->list MethodInterceptor£©
-	methodCache:·½·¨¶ÔÓ¦µÄÇĞÃæ»º´æ(methodkey,MethodInterceptorList)
-	interfaces£º½Ó¿Ú
-	advisors£ºÇĞÃæLIST
-	advisorArray£ºÇĞÃæÊı×é
-	targetSource£ºÄ¿±êÔ´
+AdvisedSupport(Advisoré…ç½®åŠæ“ä½œ)
+	preFilteredï¼šfalseè¡¨ç¤ºéœ€è¦Class filter éªŒè¯
+	advisorChainFactoryï¼šåˆ‡é¢é“¾åˆ›å»ºå·¥å‚ï¼ˆmethod->(class filter,method match)advisor->list MethodInterceptorï¼‰
+	methodCache:æ–¹æ³•å¯¹åº”çš„åˆ‡é¢ç¼“å­˜(methodkey,MethodInterceptorList)
+	interfacesï¼šæ¥å£
+	advisorsï¼šåˆ‡é¢List
+	advisorArrayï¼šåˆ‡é¢Array
+	targetSourceï¼šç›®æ ‡æº
 	
-ProxyCreatorSupport
-	aopProxyFactory:´´½¨´úÀí¹¤³§
-	listeners:
-	active:±êÊ¾´úÀíÊÇ·ñ±»´´½¨
+ProxyCreatorSupport(åˆ›å»ºä»£ç†)
+	aopProxyFactory:åˆ›å»ºä»£ç†å·¥å‚
+	listeners:advisorç”Ÿå‘½å‘¨æœŸç›‘å¬å™¨(first create,change)
+	active:æ ‡ç¤ºä»£ç†æ˜¯å¦è¢«åˆ›å»º
+
+	AopProxy createAopProxy(AdvisedSupport config)
+		1.è°ƒç”¨æ­¤æ–¹æ³•ä¹‹å‰,listener.activated(this);
+		2.æ ¹æ®é…ç½®åˆ›å»ºç›¸åº”çš„ä»£ç†(AopProxy)
+		optimizeä¼˜åŒ–|proxyTargetClass true|æ²¡æœ‰ç”¨æˆ·æ¥å£
+			PS:åŠæ—¶è¿™ä¹ˆè®¾ç½®targetæ˜¯æ¥å£æˆ–è€…æ˜¯proxyè¿˜æ˜¯jdk
 
 ProxyFactoryBean
-	interceptorNames£º
-	targetName£ºÄ¿±êÃû×Ö
-	autodetectInterfaces:×Ô¶¯·¢ÏÖ½Ó¿Ú±êÊ¾(interceptorNames.length==0&&proxyTargetClass=false)
-	singleton:µ¥ÁĞ±êÊ¾
+	interceptorNamesï¼š
+	targetNameï¼šç›®æ ‡åå­—
+	autodetectInterfaces:è‡ªåŠ¨å‘ç°æ¥å£æ ‡ç¤º(interceptorNames.length==0&&proxyTargetClass=false)
+	singleton:å•åˆ—æ ‡ç¤º
 	advisorAdapterRegistry:
-	freezeProxy£º¶³½áÅäÖÃ±êÊ¾
+	freezeProxyï¼šå†»ç»“é…ç½®æ ‡ç¤º
 	beanFactory
-	advisorChainInitialized:Á´Â·³õÊ¼»¯±êÊ¾
+	advisorChainInitialized:é“¾è·¯åˆå§‹åŒ–æ ‡ç¤º
 	singletonInstance
 	
 	
 
 
 JdkDynamicAopProxy
-	advised:´úÀíËùÓĞ¶«Î÷
-	equalsDefined£º½Ó¿ÚÊÇ·ñ¶¨Òåequals·½·¨±êÊ¾
-	hashCodeDefined:½Ó¿ÚÊÇ·ñ¶¨ÒåhashCode·½·¨±êÊ¾
+	advised:ä»£ç†æ‰€æœ‰ä¸œè¥¿
+	equalsDefinedï¼šæ¥å£æ˜¯å¦å®šä¹‰equalsæ–¹æ³•æ ‡ç¤º
+	hashCodeDefined:æ¥å£æ˜¯å¦å®šä¹‰hashCodeæ–¹æ³•æ ‡ç¤º
 	
-	invoke·½·¨
-		1.¸ù¾İequalsDefinedÎªfalse£¬ÓÖÊÇequal·½·¨¡£Ö±½Óµ÷ÓÃ±¾µØ·½·¨
-		2.ÅäÖÃ±¾Éí·½·¨µ÷ÓÃ£¬ÊÇ·ñ±©Â¶proxy
-		3.¸ù¾İ·½·¨²éÕÒËùÓĞµÄÆ¥ÅäµÄList[MethodInterceptor,Interceptor]
+	invokeæ–¹æ³•
+		1.æ ¹æ®equalsDefinedä¸ºfalseï¼Œåˆæ˜¯equalæ–¹æ³•ã€‚ç›´æ¥è°ƒç”¨æœ¬åœ°æ–¹æ³•
+		2.é…ç½®æœ¬èº«æ–¹æ³•è°ƒç”¨ï¼Œæ˜¯å¦æš´éœ²proxy
+		3.æ ¹æ®æ–¹æ³•æŸ¥æ‰¾æ‰€æœ‰çš„åŒ¹é…çš„List[MethodInterceptor,Interceptor]
 				PointcutAdvisor->MethodInterceptor
-											 ->InterceptorAndDynamicMethodMatcher(¶¯Ì¬Æ¥Åä)
-			  IntroductionAdvisor¡ª>Interceptor
+											 ->InterceptorAndDynamicMethodMatcher(åŠ¨æ€åŒ¹é…)
+			  IntroductionAdvisorâ€”>Interceptor
 			  				Interceptor->Interceptor
-		4.ÉÏ²½Îª¿Õ£¬Ö±½Óµ÷ÓÃ±¾µØ·½·¨(±äÁ¿µÄÁ¿£¬ÅªºÃ)
-	  5.ReflectiveMethodInvocation Ê¹ÓÃ
-	  6.ÊÍ·Åproxy
+		4.ä¸Šæ­¥ä¸ºç©ºï¼Œç›´æ¥è°ƒç”¨æœ¬åœ°æ–¹æ³•(å˜é‡çš„é‡ï¼Œå¼„å¥½)
+	  5.ReflectiveMethodInvocation ä½¿ç”¨
+	  6.é‡Šæ”¾proxy
 	  ReflectiveMethodInvocation
 	  	proceed()
 	  	
 
 CglibAopProxy
-	advised:´úÀíËùÓĞ¶«Î÷
-	advisedDispatcher:ÇĞÃæ·Ö·¢Æ÷
-	validatedClasses£ºÑéÖ¤µÄÀà»º´æ
-	fixedInterceptorMap£º(method,i)·½·¨¶ÔÓ¦µÄ×ø±ê
-	fixedInterceptorOffset:×ø±ê¿ªÊ¼Î»ÖÃ
+	advised:ä»£ç†æ‰€æœ‰ä¸œè¥¿
+	advisedDispatcher:åˆ‡é¢åˆ†å‘å™¨
+	validatedClassesï¼šéªŒè¯çš„ç±»ç¼“å­˜
+	fixedInterceptorMapï¼š(method,i)æ–¹æ³•å¯¹åº”çš„åæ ‡
+	fixedInterceptorOffset:åæ ‡å¼€å§‹ä½ç½®
 	
 	getProxy()
 	
 
 
 ObjenesisCglibAopProxy
-	¿ÉÒÔ´´½¨ÎŞ¹¹Ôì·½·¨
+	å¯ä»¥åˆ›å»ºæ— æ„é€ æ–¹æ³•
 	
 	
