@@ -1,11 +1,11 @@
-HandlerExceptionResolver
-	1.ModelAndViewDefiningException Å×Õâ¸öÒì³££¬ÀïÃæÏàÓ¦ModelAndView
+ï»¿HandlerExceptionResolver
+	1.ModelAndViewDefiningException æŠ›è¿™ä¸ªå¼‚å¸¸ï¼Œé‡Œé¢ç›¸åº”ModelAndView
 	2.DefaultErrorAttributes  request.setAttribute(ERROR_ATTRIBUTE, ex);
 	3.AbstractHandlerExceptionResolver
-		ÓÃ:resolveException£¬Ä£°å·½·¨
-		1.ÅĞ¶ÏÊÇ·ñ²¶×½Òì³£
-		2.´òÓ¡ÈÕÖ¾
-		3.³õÊ¼»¯Response
+		ç”¨:resolveExceptionï¼Œæ¨¡æ¿æ–¹æ³•
+		1.åˆ¤æ–­æ˜¯å¦æ•æ‰å¼‚å¸¸
+		2.æ‰“å°æ—¥å¿—
+		3.åˆå§‹åŒ–Response
 		4.doResolveException
 		SimpleMappingExceptionResolver
 		  1.exceptionMappings(Exception)-->viewName
@@ -13,11 +13,11 @@ HandlerExceptionResolver
 		  3.ModelAndView
 		  
 		DefaultHandlerExceptionResolver
-			¸÷ÖÖÒì³£
+			å„ç§å¼‚å¸¸
 			
 		ResponseStatusExceptionResolver(@ResponseStatus)
 		
 		AbstractHandlerMethodExceptionResolver
-			1.shouldApplyTo ´¦Àí
+			1.shouldApplyTo å¤„ç†
 		
-		ExceptionHandlerExceptionResolver Õâ¸öÀàÕæÃ»ÓĞÔõÃ´¿´¶®
+		ExceptionHandlerExceptionResolver è¿™ä¸ªç±»çœŸæ²¡æœ‰æ€ä¹ˆçœ‹æ‡‚

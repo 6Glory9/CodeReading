@@ -1,10 +1,10 @@
-AnnotatedElementUtils
+ï»¿AnnotatedElementUtils
 	searchWithGetSemantics(AnnotatedElement element,
 			Class<? extends Annotation> annotationType, String annotationName,
 			Processor<T> processor, Set<AnnotatedElement> visited, int metaDepth)
-	1.ËùÓĞDeclaredAnnotations
+	1.æ‰€æœ‰DeclaredAnnotations
 			searchWithGetSemanticsInAnnotations
-			1)ÓÃ»§annotation && (type||annotationName ||metaDepth>0)
+			1)ç”¨æˆ·annotation && (type||annotationName ||metaDepth>0)
 					processor->AnnotationAttributes
 						AnnotationAttributes 
 							class<->className
@@ -12,16 +12,16 @@ AnnotatedElementUtils
 							DefaultValueHolder
 			2)searchWithGetSemantics(annotation.getType,metaDepth+1)
 					processor->postProcess 
-							postProcess °Ñ¼ÄÉúµÄÀàµÄaliasÖµÈ¡¹ıÀ´
-	2.Èç¹ûÃ»ÓĞÕÒ×Å£¬ÔÙÈ¥parent class Annotation
+							postProcess æŠŠå¯„ç”Ÿçš„ç±»çš„aliaså€¼å–è¿‡æ¥
+	2.å¦‚æœæ²¡æœ‰æ‰¾ç€ï¼Œå†å»parent class Annotation
 	
 	
 	getMergedAnnotationAttributes
 		
 	
 	postProcessAnnotationAttributes
-	 1.Ìæ»»@AliasFor
-	 2.´¦ÀíDefaultValueHolder
+	 1.æ›¿æ¢@AliasFor
+	 2.å¤„ç†DefaultValueHolder
 	 
 	synthesizeAnnotation
 		AnnotationAttributeExtractor->AbstractAliasAwareAnnotationAttributeExtractor->(MapAnnotationAttributeExtractor,DefaultAnnotationAttributeExtractor
@@ -29,18 +29,18 @@ AnnotatedElementUtils
 		
 		MapAnnotationAttributeExtractor
 			enrichAndValidateAttributes()
-				1.È¡ÖµË³Ğò(attributeValue,aliasValue,defaultValue)
-				2.ÖµµÄ×ª»¯(Map->Annotation,array<map>->array<Annotation>)
+				1.å–å€¼é¡ºåº(attributeValue,aliasValue,defaultValue)
+				2.å€¼çš„è½¬åŒ–(Map->Annotation,array<map>->array<Annotation>)
 			attributeAliasMap  Map<attributeName,List<alias>>
 			source  Map<String,Object>
 			
 			getAttributeValue(Method attributeMethod)
-				1.sourceµÄÖµÒÑ¾­È¡×îĞÂµÄ,get attributeMethod ¿Ï¶¨»áÈ¡µ½Öµ¹ş
-				2.Òì³£ÑéÖ¤
-				3.Èç¹ûÈ¡µÄÄ¬ÈÏÖµ,Èç¹û´æÔÚalias,È¡ËüµÄÄ¬ÈÏÖµ
+				1.sourceçš„å€¼å·²ç»å–æœ€æ–°çš„,get attributeMethod è‚¯å®šä¼šå–åˆ°å€¼å“ˆ
+				2.å¼‚å¸¸éªŒè¯
+				3.å¦‚æœå–çš„é»˜è®¤å€¼,å¦‚æœå­˜åœ¨alias,å–å®ƒçš„é»˜è®¤å€¼
 			
-		SynthesizedAnnotationInvocationHandler  ¶¯Ì¬´úÀí
-			´æÔÚ»º´æ´¦Àí£¬Í¨¹ıMapAnnotationAttributeExtractorÈ¡ÏàÓ¦µÄÖµ¡£Èç¹ûÊÇannotationÔÙÈ¡Öµ
+		SynthesizedAnnotationInvocationHandler  åŠ¨æ€ä»£ç†
+			å­˜åœ¨ç¼“å­˜å¤„ç†ï¼Œé€šè¿‡MapAnnotationAttributeExtractorå–ç›¸åº”çš„å€¼ã€‚å¦‚æœæ˜¯annotationå†å–å€¼
 			
 		
 				

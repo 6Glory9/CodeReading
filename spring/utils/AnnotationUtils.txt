@@ -1,20 +1,20 @@
-1.getAnnotation(Annotation ann, Class<A> annotationType) ÔÚAnnotationÖĞ²éÕÒannotationTypeÀàĞÍµÄAnnotation
-	synthesizeAnnotationºÏ³ÉĞÂµÄAnnotation
+ï»¿1.getAnnotation(Annotation ann, Class<A> annotationType) åœ¨Annotationä¸­æŸ¥æ‰¾annotationTypeç±»å‹çš„Annotation
+	synthesizeAnnotationåˆæˆæ–°çš„Annotation
 	SynthesizedAnnotation 
-		isSynthesizable ¸ù¾İÕâ¸öannµÄclass²éÕÒËùÓĞ·½·¨¼°·µ»ØÖµÊÇ²»ÊÇº¬ÓĞaliasFor
-		DefaultAnnotationAttributeExtractor Õâ¸ö¿ÉÒÔÈ¡aliasFor Õâ¸öÖµ£¨¹¹Ôì·½·¨¹¹Ôì»ñÈ¡aliasMap£©
-		SynthesizedAnnotationInvocationHandler Ò²Ö§³ÖaliasFor »ñÈ¡
-		proxy(1.SynthesizedAnnotation,annotationType 2.annotationType) Èç¹û²»´æÔÚclassLoaderÎŞ·¨¼ÓÔØSynthesizedAnnotation¾ÍÊÇ2ÖÖÇé¿ö
-		Õâ¸öÒ²ÎªÊ²Ã´Ç°Ãæ×öµÄÅĞ¶Ï³ıÁËSynthesizedAnnotation
+		isSynthesizable æ ¹æ®è¿™ä¸ªannçš„classæŸ¥æ‰¾æ‰€æœ‰æ–¹æ³•åŠè¿”å›å€¼æ˜¯ä¸æ˜¯å«æœ‰aliasFor
+		DefaultAnnotationAttributeExtractor è¿™ä¸ªå¯ä»¥å–aliasFor è¿™ä¸ªå€¼ï¼ˆæ„é€ æ–¹æ³•æ„é€ è·å–aliasMapï¼‰
+		SynthesizedAnnotationInvocationHandler ä¹Ÿæ”¯æŒaliasFor è·å–
+		proxy(1.SynthesizedAnnotation,annotationType 2.annotationType) å¦‚æœä¸å­˜åœ¨classLoaderæ— æ³•åŠ è½½SynthesizedAnnotationå°±æ˜¯2ç§æƒ…å†µ
+		è¿™ä¸ªä¹Ÿä¸ºä»€ä¹ˆå‰é¢åšçš„åˆ¤æ–­é™¤äº†SynthesizedAnnotation
 
 
 2.getDeclaredRepeatableAnnotations(AnnotatedElement annotatedElement,
 		Class<A> annotationType, Class<? extends Annotation> containerAnnotationType)
-		°ÑcontainerAnnotationTypeµÄvalue×¢½âºÍÆ¥ÅäµÄannotationType¼ÓÔØ³öÏÖ
+		æŠŠcontainerAnnotationTypeçš„valueæ³¨è§£å’ŒåŒ¹é…çš„annotationTypeåŠ è½½å‡ºç°
 3.findAnnotation(AnnotatedElement annotatedElement, Class<A> annotationType)
-   Ö»»á²éÕÒ±¾Àà£¬µ«¿ÉÒÔ»á²éÕÒ Annotation in Annotation == meta Annotation  ==== first one
+   åªä¼šæŸ¥æ‰¾æœ¬ç±»ï¼Œä½†å¯ä»¥ä¼šæŸ¥æ‰¾ Annotation in Annotation == meta Annotation  ==== first one
    
 4.findAnnotation(Method method, Class<A> annotationType)
-	 ÏÈ´Ó»º´æ²éÕÒ£¬ÔÙÈ¥method,È»ºóinterface,Èç¹û»¹²»ĞĞ¸¸Àà¼ÌĞø
+	 å…ˆä»ç¼“å­˜æŸ¥æ‰¾ï¼Œå†å»method,ç„¶åinterface,å¦‚æœè¿˜ä¸è¡Œçˆ¶ç±»ç»§ç»­
    
  

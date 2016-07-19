@@ -1,18 +1,18 @@
-AnnotationAwareAspectJAutoProxyCreator
-	targetSourcedBeans ±íÊ¾Ô­Ê¼beanName
-	proxyTypes  »º´æ´úÀíclass
+ï»¿AnnotationAwareAspectJAutoProxyCreator
+	targetSourcedBeans è¡¨ç¤ºåŸå§‹beanName
+	proxyTypes  ç¼“å­˜ä»£ç†class
 	
-	TargetSource Ã»¸ã¶®
+	TargetSource æ²¡ææ‡‚
 	
-	postProcessBeforeInstantiation ÊµÀı»¯
+	postProcessBeforeInstantiation å®ä¾‹åŒ–
 	
 		getAdvicesAndAdvisorsForBean
 			1.beanFactory.loadAllAdvisors
 			2.this.aspectJAdvisorsBuilder.buildAspectJAdvisors()
 					1.@Aspect||field.getName().startsWith(AJC_MAGIC)
-					....ºóĞøÓĞµãÄÑ¶®
-			3.eligibleAdvisors ºÏ¸ñ
+					....åç»­æœ‰ç‚¹éš¾æ‡‚
+			3.eligibleAdvisors åˆæ ¼
 		
-			4.ProxyFactory ¹¹Ôì
-				1.°ÑÊÖ¶¯Ìí¼Ó Advice,MethodInterceptor ×ª³ÉAdvisor   advisorAdapterRegistry
+			4.ProxyFactory æ„é€ 
+				1.æŠŠæ‰‹åŠ¨æ·»åŠ  Advice,MethodInterceptor è½¬æˆAdvisor   advisorAdapterRegistry
 	

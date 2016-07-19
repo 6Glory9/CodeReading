@@ -1,122 +1,122 @@
-DefaultSingletonBeanRegistry
-	singletonObjects:×îÖÕ²úÎï(beanName,singleton)
-	singletonFactories:´´½¨¹ı³ÌµÄ²úÎï(beanName,FactoryBean)
-	earlySingletonObjects:singletonFactoriesµÄ²úÎïFactoryBean.getObject(beanName,ref)
-	registeredSingletons:×¢²áµÄset<beanName>
-	singletonsCurrentlyInCreation:ÔÚ´´½¨Ê±·ÅÈë£¬·ÀÖ¹Ñ­»·´´½¨
-	inCreationCheckExclusions:´´½¨ÅÅ³ı¼ì²é
+ï»¿DefaultSingletonBeanRegistry
+	singletonObjects:æœ€ç»ˆäº§ç‰©(beanName,singleton)
+	singletonFactories:åˆ›å»ºè¿‡ç¨‹çš„äº§ç‰©(beanName,FactoryBean)
+	earlySingletonObjects:singletonFactoriesçš„äº§ç‰©FactoryBean.getObject(beanName,ref)
+	registeredSingletons:æ³¨å†Œçš„set<beanName>
+	singletonsCurrentlyInCreation:åœ¨åˆ›å»ºæ—¶æ”¾å…¥ï¼Œé˜²æ­¢å¾ªç¯åˆ›å»º
+	inCreationCheckExclusions:åˆ›å»ºæ’é™¤æ£€æŸ¥
 
-	singletonsCurrentlyInDestruction:±êÊ¾ÈİÆ÷µ±Ç°ÊÇ²»ÊÇDestruction×´Ì¬
-	suppressedExceptions:°ÑÒì³£ÊÕ¼¯ÆğÒ»ÏÂÊÍ·Å
-	disposableBeans:×¢²á»ÙÃğµÄbean(ÌØÊâµÄbean)
-	containedBeanMap:beanÓëÄÚ²¿beanµÄ¹ØÏµ£¨bean,nestBeans£©
+	singletonsCurrentlyInDestruction:æ ‡ç¤ºå®¹å™¨å½“å‰æ˜¯ä¸æ˜¯DestructionçŠ¶æ€
+	suppressedExceptions:æŠŠå¼‚å¸¸æ”¶é›†èµ·ä¸€ä¸‹é‡Šæ”¾
+	disposableBeans:æ³¨å†Œæ¯ç­çš„bean(ç‰¹æ®Šçš„bean)
+	containedBeanMap:beanä¸å†…éƒ¨beançš„å…³ç³»ï¼ˆbean,nestBeansï¼‰
 	A->B
-	dependentBeanMap:(B,A)  ÒÀÀµµÄ¶ÔÏó£¬±»ÒÀÀµµÄ¶ÔÏó  
-	dependenciesForBeanMap(A,B)±»ÒÀÀµµÄ¶ÔÏó£¬ÒÀÀµµÄ¶ÔÏó
-	dependentBeanName:±íÊ¾±»ÒÀÀµ¶ÔÏó
-	beanName:ÒÀÀµ¶ÔÏó
+	dependentBeanMap:(B,A)  ä¾èµ–çš„å¯¹è±¡ï¼Œè¢«ä¾èµ–çš„å¯¹è±¡  
+	dependenciesForBeanMap(A,B)è¢«ä¾èµ–çš„å¯¹è±¡ï¼Œä¾èµ–çš„å¯¹è±¡
+	dependentBeanName:è¡¨ç¤ºè¢«ä¾èµ–å¯¹è±¡
+	beanName:ä¾èµ–å¯¹è±¡
 
 
 FactoryBeanRegistrySupport
-	factoryBeanObjectCache:factoryBean »º´æ
-	ÖØĞ´removeSingleton
+	factoryBeanObjectCache:factoryBean ç¼“å­˜
+	é‡å†™removeSingleton
 
 AbstractBeanFactory
 	parentBeanFactory:fatherBeanFactory
-	mergedBeanDefinitions:BeanDefinition×îÖÕ²ú²úÎï£¬Êı¾İÔ´(RootBeanDefinition)
+	mergedBeanDefinitions:BeanDefinitionæœ€ç»ˆäº§äº§ç‰©ï¼Œæ•°æ®æº(RootBeanDefinition)
 	beanClassLoader
 	tempClassLoader
-	cacheBeanMetadata:»º´æRootBeanDefine
-	prototypesCurrentlyInCreation:prototypes´´½¨Ñ­»·ÒÀÀµ
-	alreadyCreated:beanNameÊÇ·ñÒÑ¾­´´½¨ÁË£¬Èç¹û´æÔÚ¾Í²»ÇåÀímergedBeanDefinitions
-	scopes:scopeÃû×ÖºÍscopeµÄ¹ØÏµ,ÏàÓ¦µÄsingleton´¦Àí·½Ê½
+	cacheBeanMetadata:ç¼“å­˜RootBeanDefine
+	prototypesCurrentlyInCreation:prototypesåˆ›å»ºå¾ªç¯ä¾èµ–
+	alreadyCreated:beanNameæ˜¯å¦å·²ç»åˆ›å»ºäº†ï¼Œå¦‚æœå­˜åœ¨å°±ä¸æ¸…ç†mergedBeanDefinitions
+	scopes:scopeåå­—å’Œscopeçš„å…³ç³»,ç›¸åº”çš„singletonå¤„ç†æ–¹å¼
 	
-	typeConverter£º×ª»»Æ÷¹¤¾ß(conversionService,propertyEditorRegistrars,customEditors)
+	typeConverterï¼šè½¬æ¢å™¨å·¥å…·(conversionService,propertyEditorRegistrars,customEditors)
 	
-	conversionService£ºĞÂµÄ×ª»»·şÎñ
-	propertyEditorRegistrars:ÊôĞÔ×¢²áÆ÷
-	customEditors:ÓÃ»§×Ô¶¨Òå×ª»»Æ÷£¨Ìá¹©registerCustomEditors·şÎñÎªPropertyEditorRegistryÌá¹©ÊôĞÔ×¢²á£©
+	conversionServiceï¼šæ–°çš„è½¬æ¢æœåŠ¡
+	propertyEditorRegistrars:å±æ€§æ³¨å†Œå™¨
+	customEditors:ç”¨æˆ·è‡ªå®šä¹‰è½¬æ¢å™¨ï¼ˆæä¾›registerCustomEditorsæœåŠ¡ä¸ºPropertyEditorRegistryæä¾›å±æ€§æ³¨å†Œï¼‰
 	
-	beanExpressionResolver£ºspEL±í´ïÊ½
-	embeddedValueResolvers: $±í´ïÊ½
+	beanExpressionResolverï¼šspELè¡¨è¾¾å¼
+	embeddedValueResolvers: $è¡¨è¾¾å¼
 	
 AbstractAutowireCapableBeanFactory
-	instantiationStrategy:´´½¨²ßÂÔ
-	parameterNameDiscoverer:Ãû×ÖÉú³É¹¤¾ß
-	allowCircularReferences:»·ĞÎÒıÓÃ
+	instantiationStrategy:åˆ›å»ºç­–ç•¥
+	parameterNameDiscoverer:åå­—ç”Ÿæˆå·¥å…·
+	allowCircularReferences:ç¯å½¢å¼•ç”¨
 	allowRawInjectionDespiteWrapping:
-	ignoredDependencyTypes:ºöÂÔÒÀÀµÀàĞÍ
-	ignoredDependencyInterfaces:ºöÂÔÒÀÀµ½Ó¿Ú
-	factoryBeanInstanceCache:»º´æBeanWrapper
-	filteredPropertyDescriptorsCache:ÅÅ²éºöÂÔÒÀÀµËùÓĞPropertyDescriptorsµÄ»º´æ
+	ignoredDependencyTypes:å¿½ç•¥ä¾èµ–ç±»å‹
+	ignoredDependencyInterfaces:å¿½ç•¥ä¾èµ–æ¥å£
+	factoryBeanInstanceCache:ç¼“å­˜BeanWrapper
+	filteredPropertyDescriptorsCache:æ’æŸ¥å¿½ç•¥ä¾èµ–æ‰€æœ‰PropertyDescriptorsçš„ç¼“å­˜
 	
 
 DefaultListableBeanFactory
-	beanDefinitionNames£ºÔ­Ê¼Êı¾İ
-	allBeanNamesByType:ÀàĞÍ,names all
-	singletonBeanNamesByType£ºsingletonBean
+	beanDefinitionNamesï¼šåŸå§‹æ•°æ®
+	allBeanNamesByType:ç±»å‹,names all
+	singletonBeanNamesByTypeï¼šsingletonBean
 	manualSingletonNames
 	frozenBeanDefinitionNames
 	configurationFrozen
-	serializationId£ºID
-	dependencyComparator:ÒÀÀµ±È½ÏÆ÷
-	autowireCandidateResolver£º×Ô¶¯×¢Èë½âÎöÆ÷
-	resolvableDependencies£º½âÎöÒÀÀµMAP
+	serializationIdï¼šID
+	dependencyComparator:ä¾èµ–æ¯”è¾ƒå™¨
+	autowireCandidateResolverï¼šè‡ªåŠ¨æ³¨å…¥è§£æå™¨
+	resolvableDependenciesï¼šè§£æä¾èµ–MAP
 	
 	
 	
 
 AbstractBeanDefinition
 	beanClass:
-	scope:×÷ÓÃÓò
-	abstractFlag:³éÏó±êÊ¾
-	lazyInit:ÑÓ³Ù±êÊ¾
-	autowireMode:×Ô¶¯¼ÓÔØ·½Ê½(byName,ByType)
+	scope:ä½œç”¨åŸŸ
+	abstractFlag:æŠ½è±¡æ ‡ç¤º
+	lazyInit:å»¶è¿Ÿæ ‡ç¤º
+	autowireMode:è‡ªåŠ¨åŠ è½½æ–¹å¼(byName,ByType)
 	dependencyCheck:
-	dependsOn:ÒÀÀµ¶ÔÏó¼¯ºÏ
-	autowireCandidate:ÊÇ·ñÎª×Ô¶¯¼ÓÔØºòÑ¡ÈË
-	primary:¶à¸öºòÑ¡ÈËÊ±,´Ë±êÊ¾ÓÅÏÈ
-	qualifiers:µ±Ç°Àà@qualifiers(typeName,AutowireCandidateQualifier)
-	nonPublicAccessAllowed:±êÊ¾ÊÇ·ñÔÊĞí·ÃÎÊ²»ÊÇpublic constructors and methods
-	lenientConstructorResolution:true(lenient,ÊÇÕÒ×îÆ¥ÅäµÄ)£¬strictÖ±½ÓÅ×Òì³£
-	constructorArgumentValues:¹¹Ôì·½·¨»ò¹¤³§·½·¨²ÎÊı
-	propertyValues:²ÎÊı
-	methodOverrides:ÖØĞ´µÄ·½·¨
-	factoryBeanName:¹¤³§beanName
-	factoryMethodName:¹¤³§·½·¨
-	initMethodName:³õÊ¼»¯·½·¨
-	destroyMethodName:Ïú»Ù·½·¨
-	enforceInitMethod:³õÊ¼»¯·½·¨´æÔÚ±êÊ¾
-	enforceDestroyMethod:Ïú»Ù·½·¨´æÔÚ±êÊ¾
-	synthetic:true(ÓÃ»§×Ô¼º),falseÄ¬ÈÏ³ÌĞò×Ô¼º,¾ö¶¨ÊÇ·ñºó´¦ÀíÆ÷
+	dependsOn:ä¾èµ–å¯¹è±¡é›†åˆ
+	autowireCandidate:æ˜¯å¦ä¸ºè‡ªåŠ¨åŠ è½½å€™é€‰äºº
+	primary:å¤šä¸ªå€™é€‰äººæ—¶,æ­¤æ ‡ç¤ºä¼˜å…ˆ
+	qualifiers:å½“å‰ç±»@qualifiers(typeName,AutowireCandidateQualifier)
+	nonPublicAccessAllowed:æ ‡ç¤ºæ˜¯å¦å…è®¸è®¿é—®ä¸æ˜¯public constructors and methods
+	lenientConstructorResolution:true(lenient,æ˜¯æ‰¾æœ€åŒ¹é…çš„)ï¼Œstrictç›´æ¥æŠ›å¼‚å¸¸
+	constructorArgumentValues:æ„é€ æ–¹æ³•æˆ–å·¥å‚æ–¹æ³•å‚æ•°
+	propertyValues:å‚æ•°
+	methodOverrides:é‡å†™çš„æ–¹æ³•
+	factoryBeanName:å·¥å‚beanName
+	factoryMethodName:å·¥å‚æ–¹æ³•
+	initMethodName:åˆå§‹åŒ–æ–¹æ³•
+	destroyMethodName:é”€æ¯æ–¹æ³•
+	enforceInitMethod:åˆå§‹åŒ–æ–¹æ³•å­˜åœ¨æ ‡ç¤º
+	enforceDestroyMethod:é”€æ¯æ–¹æ³•å­˜åœ¨æ ‡ç¤º
+	synthetic:true(ç”¨æˆ·è‡ªå·±),falseé»˜è®¤ç¨‹åºè‡ªå·±,å†³å®šæ˜¯å¦åå¤„ç†å™¨
 	
-	description:ÃèÊö
+	description:æè¿°
 	role:
-	ROLE_APPLICATION ÓÃ»§¶¨Òå
-	ROLE_SUPPORT     Ó¦ÓÃÅäÖÃ
-	ROLE_INFRASTRUCTURE:ÄÚ²¿¶¨Òåbean£¬ÍêÈ«Ê¹ÓÃÕßÎŞ¹Ø
+	ROLE_APPLICATION ç”¨æˆ·å®šä¹‰
+	ROLE_SUPPORT     åº”ç”¨é…ç½®
+	ROLE_INFRASTRUCTURE:å†…éƒ¨å®šä¹‰beanï¼Œå®Œå…¨ä½¿ç”¨è€…æ— å…³
 	
-	resource£ºxml,class
+	resourceï¼šxml,class
 	
 RootBeanDefinition
-	allowCaching:ÊÇ·ñ»º´æ²ÎÊı
-	decoratedDefinition:BeanDefinitionHolder(ÓĞ±ğÃû),targetBean
-	targetType:Èç¹û¹¤³§·½·¨£¬±íÊ¾ËüµÄÀàĞÍ
-	isFactoryMethodUnique£º±íÊ¾FactoryMethodÊÇÎ¨Ò»µÄ£¬Ã»ÓĞÖØÔØµÄ
-	constructorArgumentLock£ºconstructorºÍ·½·¨²ÎÊılock
+	allowCaching:æ˜¯å¦ç¼“å­˜å‚æ•°
+	decoratedDefinition:BeanDefinitionHolder(æœ‰åˆ«å),targetBean
+	targetType:å¦‚æœå·¥å‚æ–¹æ³•ï¼Œè¡¨ç¤ºå®ƒçš„ç±»å‹
+	isFactoryMethodUniqueï¼šè¡¨ç¤ºFactoryMethodæ˜¯å”¯ä¸€çš„ï¼Œæ²¡æœ‰é‡è½½çš„
+	constructorArgumentLockï¼šconstructorå’Œæ–¹æ³•å‚æ•°lock
 	
-	resolvedConstructorOrFactoryMethod:½âÎöÖ®ºó·½·¨»ò¹¹Ôì·½·¨
-	resolvedFactoryMethodReturnType£º½âÎöÖ®ºó·½·¨·µ»ØÖµ
-	resolvedConstructorArguments:½âÎöÖ®ºó·½·¨²ÎÊıÖµ
-	preparedConstructorArguments:½âÎöÖ®Ç°²ÎÊıÖµ
-	constructorArgumentsResolved:¹¹Ôì·½·¨»ò·½Ê½²ÎÊıÊÇ·ñ½âÎö±êÊ¾
+	resolvedConstructorOrFactoryMethod:è§£æä¹‹åæ–¹æ³•æˆ–æ„é€ æ–¹æ³•
+	resolvedFactoryMethodReturnTypeï¼šè§£æä¹‹åæ–¹æ³•è¿”å›å€¼
+	resolvedConstructorArguments:è§£æä¹‹åæ–¹æ³•å‚æ•°å€¼
+	preparedConstructorArguments:è§£æä¹‹å‰å‚æ•°å€¼
+	constructorArgumentsResolved:æ„é€ æ–¹æ³•æˆ–æ–¹å¼å‚æ•°æ˜¯å¦è§£ææ ‡ç¤º
 	
-	postProcessingLock:´¦ÀíÆ÷µÄËø
-	postProcessed:MergedBeanDefinitionPostProcessor´¦Àí±êÊ¾
-	beforeInstantiationResolved:InstantiationAwareBeanPostProcessors´¦Àí±êÊ¾
-	externallyManagedConfigMembers:Íâ²¿¹ÜÀí³ÉÔ±±äÁ¿(field,method,Constructor)
-	externallyManagedInitMethods:Íâ²¿¹ÜÀíinitMethods
-	externallyManagedDestroyMethods:Íâ²¿¹ÜÀíDestroyMethods
+	postProcessingLock:å¤„ç†å™¨çš„é”
+	postProcessed:MergedBeanDefinitionPostProcessorå¤„ç†æ ‡ç¤º
+	beforeInstantiationResolved:InstantiationAwareBeanPostProcessorså¤„ç†æ ‡ç¤º
+	externallyManagedConfigMembers:å¤–éƒ¨ç®¡ç†æˆå‘˜å˜é‡(field,method,Constructor)
+	externallyManagedInitMethods:å¤–éƒ¨ç®¡ç†initMethods
+	externallyManagedDestroyMethods:å¤–éƒ¨ç®¡ç†DestroyMethods
 	
 	
 			

@@ -1,18 +1,18 @@
-ModelAndViewContainer
-	defaultModel:Ä¬ÈÏµÄÊı¾İÔ´
-	redirectModel:ÖØ¶¨ÏòµÄÊı¾İÔ´
-	sessionStatus:@SessionAttributesµÄ×´Ì¬(isComplete(session¶ÔÓ¦µÄÖµremove))
-	requestHandled:ÇëÇóµÄÏìÓ¦´¦Àí±êÊ¾
-	redirectModelScenario:ÖØ¶¨Ïò±êÊ¾
-	ignoreDefaultModelOnRedirect:ÖØ¶¨ÏòÊ±ºöÂÔÄ¬ÈÏµÄÊı¾İÔ´±êÊ¾
-	false(²»ºöÂÔ)¡£µ±redirectModelÎª¿Õ£¬redirectModelScenarioÎªtrueÊ±¡£»¹ÊÇ¿ÉÒÔÊ¹ÓÃdefaultModel
+ï»¿ModelAndViewContainer
+	defaultModel:é»˜è®¤çš„æ•°æ®æº
+	redirectModel:é‡å®šå‘çš„æ•°æ®æº
+	sessionStatus:@SessionAttributesçš„çŠ¶æ€(isComplete(sessionå¯¹åº”çš„å€¼remove))
+	requestHandled:è¯·æ±‚çš„å“åº”å¤„ç†æ ‡ç¤º
+	redirectModelScenario:é‡å®šå‘æ ‡ç¤º
+	ignoreDefaultModelOnRedirect:é‡å®šå‘æ—¶å¿½ç•¥é»˜è®¤çš„æ•°æ®æºæ ‡ç¤º
+	false(ä¸å¿½ç•¥)ã€‚å½“redirectModelä¸ºç©ºï¼ŒredirectModelScenarioä¸ºtrueæ—¶ã€‚è¿˜æ˜¯å¯ä»¥ä½¿ç”¨defaultModel
 	
 	
 	1.defaultMode+controller(Model)
 		BindingResult.name->BindingResult
 	2.setView(name,view)
-	3.RedirectAttributesÊ±£¬°ÑÏàÓ¦Öµ±©Â¶µ½FlashMap
-	4.Èç¹ûviewÎª¿Õ,viewNameTranslator½âÎö
+	3.RedirectAttributesæ—¶ï¼ŒæŠŠç›¸åº”å€¼æš´éœ²åˆ°FlashMap
+	4.å¦‚æœviewä¸ºç©º,viewNameTranslatorè§£æ
 	
 	
 	ModelAndView(model,view,clear mark)
@@ -21,116 +21,116 @@ ModelAndViewContainer
 	
 ViewResolver(viewName,Local)
 
-ViewResolverComposite:¸´ºÏ
-BeanNameViewResolver:¸ù¾İname´ÓapplicationÈ¡ÏàÓ¦viewÀàĞÍµÄview
-StaticViewResolver:Î¨Ò»µÄview
-ContentNegotiatingViewResolver(ÄÚÈİĞ­ÒéÊÓÍ¼½âÎöÆ÷)
-	contentNegotiationManager:ÄÚÈİĞ­Òé¹ÜÀíÆ÷
-	cnmFactoryBean:ÄÚÈİĞ­Òé¹¤³§
-	useNotAcceptableStatusCode:²»½ÓÊÜ±êÊ¾¡¾false,±íÊ¾½âÎöviewÃ»ÓĞ·µ»ØNULL£¬true£¬±íÊ¾½âÎöview·µ»Ø×´Ì¬Âë406¡¿
-	406-Not Acceptable Response£¬·µ»ØÒ»¸öResponseÒª´¦ÀíµÄview
-	defaultViews:Ä¬ÈÏµÄÊÓÍ¼
-	viewResolvers:ÊÓÍ¼½âÎöÆ÷
+ViewResolverComposite:å¤åˆ
+BeanNameViewResolver:æ ¹æ®nameä»applicationå–ç›¸åº”viewç±»å‹çš„view
+StaticViewResolver:å”¯ä¸€çš„view
+ContentNegotiatingViewResolver(å†…å®¹åè®®è§†å›¾è§£æå™¨)
+	contentNegotiationManager:å†…å®¹åè®®ç®¡ç†å™¨
+	cnmFactoryBean:å†…å®¹åè®®å·¥å‚
+	useNotAcceptableStatusCode:ä¸æ¥å—æ ‡ç¤ºã€false,è¡¨ç¤ºè§£æviewæ²¡æœ‰è¿”å›NULLï¼Œtrueï¼Œè¡¨ç¤ºè§£æviewè¿”å›çŠ¶æ€ç 406ã€‘
+	406-Not Acceptable Responseï¼Œè¿”å›ä¸€ä¸ªResponseè¦å¤„ç†çš„view
+	defaultViews:é»˜è®¤çš„è§†å›¾
+	viewResolvers:è§†å›¾è§£æå™¨
 	
 resolveViewName(String viewName, Locale locale)
-1.request½âÎö³ö¿Í·ş¶ËÄÜ½ÓÊÜMediaType(ÏàÓ¦½âÎö²ßÂÔ)
-2.·şÎñ¶ËÖ§³ÖµÄMediaType£¬*¡£×îÖÕÆ¥ÅäÁ½·½½ÓÊÜMediaType
-3.¸ù¾İviewName,local»ñÈ¡view,¸ù¾İMediaType»ñÈ¡ºó×º
+1.requestè§£æå‡ºå®¢æœç«¯èƒ½æ¥å—MediaType(ç›¸åº”è§£æç­–ç•¥)
+2.æœåŠ¡ç«¯æ”¯æŒçš„MediaTypeï¼Œ*ã€‚æœ€ç»ˆåŒ¹é…ä¸¤æ–¹æ¥å—MediaType
+3.æ ¹æ®viewName,localè·å–view,æ ¹æ®MediaTypeè·å–åç¼€
 		view(viewName,view+suffix,defaultView)
 		
 bestView
 1.RedirectView
-2.½âÎöviewµÄContentType³ÉMediaType,È»ºó¼æÈİMediaType
+2.è§£æviewçš„ContentTypeæˆMediaType,ç„¶åå…¼å®¹MediaType
 
-AbstractCachingViewResolver ´¦Àí»º´æÎÊÌâ£¬ÕæÕı½âÎö½»¸ø×ÓÀà
-	cacheLimit£º»º´æÈİÁ¿
-	cacheUnresolved:»º´æÎŞ·¨½âÎö±êÊ¾
-	viewAccessCache:·ÃÎÊ»º´æ£¨Ö»»á»º´æcacheLimit£©
-	viewCreationCache:´´½¨»º´æ£¨³¬¹ıcacheLimitÈİÁ¿£¬´æÔÚviewCreationCacheÀïÃæ£©
+AbstractCachingViewResolver å¤„ç†ç¼“å­˜é—®é¢˜ï¼ŒçœŸæ­£è§£æäº¤ç»™å­ç±»
+	cacheLimitï¼šç¼“å­˜å®¹é‡
+	cacheUnresolved:ç¼“å­˜æ— æ³•è§£ææ ‡ç¤º
+	viewAccessCache:è®¿é—®ç¼“å­˜ï¼ˆåªä¼šç¼“å­˜cacheLimitï¼‰
+	viewCreationCache:åˆ›å»ºç¼“å­˜ï¼ˆè¶…è¿‡cacheLimitå®¹é‡ï¼Œå­˜åœ¨viewCreationCacheé‡Œé¢ï¼‰
 	
 	createView
 ResourceBundleViewResolver
 
 UrlBasedViewResolver
 	viewClass:
-	prefix:Ç°×º
-	suffix:ºó×º
-	contentType:ÄÚÈİÀàĞÍ
-	redirectContextRelative£ºÖØ¶¨ÏòÏà¶ÔContext±êÊ¾
-	redirectHttp10Compatible£º¼æÈİhttp10±êÊ¾
-	staticAttributes£º¾²Ì¬ÊôĞÔ
-	exposePathVariables£º±©Â¶PathVariables±êÊ¾
-	exposeContextBeansAsAttributes£º±©Â¶ContextBeans×÷ÎªÊôĞÔ
-	viewNames:ÊÓÍ¼Æ¥ÅäÃû×Ö
-	requestContextAttribute:requestContext µÄÃû×Ö
+	prefix:å‰ç¼€
+	suffix:åç¼€
+	contentType:å†…å®¹ç±»å‹
+	redirectContextRelativeï¼šé‡å®šå‘ç›¸å¯¹Contextæ ‡ç¤º
+	redirectHttp10Compatibleï¼šå…¼å®¹http10æ ‡ç¤º
+	staticAttributesï¼šé™æ€å±æ€§
+	exposePathVariablesï¼šæš´éœ²PathVariablesæ ‡ç¤º
+	exposeContextBeansAsAttributesï¼šæš´éœ²ContextBeansä½œä¸ºå±æ€§
+	viewNames:è§†å›¾åŒ¹é…åå­—
+	requestContextAttribute:requestContext çš„åå­—
 	
-	createViewÄ£°å·½·¨
-	1.Æ¥ÅäÊÓÍ¼Æ¥ÅäÃû×Ö
-	2.RedirectView£¨url,redirectContextRelative,redirectHttp10Compatible£©¡¾redirect:¡¿
-		1.±ØĞëÒÔ/¿ªÍ· && redirectContextRelative ²Å»á×Ô¶¯²¹³ärequest.getContextPath()
-		2.spring initializeBeanÉúÃüÖÜÆÚ»¹¿ÉÒÔ´¦Àí´Ë¶ÔÏó
-	3.InternalResourceView¡¾forward:¡¿
-	4.¼ÓÔØÆäËüÊÓÍ¼
+	createViewæ¨¡æ¿æ–¹æ³•
+	1.åŒ¹é…è§†å›¾åŒ¹é…åå­—
+	2.RedirectViewï¼ˆurl,redirectContextRelative,redirectHttp10Compatibleï¼‰ã€redirect:ã€‘
+		1.å¿…é¡»ä»¥/å¼€å¤´ && redirectContextRelative æ‰ä¼šè‡ªåŠ¨è¡¥å……request.getContextPath()
+		2.spring initializeBeanç”Ÿå‘½å‘¨æœŸè¿˜å¯ä»¥å¤„ç†æ­¤å¯¹è±¡
+	3.InternalResourceViewã€forward:ã€‘
+	4.åŠ è½½å…¶å®ƒè§†å›¾
 
 loadView
-1.buildView()Ä£°å·½·¨
+1.buildView()æ¨¡æ¿æ–¹æ³•
 	1.setURL(getPrefix() + viewName + getSuffix())
 	2.setContentType
 	3.setRequestContextAttribute
 	4.setStaticAttributes
 	5.setExposePathVariables
-	6.±©Â¶ËùÓĞexposeContextBeansAsAttributes
-¼Ó¹Ì¶¨Áô¸ø×ÓÀàÊµÏÖ°É¡£
+	6.æš´éœ²æ‰€æœ‰exposeContextBeansAsAttributes
+åŠ å›ºå®šç•™ç»™å­ç±»å®ç°å§ã€‚
 
-2.spring initializeBeanÉúÃüÖÜÆÚ»¹¿ÉÒÔ´¦Àí´Ë¶ÔÏó
+2.spring initializeBeanç”Ÿå‘½å‘¨æœŸè¿˜å¯ä»¥å¤„ç†æ­¤å¯¹è±¡
 
-3.checkResource ½»view×Ô¼ºÊµÏÖ
+3.checkResource äº¤viewè‡ªå·±å®ç°
 
 AbstractTemplateViewResolver
 	buildView
-	1.exposeRequestAttributes ±©Â¶request²ÎÊı±êÊ¾
-		allowRequestOverride£ºÏàÍ¬µÄÃû×Ö£¬Å×Òì³£
-	2.exposeSessionAttributes ±©Â¶session²ÎÊı±êÊ¾
-		allowSessionOverride£ºÏàÍ¬µÄÃû×Ö£¬Å×Òì³£
-	3.exposeSpringMacroHelpers ±©Â¶SpringMacro ±êÊ¾¡£ÀïÃæÓĞ¹ú¼Êº¯Êı
+	1.exposeRequestAttributes æš´éœ²requestå‚æ•°æ ‡ç¤º
+		allowRequestOverrideï¼šç›¸åŒçš„åå­—ï¼ŒæŠ›å¼‚å¸¸
+	2.exposeSessionAttributes æš´éœ²sessionå‚æ•°æ ‡ç¤º
+		allowSessionOverrideï¼šç›¸åŒçš„åå­—ï¼ŒæŠ›å¼‚å¸¸
+	3.exposeSpringMacroHelpers æš´éœ²SpringMacro æ ‡ç¤ºã€‚é‡Œé¢æœ‰å›½é™…å‡½æ•°
 
 VelocityViewResolver
-	dateToolAttribute:Ê±¼ä¹¤¾ßÃû×Ö
-	numberToolAttribute£ºÊı¾İ¹¤¾ßÃû×Ö
-	toolboxConfigLocation:¹¤¾ßÃû×Ö  
+	dateToolAttribute:æ—¶é—´å·¥å…·åå­—
+	numberToolAttributeï¼šæ•°æ®å·¥å…·åå­—
+	toolboxConfigLocation:å·¥å…·åå­—  
 
 	
 View
 
 AbstractView
-contentType:ÄÚÈİÀàĞÍ
+contentType:å†…å®¹ç±»å‹
 
 requestContextAttribute:RequestContext attribute of name
 
-exposePathVariables:±©Â¶pathVariables±êÊ¾
-staticAttributes:¾²Ì¬×ÊÔ´
+exposePathVariables:æš´éœ²pathVariablesæ ‡ç¤º
+staticAttributes:é™æ€èµ„æº
 
-exposeContextBeansAsAttributes:±©Â¶ContextBeans±êÊ¾
+exposeContextBeansAsAttributes:æš´éœ²ContextBeansæ ‡ç¤º
 exposedContextBeanNames:
 
 render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
 1.createMergedOutputModel
 exposeStatic,exposePathVariables,exposeRequestContext
-2.ÉèÖÃ»ØÖ´Í·
+2.è®¾ç½®å›æ‰§å¤´
 3.renderMergedOutputModel
 
-RedirectView Ä£°å·½·¨
+RedirectView æ¨¡æ¿æ–¹æ³•
 	1.createTargetUrl
-		contextRelative&&/¿ªÍ·->²¹³ärequest.getContextPath()
-		replaceUriTemplateVariables£¬Ìí¼ÓÔ­Ê¼queryParam,exposeModelAttributes£¨×¢ÒâmodelÖµ£©
-	2.updateTargetUrl->RequestDataValueProcessor´¦Àí¹³×Ó
-	3.flashMap·½Ê½
-	4.Ìø×ª
+		contextRelative&&/å¼€å¤´->è¡¥å……request.getContextPath()
+		replaceUriTemplateVariablesï¼Œæ·»åŠ åŸå§‹queryParam,exposeModelAttributesï¼ˆæ³¨æ„modelå€¼ï¼‰
+	2.updateTargetUrl->RequestDataValueProcessorå¤„ç†é’©å­
+	3.flashMapæ–¹å¼
+	4.è·³è½¬
 
-InternalResourceView Ä£°å·½·¨
- 	1.modelÉèÖÃµ½requestÀïÃæ
+InternalResourceView æ¨¡æ¿æ–¹æ³•
+ 	1.modelè®¾ç½®åˆ°requesté‡Œé¢
  	2.exposeHelpers
- 	3.×èÖ¹Êı¾İÑ­»·
+ 	3.é˜»æ­¢æ•°æ®å¾ªç¯
  	4.include,forward
 
 FastJsonJsonView

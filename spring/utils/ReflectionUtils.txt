@@ -1,11 +1,11 @@
-ReflectionUtils
+ï»¿ReflectionUtils
 	1.findField(Class<?> clazz, String name, Class<?> type)
-		first»ñÈ¡field
-	2.setField  ÉèÖµ
-	3.getfield  È¡Öµ
+		firstè·å–field
+	2.setField  è®¾å€¼
+	3.getfield  å–å€¼
 	4.findMethod(Class<?> clazz, String name, Class<?>... paramTypes)
-		È¡·½·¨
-	5.invokeMethod(Method method, Object target, Object... args) µ÷ÓÃ·½·¨
+		å–æ–¹æ³•
+	5.invokeMethod(Method method, Object target, Object... args) è°ƒç”¨æ–¹æ³•
 	6.isPublicStaticFinal
 	7.isEqualsMethod
 	8.doWithMethods(Class<?> clazz, MethodCallback mc, MethodFilter mf)

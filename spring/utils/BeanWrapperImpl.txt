@@ -1,5 +1,5 @@
-BeanWrapperImpl(PropertyAccessorFactory´´½¨beanWrapper)
-	1.BeanPropertyHandler ¶Ôset,get·½·¨°ü×°
+ï»¿BeanWrapperImpl(PropertyAccessorFactoryåˆ›å»ºbeanWrapper)
+	1.BeanPropertyHandler å¯¹set,getæ–¹æ³•åŒ…è£…
 	AbstractPropertyAccessor(TypeConverter,PropertyEditorRegistry,
 													PropertyAccessor,ConfigurablePropertyAccessor)
 	AbstractNestablePropertyAccessor
@@ -13,18 +13,18 @@ AbstractNestablePropertyAccessor
 			PropertyTokenHolder(actualName,canonicalName,keys)
 			"a[i]"===>a(actualName),a[i](canonicalName),i(keys)
 	getPropertyAccessorForPropertyPath(path)
-		1.ÅĞ¶ÏÊÇ·ñ´æÔÚa[key].b|a.b|a[key][key2].bÕâÑù³¡¾°
-		2.Èç¹û´æÔÚÑ°ÕÒchildAbstractNestablePropertyAccessor
-			¹¹½¨µ±Ç°a¶ÔÓ¦AbstractNestablePropertyAccessor
-			getNestedPropertyAccessor(String nestedProperty),µ±keysÎª¿ÕÊ±,actualName==canonicalName
-				getPropertyValue(PropertyTokenHolder tokens) »ñÈ¡ÏàÓ¦Öµ
+		1.åˆ¤æ–­æ˜¯å¦å­˜åœ¨a[key].b|a.b|a[key][key2].bè¿™æ ·åœºæ™¯
+		2.å¦‚æœå­˜åœ¨å¯»æ‰¾childAbstractNestablePropertyAccessor
+			æ„å»ºå½“å‰aå¯¹åº”AbstractNestablePropertyAccessor
+			getNestedPropertyAccessor(String nestedProperty),å½“keysä¸ºç©ºæ—¶,actualName==canonicalName
+				getPropertyValue(PropertyTokenHolder tokens) è·å–ç›¸åº”å€¼
 					PropertyHandler(propertyType,readable,writable)
 					1.keys == null  return objects
 					2.keys != null   new Objects return Object
-				Èç¹ûÖµÎª¿Õ¿ÉÄÜ»áÉèÖÃÄ¬ÈÏÖµ
+				å¦‚æœå€¼ä¸ºç©ºå¯èƒ½ä¼šè®¾ç½®é»˜è®¤å€¼
 				setDefaultValue(PropertyTokenHolder tokens) 
 				setPropertyValue(PropertyTokenHolder tokens, PropertyValue pv)
-				ÉèÖÃµ±Ç°AbstractNestablePropertyAccessor»º´æÖĞ¡£
+				è®¾ç½®å½“å‰AbstractNestablePropertyAccessorç¼“å­˜ä¸­ã€‚
 				
 T convertIfNecessary(String propertyName, Object oldValue, Object newValue,Class<T> requiredType, TypeDescriptor typeDescriptor)
 	

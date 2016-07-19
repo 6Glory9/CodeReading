@@ -1,17 +1,17 @@
-GenericConversionService
-	converters:Êı¾İÔ´
-	converterCache:»º´æ
+ï»¿GenericConversionService
+	converters:æ•°æ®æº
+	converterCache:ç¼“å­˜
 	
-	ConvertersÊı¾İÔ´Àà
+	Convertersæ•°æ®æºç±»
 		add
 		
-		converterµÄConvertibleTypesÎª¿Õ£¬Ö±½ÓÊÓÎªglobalConverters,(globalConverters)
-		ConvertersForPair ÊÇÕâÒ»¸öList<Converter>,ConvertersForPair(converters)
+		converterçš„ConvertibleTypesä¸ºç©ºï¼Œç›´æ¥è§†ä¸ºglobalConverters,(globalConverters)
+		ConvertersForPair æ˜¯è¿™ä¸€ä¸ªList<Converter>,ConvertersForPair(converters)
 		
 		find
-		1.ÏÈ¸ù¾İkeyÕÒµ½ConvertersForPair
-		2.ConvertersForPairÀïÃæConverterÊÇÌõ¼ş»òÖ±½Ó·µ»Ø
-		3.È«¾Ö
+		1.å…ˆæ ¹æ®keyæ‰¾åˆ°ConvertersForPair
+		2.ConvertersForPairé‡Œé¢Converteræ˜¯æ¡ä»¶æˆ–ç›´æ¥è¿”å›
+		3.å…¨å±€
 		
 	
 	addConverter(Class<?> sourceType, Class<?> targetType, Converter<?, ?> converter)

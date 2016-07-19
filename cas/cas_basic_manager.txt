@@ -1,17 +1,17 @@
-1.AuthenticationManager:ÈÏÖ¤¹ÜÀí
-	Credential£ºÆ¾Ö¤£¨ÕËºÅ£¬ÃÜÂë£¬hosts£©
-	Principal: Éí·İ
+ï»¿1.AuthenticationManager:è®¤è¯ç®¡ç†
+	Credentialï¼šå‡­è¯ï¼ˆè´¦å·ï¼Œå¯†ç ï¼Œhostsï¼‰
+	Principal: èº«ä»½
 	
-	AuthenticationHandler:ÈÏÖ¤´¦ÀíÆ÷
-	PrincipalResolver:Éí·İ½âÎöÆ÷
-	Authentication:ÈÏÖ¤ĞÅÏ¢
-	AuthenticationMetaDataPopulator:ÈÏÖ¤ĞÅÏ¢µÄ²¹³ä
+	AuthenticationHandler:è®¤è¯å¤„ç†å™¨
+	PrincipalResolver:èº«ä»½è§£æå™¨
+	Authentication:è®¤è¯ä¿¡æ¯
+	AuthenticationMetaDataPopulator:è®¤è¯ä¿¡æ¯çš„è¡¥å……
 
 
 2.ExpirationPolicy
-  TGT£º·ÏÆú²ßÂÔ
+  TGTï¼šåºŸå¼ƒç­–ç•¥
   
 3.ServicesManager
-  ¸ù¾İÉêÇëservice²éÕÒRegisteredServiceÕÒÏàÓ¦µÄ²Ù×÷,ËûÃÇID×öÏàÓ¦µÄÆ¥Åä
+  æ ¹æ®ç”³è¯·serviceæŸ¥æ‰¾RegisteredServiceæ‰¾ç›¸åº”çš„æ“ä½œ,ä»–ä»¬IDåšç›¸åº”çš„åŒ¹é…
   
-4.AuthenticationSatisfiedByPolicy ²»Ì«Çå³şÊÇÊ²Ã´¶«Î÷
+4.AuthenticationSatisfiedByPolicy ä¸å¤ªæ¸…æ¥šæ˜¯ä»€ä¹ˆä¸œè¥¿

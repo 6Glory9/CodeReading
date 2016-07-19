@@ -1,4 +1,4 @@
-TransactionInterceptor
+ï»¿TransactionInterceptor
 	
 	invokeWithinTransaction
 	1.TransactionAttribute
@@ -9,48 +9,48 @@ TransactionInterceptor
 	PlatformTransactionManager.getTransaction(TransactionAttribute) -->TransactionStatus
 	1.doGetTransaction()-->DataSourceTransactionObject
 		ConnectionHolder,isNestedTransactionAllowed,newConnectionHolder(false)
-		´Óresources»ñÈ¡ConnectionHolder
+		ä»resourcesè·å–ConnectionHolder
 		
 		ConnectionHolder
-		currentConnection µ±Ç°Á¬½Ó
-		ConnectionHandle  Á¬½Ó´¦ÀíÆ÷
-		transactionActive µ±Ç°ÊÂÎñÊÇ·ñ¼¤»î
-		savepointsSupported ÊÇ·ñÖ§³Ö´æ´¢µã±£´æ
+		currentConnection å½“å‰è¿æ¥
+		ConnectionHandle  è¿æ¥å¤„ç†å™¨
+		transactionActive å½“å‰äº‹åŠ¡æ˜¯å¦æ¿€æ´»
+		savepointsSupported æ˜¯å¦æ”¯æŒå­˜å‚¨ç‚¹ä¿å­˜
 		savepointCounter
-		synchronizedWithTransaction  Í¬²½¾ßÓĞÊÂÎñ
-		rollbackOnly  »Ø¹ö±êÊ¾
-		deadline ËÀÍöÊ±¼ä
+		synchronizedWithTransaction  åŒæ­¥å…·æœ‰äº‹åŠ¡
+		rollbackOnly  å›æ»šæ ‡ç¤º
+		deadline æ­»äº¡æ—¶é—´
 		isVoid 
 		referenceCount   (request referenceCount++,released referenceCount--)
 		
 	2.isExistingTransaction
 	
 	AbstractPlatformTransactionManager
-				transactionSynchronization = 0 Ä¬ÈÏÊÇ·ñÍ¬²½±êÊ¾	
-				1.PROPAGATION_NOT_SUPPORTED(Ö»Òª¸ú±êÊ¾Æ¥Åä¾ÍºÃ)
+				transactionSynchronization = 0 é»˜è®¤æ˜¯å¦åŒæ­¥æ ‡ç¤º	
+				1.PROPAGATION_NOT_SUPPORTED(åªè¦è·Ÿæ ‡ç¤ºåŒ¹é…å°±å¥½)
 					getTransactionSynchronization() == SYNCHRONIZATION_ALWAYS
 					
-				2.PROPAGATION_REQUIRES_NEW £¨Ö»Òª±êÊ¾²»ÊÇÓÀÍ¬²½£¬¾ÍĞèÒªÍ¬²½£©
+				2.PROPAGATION_REQUIRES_NEW ï¼ˆåªè¦æ ‡ç¤ºä¸æ˜¯æ°¸åŒæ­¥ï¼Œå°±éœ€è¦åŒæ­¥ï¼‰
 					getTransactionSynchronization() != SYNCHRONIZATION_NEVER
 		
-				getConnectionHolder().isTransactionActive()   ÊÂÎñÔÚ´æ»î
+				getConnectionHolder().isTransactionActive()   äº‹åŠ¡åœ¨å­˜æ´»
 		
-		1.µ±Ç°ÊÂÎñ´æÔÚ£¬Èç¹ûµ±Ç°ÊÂÎñ´«²¥ĞĞÎªÎªPROPAGATION_NEVER
+		1.å½“å‰äº‹åŠ¡å­˜åœ¨ï¼Œå¦‚æœå½“å‰äº‹åŠ¡ä¼ æ’­è¡Œä¸ºä¸ºPROPAGATION_NEVER
 			IllegalTransactionStateException
-		2.PROPAGATION_NOT_SUPPORTED ²»ĞèÒªÊÂÎñ
-			suspend£¨DataSourceTransactionObject£© ¹ÒÆğÊÂÎñ
-			1.Ô¶³Ìµ±Ç°ÊÂÎñÍ¬²½¼¤»î
-				1.Çå³ıËùÓĞTransactionSynchronizationManagerÊôĞÔ£¬ËùÓĞTransactionSynchronization.Suspended
-				2.SuspendedResourcesHolder£¨List<TransactionSynchronization>£©
-			2.¹ÒÆğ
-				Çå³ıµ±Ç°DataSourceTransactionObject Á¬½ÓÆ÷ConnectionHolderºÍTransactionSynchronizationManager.resources
+		2.PROPAGATION_NOT_SUPPORTED ä¸éœ€è¦äº‹åŠ¡
+			suspendï¼ˆDataSourceTransactionObjectï¼‰ æŒ‚èµ·äº‹åŠ¡
+			1.è¿œç¨‹å½“å‰äº‹åŠ¡åŒæ­¥æ¿€æ´»
+				1.æ¸…é™¤æ‰€æœ‰TransactionSynchronizationManagerå±æ€§ï¼Œæ‰€æœ‰TransactionSynchronization.Suspended
+				2.SuspendedResourcesHolderï¼ˆList<TransactionSynchronization>ï¼‰
+			2.æŒ‚èµ·
+				æ¸…é™¤å½“å‰DataSourceTransactionObject è¿æ¥å™¨ConnectionHolderå’ŒTransactionSynchronizationManager.resources
 				SuspendedResourcesHolder(SourceConnectionHolder)
-				prepareTransactionStatus£¨newTransactionStatus£¬prepareSynchronization)
+				prepareTransactionStatusï¼ˆnewTransactionStatusï¼ŒprepareSynchronization)
 		3.PROPAGATION_REQUIRES_NEW
-			newTransactionStatus£¬doBegin£¬prepareSynchronization
+			newTransactionStatusï¼ŒdoBeginï¼ŒprepareSynchronization
 		4.PROPAGATION_NESTED
-				prepareTransactionStatus£¬status.createAndHoldSavepoint(); jdbc 3.0
-				newTransactionStatus£¬doBegin£¬prepareSynchronization
+				prepareTransactionStatusï¼Œstatus.createAndHoldSavepoint(); jdbc 3.0
+				newTransactionStatusï¼ŒdoBeginï¼ŒprepareSynchronization
 		5.other
 				prepareTransactionStatus
 				
@@ -58,24 +58,24 @@ TransactionInterceptor
 	completeTransactionAfterThrowing
 		txInfo.transactionAttribute.rollbackOn(ex)
 		1.triggerBeforeCompletion --> all synchronization.beforeCompletion();
-		2.status.hasSavepoint()  ´¦Àí
+		2.status.hasSavepoint()  å¤„ç†
 		3.doRollback(status); connection.rollback
 		4.doSetRollbackOnly(status);
 		triggerAfterCompletion()
 		cleanupAfterCompletion
-			resume »¹Ô­Ö®Ç°connectionHolder
+			resume è¿˜åŸä¹‹å‰connectionHolder
 			
 			
 			
-	TransactionSynchronizationManager ÊÂÎñÍ¬²½Æ÷
+	TransactionSynchronizationManager äº‹åŠ¡åŒæ­¥å™¨
 				1.resources  Map<dataSourceKey,ConnectionHolder>
-				2.synchronizations  Í¬²½ÊÂÎñ£¨JTA£¬ÏàÓ¦µÄ¼àÌı´¦ÀíÆ÷µ÷ÓÃÏàÓ¦·½·¨£©
-				3.currentTransactionName  ÊÂÎñÃû³Æ
-				4.currentTransactionReadOnly  Ö»¶ÁÊôĞÔ
-				5.currentTransactionIsolationLevel ÊÂÎñ¸ôÀë¼¶±ğ
-				6.actualTransactionActive  µ±Ç°ÊÂÎñµÄ×´Ì¬
+				2.synchronizations  åŒæ­¥äº‹åŠ¡ï¼ˆJTAï¼Œç›¸åº”çš„ç›‘å¬å¤„ç†å™¨è°ƒç”¨ç›¸åº”æ–¹æ³•ï¼‰
+				3.currentTransactionName  äº‹åŠ¡åç§°
+				4.currentTransactionReadOnly  åªè¯»å±æ€§
+				5.currentTransactionIsolationLevel äº‹åŠ¡éš”ç¦»çº§åˆ«
+				6.actualTransactionActive  å½“å‰äº‹åŠ¡çš„çŠ¶æ€
 			
-			1.getResource£¨dataSource£©
+			1.getResourceï¼ˆdataSourceï¼‰
 			2.bindResource
 			3.unbindResource
 			4.registerSynchronization
@@ -85,11 +85,11 @@ TransactionInterceptor
 		2.TransactionInfo oldTransactionInfo
 	
 	TransactionStatus  -- DefaultTransactionStatus
-		1.transaction  ÊÂÎñ
-		2.newTransaction ĞÂµÄÊÂÎï
-		3.newSynchronization ÊÇ·ñĞèÒªÊÂÎñÍ¬²½¹ÜÀí¹ÜÀí
+		1.transaction  äº‹åŠ¡
+		2.newTransaction æ–°çš„äº‹ç‰©
+		3.newSynchronization æ˜¯å¦éœ€è¦äº‹åŠ¡åŒæ­¥ç®¡ç†ç®¡ç†
 		4.readOnly
-		5.suspendedResources ¹ÒÆğ×ÊÔ´ SuspendedResourcesHolder
+		5.suspendedResources æŒ‚èµ·èµ„æº SuspendedResourcesHolder
 			
 			
 		

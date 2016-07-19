@@ -1,13 +1,13 @@
-ContextLoaderListener
+ï»¿ContextLoaderListener
 	defaultStrategies
 	org.springframework.web.context.WebApplicationContext=
 	org.springframework.web.context.support.XmlWebApplicationContext
 	
 	contextInitialized(ServletContextEvent event)
-			1.±£Ö¤µ±Ç°servletContext²»´æÔÚWebApplicationContext
+			1.ä¿è¯å½“å‰servletContextä¸å­˜åœ¨WebApplicationContext
 			2.createWebApplicationContext 
-					È¡ÖµË³Ðò:1.contextClass 2.defaultStrategies 
-					±£Ö¤ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)
+					å–å€¼é¡ºåº:1.contextClass 2.defaultStrategies 
+					ä¿è¯ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)
 			3.parentApplicationContext
 					locatorFactorySelector parentContextKey ->parentContext
 			4.configureAndRefreshWebApplicationContext

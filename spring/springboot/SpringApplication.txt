@@ -1,21 +1,21 @@
-SpringApplication
-		1.sources  Êı¾İÔ´Í·
-		2.mainApplicationClass  main.class£¨Í¨¹ınew RuntimeException().getStackTrace()£©
-		3.webEnvironment  web±êÊ¾(Servlet&&ConfigurableWebApplicationContext)
+ï»¿SpringApplication
+		1.sources  æ•°æ®æºå¤´
+		2.mainApplicationClass  main.classï¼ˆé€šè¿‡new RuntimeException().getStackTrace()ï¼‰
+		3.webEnvironment  webæ ‡ç¤º(Servlet&&ConfigurableWebApplicationContext)
 		4.initializers ApplicationContextInitializer
-		5.listeners   ApplicationListener,¼àÌıÏàÓ¦µÄÊÂ¼ş¡£
-		6.additionalProfiles   ÔËÓÃÉèÖÃ²ßÂÔ
+		5.listeners   ApplicationListener,ç›‘å¬ç›¸åº”çš„äº‹ä»¶ã€‚
+		6.additionalProfiles   è¿ç”¨è®¾ç½®ç­–ç•¥
 		
-		1)StopWatch »ıÀÛÃ¿¸öÄ£¿é×Ü»¨·ÑÊ±¼ästopWatch.start("Ä£¿éÃû");stopWatch.stop();
-    2)StartupInfoLogger ´òÓ¡³ö²»Í¬µÄÑùÊ½
+		1)StopWatch ç§¯ç´¯æ¯ä¸ªæ¨¡å—æ€»èŠ±è´¹æ—¶é—´stopWatch.start("æ¨¡å—å");stopWatch.stop();
+    2)StartupInfoLogger æ‰“å°å‡ºä¸åŒçš„æ ·å¼
     
 
 		SpringApplication.run(Main.class);
-		 		1.setHeadlessFlat  				                    headless±êÊ¾		     
-		 		2.getSpringApplicationRunListeners            springbootÆô¶¯ÉúÃüÖÜÆÚRunListeners£¬ÆäÖĞÓĞ´¥·¢ÊÂ¼ş
+		 		1.setHeadlessFlat  				                    headlessæ ‡ç¤º		     
+		 		2.getSpringApplicationRunListeners            springbootå¯åŠ¨ç”Ÿå‘½å‘¨æœŸRunListenersï¼Œå…¶ä¸­æœ‰è§¦å‘äº‹ä»¶
 		 		3.Listeners.start()
 		 		4.createAndRefreshContext()
-		 			1)create environment£¬configureEnvironment  1.¸ù¾İ±êÊ¾´´½¨»·¾³±äÁ¿ 2.ÉèÖÃ¼¤»î²ßÂÔ
+		 			1)create environmentï¼ŒconfigureEnvironment  1.æ ¹æ®æ ‡ç¤ºåˆ›å»ºç¯å¢ƒå˜é‡ 2.è®¾ç½®æ¿€æ´»ç­–ç•¥
 		 			2)configurePropertySources                  1.defaultProperties last  2.CommandLineProperties fist
 		 			3)listeners.environmentPrepared()
 		 			4)createApplicationContext and postProcessApplicationContext
@@ -28,7 +28,7 @@ SpringApplication
 		 		5.Listeners.finished()
 		 		6.exception handler
 		 		
-PS:»·¾³±äÁ¿Ë³Ğò
+PS:ç¯å¢ƒå˜é‡é¡ºåº
 StubPropertySource [name='servletConfigInitParams']
 StubPropertySource [name='servletContextInitParams']
 MapPropertySource [name='systemProperties']

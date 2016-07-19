@@ -1,7 +1,7 @@
-ConfigurationClassPostProcessor
+ï»¿ConfigurationClassPostProcessor
 	1.add ImportAwareBeanPostProcessor setImportMetadata
 	2.add EnhancedConfigurationBeanPostProcessor  setBeanFactory
-	BeanDefinition ×ª³É AnnotationMetadata
+	BeanDefinition è½¬æˆ AnnotationMetadata
 	1.@Configuration  beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, full);
 	2.@Component,@ComponentScan,@Import,@ImportResource,methods have @Bean
 			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, full); lite
@@ -13,28 +13,28 @@ ConfigurationClassPostProcessor
 		1.AnnotationMetadata
 		2.beanName
 		3.resource
-		4.beanMethods  @bean ·½·¨
-		5.importedBy  @Import class ±»ÄÄĞ©ClassÒı½ø
-		6.importedResources @importedResources Òı½øResources
-		7.skippedBeanMethods Ìø¹ı·½·¨
-		8.ImportBeanDefinitionRegistrar  Òı½øBeanDefinitionRegistrar
+		4.beanMethods  @bean æ–¹æ³•
+		5.importedBy  @Import class è¢«å“ªäº›Classå¼•è¿›
+		6.importedResources @importedResources å¼•è¿›Resources
+		7.skippedBeanMethods è·³è¿‡æ–¹æ³•
+		8.ImportBeanDefinitionRegistrar  å¼•è¿›BeanDefinitionRegistrar
 		
-		ConfigurationClass(classÈİÆ÷),SourceClass(Êı¾İ¹¤¾ß)
+		ConfigurationClass(classå®¹å™¨),SourceClass(æ•°æ®å·¥å…·)
 		
-		Imported()¹ØÏµ»¹Ã»ÓĞ¿´Ã÷°×£¬Ò»»á¶ùÔÙ¿´
-		±»Ë­¼ÓÔØ a->b->c   ËùÓĞc±»¼ÓÔØ¼¯ºÏ´æÔÚa,b
+		Imported()å…³ç³»è¿˜æ²¡æœ‰çœ‹æ˜ç™½ï¼Œä¸€ä¼šå„¿å†çœ‹
+		è¢«è°åŠ è½½ a->b->c   æ‰€æœ‰cè¢«åŠ è½½é›†åˆå­˜åœ¨a,b
 		
 		doProcessConfigurationClass(ConfigurationClass configClass, SourceClass sourceClass) 
-		1.processMemberClasses   nestedClasses(public static class && @Configuration)==> (class£¨importedBy£©,ÄÚ²¿²úÉúµÄbean)
-		2.processPropertySource   Ö±½Ó¼ÓÔØ»·¾³±äÁ¿ÒıÓÃ£¬½øĞĞ´¦Àí
-		3.processComponentScan (@Component) Ö±½ÓÍ¨¹ıComponentScan×¢²á£¬È»ºóÔÙÉúÒ»¸öConfigurationClass½øĞĞ½âÎö
-		4.processImports(@Import valueÖµ)
-				1.ImportSelector(Ö±½Ó¼ÓÔØbean),
-					deferredImportSelectors(ÑÓÊ±Ö´ĞĞ)
-					ImportSelector(selector.selectImports(metadata)Òı½øËùÓĞclasses,È»ºóprocessImports)
+		1.processMemberClasses   nestedClasses(public static class && @Configuration)==> (classï¼ˆimportedByï¼‰,å†…éƒ¨äº§ç”Ÿçš„bean)
+		2.processPropertySource   ç›´æ¥åŠ è½½ç¯å¢ƒå˜é‡å¼•ç”¨ï¼Œè¿›è¡Œå¤„ç†
+		3.processComponentScan (@Component) ç›´æ¥é€šè¿‡ComponentScanæ³¨å†Œï¼Œç„¶åå†ç”Ÿä¸€ä¸ªConfigurationClassè¿›è¡Œè§£æ
+		4.processImports(@Import valueå€¼)
+				1.ImportSelector(ç›´æ¥åŠ è½½bean),
+					deferredImportSelectors(å»¶æ—¶æ‰§è¡Œ)
+					ImportSelector(selector.selectImports(metadata)å¼•è¿›æ‰€æœ‰classes,ç„¶åprocessImports)
 				2.ImportBeanDefinitionRegistrar
 					addImportBeanDefinitionRegistrar
-				3.processConfigurationClass(¼ÓÔØ ImportSelector²úÉúµÄbean)£¬(class£¨importedBy£©,ÄÚ²¿²úÉúµÄbean)
+				3.processConfigurationClass(åŠ è½½ ImportSelectoräº§ç”Ÿçš„bean)ï¼Œ(classï¼ˆimportedByï¼‰,å†…éƒ¨äº§ç”Ÿçš„bean)
 		5.processImportResource
 		6.processBeans
 		7.processInterfaceBeans
@@ -43,32 +43,32 @@ ConfigurationClassPostProcessor
 	ConfigurationClassBeanDefinitionReader
 		TrackedConditionEvaluator
 			ConditionEvaluator
-			1.configClass.getImportedBy() ±»ÒıÈëÀàÈ«²¿skip,µ±Ç°Õâ¸öÀàÖ±½Óskip
-			2.ConditionEvaluator(registry, environment, resourceLoader).skip()µÄ½á¹û
-			PS:1.ÀàËùÓĞConditionalµÄannotationÕÒµ½£¬È¡ÀïÃæµÄValue
-			   2.ËùÓĞvalueÖµ¶¼ÊÇConditionµÄ×ÓÀà
+			1.configClass.getImportedBy() è¢«å¼•å…¥ç±»å…¨éƒ¨skip,å½“å‰è¿™ä¸ªç±»ç›´æ¥skip
+			2.ConditionEvaluator(registry, environment, resourceLoader).skip()çš„ç»“æœ
+			PS:1.ç±»æ‰€æœ‰Conditionalçš„annotationæ‰¾åˆ°ï¼Œå–é‡Œé¢çš„Value
+			   2.æ‰€æœ‰valueå€¼éƒ½æ˜¯Conditionçš„å­ç±»
 			   3.condition.matches(this.context, metadata)
-			   		metadata,ConditionalËùÔÚÀàËùÓĞĞÅÏ¢
+			   		metadata,Conditionalæ‰€åœ¨ç±»æ‰€æœ‰ä¿¡æ¯
 			   		context(environment,resourceLoader,BeanDefinitionRegistry,ConfigurableListableBeanFactory)
-			   4.²ÎÊı´«Èë·½Ê½
-			   			@ConditionalOnClass(ÕâÀï´«Èë²ÎÊı),ConditionalOnClassµÄÍ·ÉÏÈ´ÊÇ@conditionÖµ
+			   4.å‚æ•°ä¼ å…¥æ–¹å¼
+			   			@ConditionalOnClass(è¿™é‡Œä¼ å…¥å‚æ•°),ConditionalOnClassçš„å¤´ä¸Šå´æ˜¯@conditionå€¼
 			
 		ConditionEvaluator
-			1.ÅĞ¶ÏÕâ¸öÀàÊÇ·ñÓĞConditional
-			2.Èç¹ûConfigurationPhase¸ù¾İmetadataÅĞ¶Ï
-			3.°ÑÀàÉÏËùÓĞ@ConditionalµÄvalueÈ¡³öÀ´ interface(Condition)
-			4.Èç¹ûÊÇConfigurationConditionÈ¡ConfigurationPhase×öÅĞ¶Ï
+			1.åˆ¤æ–­è¿™ä¸ªç±»æ˜¯å¦æœ‰Conditional
+			2.å¦‚æœConfigurationPhaseæ ¹æ®metadataåˆ¤æ–­
+			3.æŠŠç±»ä¸Šæ‰€æœ‰@Conditionalçš„valueå–å‡ºæ¥ interface(Condition)
+			4.å¦‚æœæ˜¯ConfigurationConditionå–ConfigurationPhaseåšåˆ¤æ–­
 			5.Condition.matches(ConditionContext context, AnnotatedTypeMetadata metadata)
 			ProfileCondition
-				»·¾³±äÁ¿ÓëmetadataµÄÖµ×ö¶Ô±È
-			ConfigurationCondition ÏµÁĞ£¨Ôö¼ÓConfigurationPhase£©
+				ç¯å¢ƒå˜é‡ä¸metadataçš„å€¼åšå¯¹æ¯”
+			ConfigurationCondition ç³»åˆ—ï¼ˆå¢åŠ ConfigurationPhaseï¼‰
 				
-			SpringBootCondition ÏµÁĞ
-				Ä£°å·½·¨
-				1.getClassOrMethodName È¡µÃÃû×Ö
-				2.×ÓÀàµÃµ½×îÖÕÅĞ¶Ï
+			SpringBootCondition ç³»åˆ—
+				æ¨¡æ¿æ–¹æ³•
+				1.getClassOrMethodName å–å¾—åå­—
+				2.å­ç±»å¾—åˆ°æœ€ç»ˆåˆ¤æ–­
 				3.log
-				4.ConditionEvaluationReport ¼ÇÂ¼
+				4.ConditionEvaluationReport è®°å½•
 				
 				
 		

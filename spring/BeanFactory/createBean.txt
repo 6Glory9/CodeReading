@@ -1,78 +1,78 @@
-AbstractBeanFactory
+ï»¿AbstractBeanFactory
 	doGetBean
 			1.transformedBeanName(name)
 				&name->name,alias->beanName
       2.getSingleton(String beanName, boolean allowEarlyReference)
-      	singletonObjects:×îÖÕsingletonObject´æ·ÅµØ
-      	singletonsCurrentlyInCreation£ºÕıÔÚ´´½¨µÄÈİÆ÷
-      	earlySingletonObjects:SingletonObjectÒıÓÃ»º´æ
-      	singletonFactories:singletonFactory´æµÄÕæÊµÈİÆ÷,´´½¨ºóÃæÓĞÒ»¸öÎ»ÖÃ±£´æ(addSingletonFactory)
+      	singletonObjects:æœ€ç»ˆsingletonObjectå­˜æ”¾åœ°
+      	singletonsCurrentlyInCreationï¼šæ­£åœ¨åˆ›å»ºçš„å®¹å™¨
+      	earlySingletonObjects:SingletonObjectå¼•ç”¨ç¼“å­˜
+      	singletonFactories:singletonFactoryå­˜çš„çœŸå®å®¹å™¨,åˆ›å»ºåé¢æœ‰ä¸€ä¸ªä½ç½®ä¿å­˜(addSingletonFactory)
       	
       3.getObjectForBeanInstance(Object beanInstance, String name, String beanName, RootBeanDefinition mbd)
-				  1.²éÑ¯beanFactory¶ÔÏó£¬µ«beanInstance²»ÊÇbeanFactoryÀàĞÍµÄ
-				  2.singletonObject»òFactoryBean¶ÔÏó£¬¾ÍÖ±½Ó·µ»Ø
-				  	factoryBeanObjectCache:ÓÃÓÚ»º´æFactoryBean
+				  1.æŸ¥è¯¢beanFactoryå¯¹è±¡ï¼Œä½†beanInstanceä¸æ˜¯beanFactoryç±»å‹çš„
+				  2.singletonObjectæˆ–FactoryBeanå¯¹è±¡ï¼Œå°±ç›´æ¥è¿”å›
+				  	factoryBeanObjectCache:ç”¨äºç¼“å­˜FactoryBean
 				  3.getMergedLocalBeanDefinition(beanName)
-				  	beanName->RootBeanDefinition×îÖÕÊı¾İÔ´
-				  	mergedBeanDefinitions:ÓÃÓÚ»º´æRootBeanDefinition×îÖÕÊı¾İÔ´
+				  	beanName->RootBeanDefinitionæœ€ç»ˆæ•°æ®æº
+				  	mergedBeanDefinitions:ç”¨äºç¼“å­˜RootBeanDefinitionæœ€ç»ˆæ•°æ®æº
 				  4.getObjectFromFactoryBean(FactoryBean<?> factory, String beanName, boolean shouldPostProcess)
-				  	µ¥Àı´¦Àí·½Ê½
-				  		ÖØ¸´È¡Öµ:ËµÊÇ½â¾öÑ­»·ÒÀÀµ£¬µ«Ç°ÃæÓĞÒ»°ÑËø£¬³ı·ÇÊÇ¸¸Àà£¿£¿£¿
+				  	å•ä¾‹å¤„ç†æ–¹å¼
+				  		é‡å¤å–å€¼:è¯´æ˜¯è§£å†³å¾ªç¯ä¾èµ–ï¼Œä½†å‰é¢æœ‰ä¸€æŠŠé”ï¼Œé™¤éæ˜¯çˆ¶ç±»ï¼Ÿï¼Ÿï¼Ÿ
 				  		applyBeanPostProcessorsAfterInitialization(BeanPostProcessor)
-				  		1.ºó´¦ÀíapplyBeanPostProcessorsAfterInitialization(ÉúÃü)
-				  		2.±£´æfactoryBeanObjectCache
-				  	Ô­ĞÍ´¦Àí·½Ê½
+				  		1.åå¤„ç†applyBeanPostProcessorsAfterInitialization(ç”Ÿå‘½)
+				  		2.ä¿å­˜factoryBeanObjectCache
+				  	åŸå‹å¤„ç†æ–¹å¼
 				  	
 				  	BeanPostProcessor
 				  		DestructionAwareBeanPostProcessor
 				  		InstantiationAwareBeanPostProcessor
 				  		MergedBeanDefinitionPostProcessor
 				
-				4.¼ì²éÔ­Ê¼´´½¨ÖĞµÄÎÊÌâ
-					 prototypesCurrentlyInCreation:Ïß³Ì±äÁ¿
-				5.´Ó¸¸ÀàÑ°ÕÒÏàÓ¦µÄ&beanNameºÍbeanName
+				4.æ£€æŸ¥åŸå§‹åˆ›å»ºä¸­çš„é—®é¢˜
+					 prototypesCurrentlyInCreation:çº¿ç¨‹å˜é‡
+				5.ä»çˆ¶ç±»å¯»æ‰¾ç›¸åº”çš„&beanNameå’ŒbeanName
 				6.markBeanAsCreated
-					alreadyCreated£ºÇåÀímergedBeanDefinitions
-				7.»ñÈ¡×î×îÖÕÊı¾İRootBeanDefinition,³éÏóÀà¼ì²é
-				8.ÒÀÀµbean»ñÈ¡dependsOn
+					alreadyCreatedï¼šæ¸…ç†mergedBeanDefinitions
+				7.è·å–æœ€æœ€ç»ˆæ•°æ®RootBeanDefinition,æŠ½è±¡ç±»æ£€æŸ¥
+				8.ä¾èµ–beanè·å–dependsOn
 						isDependent(String beanName, String dependentBeanName, Set<String> alreadySeen)
 							dependentBeanMap<beanName,dependentBeanNames>:
-								beanName±íÊ¾µ±Ç°bean,dependentBeanName±íÊ¾µ±Ç°beanÒÀÀµµÄdependentBeanName
-								dependentBeanNames±íÊ¾ÒÀÀµÊÇbeanNameËùÓĞ¼¯ºÏ
+								beanNameè¡¨ç¤ºå½“å‰bean,dependentBeanNameè¡¨ç¤ºå½“å‰beanä¾èµ–çš„dependentBeanName
+								dependentBeanNamesè¡¨ç¤ºä¾èµ–æ˜¯beanNameæ‰€æœ‰é›†åˆ
 								dependentBeanNamesB->dependentBeanNamesA->beanName
-								µİ¹é²é¼ìdependentBeanNamesB,dependentBeanNamesAÊÇ·ñ´æÔÚdependentBeanName
-				9.×¢²áÒÀÀµ¡¶Ãû×ÖÏà·´¡·
-					 dependentBeanMap<dependentBeanName,beanNames> add£¨dependentBeanName£¬beanName£©
+								é€’å½’æŸ¥æ£€dependentBeanNamesB,dependentBeanNamesAæ˜¯å¦å­˜åœ¨dependentBeanName
+				9.æ³¨å†Œä¾èµ–ã€Šåå­—ç›¸åã€‹
+					 dependentBeanMap<dependentBeanName,beanNames> addï¼ˆdependentBeanNameï¼ŒbeanNameï¼‰
 					 dependenciesForBeanMap<beanName,DependentBeanNames> add(beanName,dependentBeanName)
 				
-				10.´´½¨µ¥Àı
+				10.åˆ›å»ºå•ä¾‹
 						getSingleton(String beanName, ObjectFactory<?> singletonFactory)
-						1.Èç¹ûsingletonsCurrentlyInDestructionÎªtrueËµÃ÷¶¼ÔÚInDestruction
+						1.å¦‚æœsingletonsCurrentlyInDestructionä¸ºtrueè¯´æ˜éƒ½åœ¨InDestruction
 						2.beforeSingletonCreation
 							singletonsCurrentlyInCreation.add
-							inCreationCheckExclusions.¼ì²éÅÅ³ıbeanName
+							inCreationCheckExclusions.æ£€æŸ¥æ’é™¤beanName
 						
-						3.´´½¨bean
+						3.åˆ›å»ºbean
 								1.resolvedClass
 								2.prepareMethodOverride
-								3.resolveBeforeInstantiation(beanName, mbdToUse),´´½¨´úÀí(ÉúÃü)
+								3.resolveBeforeInstantiation(beanName, mbdToUse),åˆ›å»ºä»£ç†(ç”Ÿå‘½)
 									 PS:
 									 1.!Boolean.FALSE.equals(mbd.beforeInstantiationResolved),
 									  beforeInstantiationResolved=null
 									 2.determineTargetType(beanName, mbd)
 									 			targetType,beanClass|factoryMethodReturnType
 									 applyBeanPostProcessorsBeforeInstantiation
-									   µÚÒ»´Î·µ»Øbean¾Í¿ªÊ¼stop(InstantiationAwareBeanPostProcessor)
+									   ç¬¬ä¸€æ¬¡è¿”å›beanå°±å¼€å§‹stop(InstantiationAwareBeanPostProcessor)
 									 applyBeanPostProcessorsAfterInitialization
-									   µÚÒ»´Î·µ»Ønull¾Í¿ªÊ¼stop(BeanPostProcessor)
+									   ç¬¬ä¸€æ¬¡è¿”å›nullå°±å¼€å§‹stop(BeanPostProcessor)
 							  4.doCreateBean()
 							  		1.createBeanInstance
 							  				1.FactoryMethod->BeanWrapper
 							  						RootBeanDefinition:
-							  						resolvedConstructorOrFactoryMethod,½âÎöºÃ·½·¨»ò¹¹Ôì·½·¨
-							  						constructorArgumentsResolved:²ÎÊı½âÎö±êÊ¾
-							  						resolvedConstructorArguments:½âÎöºÃ²ÎÊı
-							  						preparedConstructorArguments:×¼±¸½âÎö²ÎÊı
+							  						resolvedConstructorOrFactoryMethod,è§£æå¥½æ–¹æ³•æˆ–æ„é€ æ–¹æ³•
+							  						constructorArgumentsResolved:å‚æ•°è§£ææ ‡ç¤º
+							  						resolvedConstructorArguments:è§£æå¥½å‚æ•°
+							  						preparedConstructorArguments:å‡†å¤‡è§£æå‚æ•°
 							  				
 							  				
 										  				resolvePreparedArguments
@@ -83,59 +83,59 @@ AbstractBeanFactory
 										  							@Lazy->ProxyFactory
 										  							
 										  							doResolveDependency()
-										  							¡¾@value¡¿(¸Ğ¾õfieldµÄ´¦Àí)
+										  							ã€@valueã€‘(æ„Ÿè§‰fieldçš„å¤„ç†)
 										  								1.${}->StringValueResolver ==setEmbeddedValueResolver
-										  								2.#{}->beanExpressionResolver ==spring EL±í´ïÊ½
-										  								3.ÀàĞÍ×ª»»
+										  								2.#{}->beanExpressionResolver ==spring ELè¡¨è¾¾å¼
+										  								3.ç±»å‹è½¬æ¢
 										  							
-										  							¡¾array¡¿
-										  									1.beaFactory¸ù¾İÀàĞÍÈ¡Öµ£¬È»ºóÀàĞÍ±È¶Ô »òÕß @Qualifier
-										  									2.resolvableDependencies¸ù¾İÀàĞÍÈ¡Öµ
+										  							ã€arrayã€‘
+										  									1.beaFactoryæ ¹æ®ç±»å‹å–å€¼ï¼Œç„¶åç±»å‹æ¯”å¯¹ æˆ–è€… @Qualifier
+										  									2.resolvableDependenciesæ ¹æ®ç±»å‹å–å€¼
 										  									3.fallbackDescriptor
-										  							¡¾Collection interface¡¿
-										  							¡¾Map interface¡¿
-										  							¡¾type¡¿
+										  							ã€Collection interfaceã€‘
+										  							ã€Map interfaceã€‘
+										  							ã€typeã€‘
 										  									primary
 										  									fallbackDescriptor
 										  					2.valueResolver.resolveValueIfNecessary(BeanMetadataElement)
-										  							 spring¶¨ÒåÊı¾İÀàĞÍ´¦Àí
+										  							 springå®šä¹‰æ•°æ®ç±»å‹å¤„ç†
 										  					3.beanFactory.evaluateBeanDefinitionString
-										  							spring EL±í´ïÊ½´¦Àí
+										  							spring ELè¡¨è¾¾å¼å¤„ç†
 							  				2.autowireConstructor->BeanWrapper
-							  				3.instantiateBean(beanName, mbd)->BeanWrapper(ÎŞ²ÎÊı)
-							  		4.applyMergedBeanDefinitionPostProcessors->MergedBeanDefinitionPostProcessor(ÉúÃü)
-							  			 ³£ÓÃ×¢½â×¢ÈëµÄ×¼±¸
+							  				3.instantiateBean(beanName, mbd)->BeanWrapper(æ— å‚æ•°)
+							  		4.applyMergedBeanDefinitionPostProcessors->MergedBeanDefinitionPostProcessor(ç”Ÿå‘½)
+							  			 å¸¸ç”¨æ³¨è§£æ³¨å…¥çš„å‡†å¤‡
 							  		5.addSingletonFactory
-							  			ÌáÇ°±©Â¶SingletonFactory
-							  		6.postProcessAfterInstantiationµÄ´¦Àí->InstantiationAwareBeanPostProcessor£¨ÉúÃü£©
+							  			æå‰æš´éœ²SingletonFactory
+							  		6.postProcessAfterInstantiationçš„å¤„ç†->InstantiationAwareBeanPostProcessorï¼ˆç”Ÿå‘½ï¼‰
 							  		7.autowireByName,autowireByType
-							  			ÅäÖÃ×Ô¶¯ÉèÖÃ,»á°ÑAbstractBeanDefinition.PropertyValues+bw.setter·½·¨ÏàÓ¦¹ıÂËÖµ
-							  			¸Ğ¾õÓĞµãÎ£ÏÕ¹ş£¬ÒÀÀµµÄ¶ÔÏó»áÏÈgetBean£¬µ«Ã»ÓĞ×öÏàÓ¦setter£¬Õâ¸ö²Ù×÷ºóĞøÌî³ä
-							  		8.postProcessPropertyValues->InstantiationAwareBeanPostProcessor(ÉúÃü)postProcessPropertyValues
-							  			 annotation×¢Èë·½Ê½£¬Ö±½Óset·½·¨×¢Èë(1.¿ÉÄÜ±»ºóÃæÅäÖÃÖØÔØ 2.ignoredDependencyTypes,ignoredDependencyInterfaces)
-							  		9.applyPropertyValues ×îÖÕÌî³ä
+							  			é…ç½®è‡ªåŠ¨è®¾ç½®,ä¼šæŠŠAbstractBeanDefinition.PropertyValues+bw.setteræ–¹æ³•ç›¸åº”è¿‡æ»¤å€¼
+							  			æ„Ÿè§‰æœ‰ç‚¹å±é™©å“ˆï¼Œä¾èµ–çš„å¯¹è±¡ä¼šå…ˆgetBeanï¼Œä½†æ²¡æœ‰åšç›¸åº”setterï¼Œè¿™ä¸ªæ“ä½œåç»­å¡«å……
+							  		8.postProcessPropertyValues->InstantiationAwareBeanPostProcessor(ç”Ÿå‘½)postProcessPropertyValues
+							  			 annotationæ³¨å…¥æ–¹å¼ï¼Œç›´æ¥setæ–¹æ³•æ³¨å…¥(1.å¯èƒ½è¢«åé¢é…ç½®é‡è½½ 2.ignoredDependencyTypes,ignoredDependencyInterfaces)
+							  		9.applyPropertyValues æœ€ç»ˆå¡«å……
 							  		10.initializeBean
 							  				1.invokeAwareMethods
 							  				2.applyBeanPostProcessorsBeforeInitialization->BeanPostProcessor
-							  				3.invokeInitMethods->(ÏµÍ³³õÊ¼»¯·½·¨(InitializingBean->afterPropertiesSet),×Ô¶¨Òå(³õÊ¼»¯·½·¨init-method))
+							  				3.invokeInitMethods->(ç³»ç»Ÿåˆå§‹åŒ–æ–¹æ³•(InitializingBean->afterPropertiesSet),è‡ªå®šä¹‰(åˆå§‹åŒ–æ–¹æ³•init-method))
 							  				4.applyBeanPostProcessorsAfterInitialization->BeanPostProcessor
 							  		11.registerDisposableBean
 							  				scop->registerDisposableBean
 						4.afterSingletonCreation
 							singletonsCurrentlyInCreation.remove
-							inCreationCheckExclusions.¼ì²éÅÅ³ıbeanName
+							inCreationCheckExclusions.æ£€æŸ¥æ’é™¤beanName
 						5.addSingleton
 								singletonObjects,singletonFactories,earlySingletonObjects,registeredSingletons
 						
-				11.´´½¨µ¥ÀıÊ§°Ü
+				11.åˆ›å»ºå•ä¾‹å¤±è´¥
 						destroySingleton(String beanName)
 							removeSingleton(beanName)
-							disposableBeans:´ÓÕâÀïÈ¡³öÏàÓ¦µÄbean
-							containedBeanMap:ÄÚ²¿µÄbean¶ÔÓ¦µÄMap
-							 1.ÒÀÀµ´ËbeanName¶¼Ö´ĞĞdestroySingleton·½·¨
-							 2.Èç¹ûÊÇdisposableBeanÖ´ĞĞÏàÓ¦µÄ·½·¨
-							 3.ÄÚ²¿bean¶¼Ö´ĞĞdestroySingleton·½·¨
-							 4.ÇåÀídependentBeanMap,dependenciesForBeanMap
-							 5.×îÖÕÅ×Òì³£³öÀ´,Ö»ÊÇµ¥¸öÒì³££¬×îÖÕ»á±»ÉÏ²ã²¶×½±»getSingleton
+							disposableBeans:ä»è¿™é‡Œå–å‡ºç›¸åº”çš„bean
+							containedBeanMap:å†…éƒ¨çš„beanå¯¹åº”çš„Map
+							 1.ä¾èµ–æ­¤beanNameéƒ½æ‰§è¡ŒdestroySingletonæ–¹æ³•
+							 2.å¦‚æœæ˜¯disposableBeanæ‰§è¡Œç›¸åº”çš„æ–¹æ³•
+							 3.å†…éƒ¨beanéƒ½æ‰§è¡ŒdestroySingletonæ–¹æ³•
+							 4.æ¸…ç†dependentBeanMap,dependenciesForBeanMap
+							 5.æœ€ç»ˆæŠ›å¼‚å¸¸å‡ºæ¥,åªæ˜¯å•ä¸ªå¼‚å¸¸ï¼Œæœ€ç»ˆä¼šè¢«ä¸Šå±‚æ•æ‰è¢«getSingleton
       	
 				

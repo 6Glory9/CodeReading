@@ -1,74 +1,74 @@
-JobLauncher
-Ä£°å·½·¨£ºÔËĞĞ¹¤×÷(Job,JobParamters)
-1.¸ù¾İ¹¤×÷²ÎÊıºÍ¹¤×÷Ãû³Æ£¬²éÑ¯¹¤×÷Ö´ĞĞ£¬ÓÃÓÚ¼ì²éÖØ¸´Æô¶¯¡£
-2.¼ì²é¹¤×÷²ÎÊı
-3.´´½¨ĞÂµÄ¹¤×÷Ö´ĞĞ
-4.Í¬²½»òÕßÒì²½ÔËĞĞ¹¤×÷Ö´ĞĞ
+ï»¿JobLauncher
+æ¨¡æ¿æ–¹æ³•ï¼šè¿è¡Œå·¥ä½œ(Job,JobParamters)
+1.æ ¹æ®å·¥ä½œå‚æ•°å’Œå·¥ä½œåç§°ï¼ŒæŸ¥è¯¢å·¥ä½œæ‰§è¡Œï¼Œç”¨äºæ£€æŸ¥é‡å¤å¯åŠ¨ã€‚
+2.æ£€æŸ¥å·¥ä½œå‚æ•°
+3.åˆ›å»ºæ–°çš„å·¥ä½œæ‰§è¡Œ
+4.åŒæ­¥æˆ–è€…å¼‚æ­¥è¿è¡Œå·¥ä½œæ‰§è¡Œ
 
-1)job¿ÉÒÔ´´½¨¶à¸öjobInstance
-2)Ò»¸öjobInstance¿ÉÄÜÖ´ĞĞ¶à´Î(JobExecution)
-3)JobExecution°üº¬¶à¸östepExecution(²½Ö´ĞĞ)
+1)jobå¯ä»¥åˆ›å»ºå¤šä¸ªjobInstance
+2)ä¸€ä¸ªjobInstanceå¯èƒ½æ‰§è¡Œå¤šæ¬¡(JobExecution)
+3)JobExecutionåŒ…å«å¤šä¸ªstepExecution(æ­¥æ‰§è¡Œ)
 
 JobExecution
-	jobInstance£º¹¤×÷ÊµÀı
-	stepExecutions£º¶à¸ö²½Ö´ĞĞ
+	jobInstanceï¼šå·¥ä½œå®ä¾‹
+	stepExecutionsï¼šå¤šä¸ªæ­¥æ‰§è¡Œ
   
-  createTime:´´½¨Ê±¼ä
-  lastUpdated:¸üĞÂÊ±¼ä
-  startTime:¿ªÊ¼Ê±¼ä
-  endTime:½áÊøÊ±¼ä
+  createTime:åˆ›å»ºæ—¶é—´
+  lastUpdated:æ›´æ–°æ—¶é—´
+  startTime:å¼€å§‹æ—¶é—´
+  endTime:ç»“æŸæ—¶é—´
   
-  status:×´Ì¬(Ö´ĞĞ×îÖÕµÄ×´Ì¬£¬¿ÉÄÜÔÊĞíÖØĞÂÖ´ĞĞ)
-  exitStatus:ÍË³ö×´Ì¬£¨µ±Ç°Ö´ĞĞµÄ×´Ì¬£©
-  executionContext:Ö´ĞĞÉÏÏÂÎÄ
-  failureExceptions£º´íÎóÒì³£¼¯ºÏ
+  status:çŠ¶æ€(æ‰§è¡Œæœ€ç»ˆçš„çŠ¶æ€ï¼Œå¯èƒ½å…è®¸é‡æ–°æ‰§è¡Œ)
+  exitStatus:é€€å‡ºçŠ¶æ€ï¼ˆå½“å‰æ‰§è¡Œçš„çŠ¶æ€ï¼‰
+  executionContext:æ‰§è¡Œä¸Šä¸‹æ–‡
+  failureExceptionsï¼šé”™è¯¯å¼‚å¸¸é›†åˆ
 
 stepExecution
-	jobExecution:¹¤×÷Ö´ĞĞ
-	stepName:²½µÄÃû³Æ
+	jobExecution:å·¥ä½œæ‰§è¡Œ
+	stepName:æ­¥çš„åç§°
 	
-	readCount:¶Á´ÎÊı
-	writeCount:Ğ´´ÎÊı
-	commitCount:Ìá½»´ÎÊı
-	rollbackCount:»Ø¹ö´ÎÊı
+	readCount:è¯»æ¬¡æ•°
+	writeCount:å†™æ¬¡æ•°
+	commitCount:æäº¤æ¬¡æ•°
+	rollbackCount:å›æ»šæ¬¡æ•°
 	
-	readSkipCount:¶ÁÌø¹ı´ÎÊı
-	processSkipCount:´¦ÀíÌø¹ı´ÎÊı
-	writeSkipCount:Ğ´Ìø¹ı´ÎÊı
+	readSkipCount:è¯»è·³è¿‡æ¬¡æ•°
+	processSkipCount:å¤„ç†è·³è¿‡æ¬¡æ•°
+	writeSkipCount:å†™è·³è¿‡æ¬¡æ•°
 	
-	filterCount:¹ıÂË´ÎÊı
-	terminateOnly:ÖÕ½á±êÊ¾
+	filterCount:è¿‡æ»¤æ¬¡æ•°
+	terminateOnly:ç»ˆç»“æ ‡ç¤º
 	
 	
-	createTime:´´½¨Ê±¼ä
-  lastUpdated:¸üĞÂÊ±¼ä
-  startTime:¿ªÊ¼Ê±¼ä
-  endTime:½áÊøÊ±¼ä
+	createTime:åˆ›å»ºæ—¶é—´
+  lastUpdated:æ›´æ–°æ—¶é—´
+  startTime:å¼€å§‹æ—¶é—´
+  endTime:ç»“æŸæ—¶é—´
   
-  status:×´Ì¬
-  exitStatus:ÍË³ö×´Ì¬
-  executionContext:Ö´ĞĞÉÏÏÂÎÄ
-  failureExceptions£º´íÎóÒì³£¼¯ºÏ
+  status:çŠ¶æ€
+  exitStatus:é€€å‡ºçŠ¶æ€
+  executionContext:æ‰§è¡Œä¸Šä¸‹æ–‡
+  failureExceptionsï¼šé”™è¯¯å¼‚å¸¸é›†åˆ
   
 
 
 AbstractJob
-	listener£¨JobExecutionListener£©£º¹¤×÷Ö´ĞĞListener(before,after)
-	stepHandler£º²½´¦ÀíÆ÷
+	listenerï¼ˆJobExecutionListenerï¼‰ï¼šå·¥ä½œæ‰§è¡ŒListener(before,after)
+	stepHandlerï¼šæ­¥å¤„ç†å™¨
 	
-	¹¤×÷Ö´ĞĞÄ£°å·½Ê½
-		1.¹¤×÷²ÎÊıÑéÖ¤
-		2.Èç¹ûÖ´ĞĞ×´Ì¬ÎªÍ£Ö¹
-		3.¹¤×÷Ö´ĞĞ
+	å·¥ä½œæ‰§è¡Œæ¨¡æ¿æ–¹å¼
+		1.å·¥ä½œå‚æ•°éªŒè¯
+		2.å¦‚æœæ‰§è¡ŒçŠ¶æ€ä¸ºåœæ­¢
+		3.å·¥ä½œæ‰§è¡Œ
 
 SimpleJob
-		Ö±½Ó²½´¦ÀíÆ÷Ö±½Ó´¦Àí
-		1.²é¿´¹¤×÷ÊµÀıÕâ¸öÃû×Ö²½Ö´ĞĞ
-		2.¼ì²é×´Ì¬¼°Ö´ĞĞ´ÎÊı
-		3.Ã»ÓĞÖ´ĞĞÍê³É£¬Ê¹ÓÃÉÏ´ÎÖ´ĞĞÉÏÏÂÎÄ¼ÌĞøÖ´ĞĞ
+		ç›´æ¥æ­¥å¤„ç†å™¨ç›´æ¥å¤„ç†
+		1.æŸ¥çœ‹å·¥ä½œå®ä¾‹è¿™ä¸ªåå­—æ­¥æ‰§è¡Œ
+		2.æ£€æŸ¥çŠ¶æ€åŠæ‰§è¡Œæ¬¡æ•°
+		3.æ²¡æœ‰æ‰§è¡Œå®Œæˆï¼Œä½¿ç”¨ä¸Šæ¬¡æ‰§è¡Œä¸Šä¸‹æ–‡ç»§ç»­æ‰§è¡Œ
 
 AbstractStep		
-	²½Ö´ĞĞÄ£°å
+	æ­¥æ‰§è¡Œæ¨¡æ¿
 	StepExecutionListener.before
 	open
 	doExecution
@@ -78,35 +78,35 @@ AbstractStep
 TaskletStep
 		update(open,close)
 		
-		Ö´ĞĞÄ£°å
-			1.´ÓÍê³É²ßÂÔµÃµ½ÖØ¸´ÉÏÏÂÎÄ
+		æ‰§è¡Œæ¨¡æ¿
+			1.ä»å®Œæˆç­–ç•¥å¾—åˆ°é‡å¤ä¸Šä¸‹æ–‡
 			2.RepeatListener.open()
-			3.³õÊ¼ÄÚ²¿²Ù×÷×´Ì¬
+			3.åˆå§‹å†…éƒ¨æ“ä½œçŠ¶æ€
 				4.RepeatListener.before()
 				5.doExecute()
 				6.RepeatListener.after()
-				7.Òì³£´¦ÀíÆ÷
-				8.ÅĞ¶ÏÊÇ·ñ½áÊø(ÈıÖÖ·½Ê½£¨Íê³É²ßÂÔÅĞ¶Ï£¬±êÊ¾£¬Òì³££©)
-			9.Òì²½µÈ´ı½á¹û£¬Ö®Ç°·µ»Ø×´Ì¬Òì²½×´Ì¬²»ÊÇÕæµÄ×´Ì¬
+				7.å¼‚å¸¸å¤„ç†å™¨
+				8.åˆ¤æ–­æ˜¯å¦ç»“æŸ(ä¸‰ç§æ–¹å¼ï¼ˆå®Œæˆç­–ç•¥åˆ¤æ–­ï¼Œæ ‡ç¤ºï¼Œå¼‚å¸¸ï¼‰)
+			9.å¼‚æ­¥ç­‰å¾…ç»“æœï¼Œä¹‹å‰è¿”å›çŠ¶æ€å¼‚æ­¥çŠ¶æ€ä¸æ˜¯çœŸçš„çŠ¶æ€
 			10.RepeatListener.close()
 			
 StepContextRepeatCallback
 		ChunkContext:warrap(stepExecution)
 		
-		ChunkÄ£°å
+		Chunkæ¨¡æ¿
 			StepInterruptionPolicy.before
-			ÊÂÎñ´¦Àí(ChunkTransactionCallback)
+			äº‹åŠ¡å¤„ç†(ChunkTransactionCallback)
 			ChunkListener.after
 			StepInterruptionPolicy.after
 
 ChunkTransactionCallback
 		chunkListener.before()
-		ÈÎÎñÆ÷´¦Àí(Tasklet)
-		¸üĞÂstepExcutionÊı¾İ
+		ä»»åŠ¡å™¨å¤„ç†(Tasklet)
+		æ›´æ–°stepExcutionæ•°æ®
 		
-ChunkOrientedTasklet£¨µ¼ÏòÈÎÎñÆ÷£©
-		ÈÎÎñ´¦ÀíÄ£°å
-			1.ChunkProviderÖØ¸´¶ÁÈ¡Êı¾İ
+ChunkOrientedTaskletï¼ˆå¯¼å‘ä»»åŠ¡å™¨ï¼‰
+		ä»»åŠ¡å¤„ç†æ¨¡æ¿
+			1.ChunkProvideré‡å¤è¯»å–æ•°æ®
 		
 		
 			

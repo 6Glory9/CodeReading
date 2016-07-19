@@ -1,65 +1,65 @@
-AbstractApplicationContext
-	parent£º¸¸Application
-	environment:»·¾³±äÁ¿
-	beanFactoryPostProcessors:bean¹¤³§´¦ÀíÆ÷
-	resourcePatternResolver:×ÊÔ´½âÎöÆ÷
-	lifecycleProcessor:Ó¦ÓÃÉúÃüÖÜÆÚ´¦ÀíÆ÷
+ï»¿AbstractApplicationContext
+	parentï¼šçˆ¶Application
+	environment:ç¯å¢ƒå˜é‡
+	beanFactoryPostProcessors:beanå·¥å‚å¤„ç†å™¨
+	resourcePatternResolver:èµ„æºè§£æå™¨
+	lifecycleProcessor:åº”ç”¨ç”Ÿå‘½å‘¨æœŸå¤„ç†å™¨
 	messageSource:
-	applicationEventMulticaster:ÊÂ¼ş¹ã²¥Æ÷
-	applicationListeners:¼àÌıÆ÷
-	earlyApplicationEvents:ÔçÆÚÊÂ¼ş
+	applicationEventMulticaster:äº‹ä»¶å¹¿æ’­å™¨
+	applicationListeners:ç›‘å¬å™¨
+	earlyApplicationEvents:æ—©æœŸäº‹ä»¶
 	
 	create:refresh()
-		1.´´½¨»·¾³±äÁ¿¼°ÑéÖ¤
-		2.´´½¨»ñÈ¡beanFactory.refreshBeanFactory(),getBeanFactory()Áô¸ø×ÓÀàÊµÏÖ
-		3.ÊÖ¶¯Ôö¼Óbean(ignoreDependencyInterface,registerResolvableDependency,addBeans)
-		4.ºó´¦ÀíBeanFactory,¶ÔApplicationÒ»Ğ©ÌØÊâ´¦Àí
-		5.bean¹¤³§´¦ÀíÆ÷´¦Àí
-		6.×¢²ábean´¦ÀíÆ÷
-		7.³õÊ¼»¯messageSource
-		8.³õÊ¼»¯ÊÂ¼ş¹ã²¥Æ÷
-		9.³õÊ¼»¯ÌØÊâ×é¼ş,Áô¸ø×ÓÀàÊµÏÖ
-	 10.×¢²á¼àÌıÆ÷
-	 11.´´½¨ËùÓĞbean(weaverAwareName,setClassLoader(null),freezeConfiguration)
-	 12.³õÊ¼»¯lifecycleProcessor,ÊÍ·ÅÊÂ¼ş(ContextRefreshedEvent) 
+		1.åˆ›å»ºç¯å¢ƒå˜é‡åŠéªŒè¯
+		2.åˆ›å»ºè·å–beanFactory.refreshBeanFactory(),getBeanFactory()ç•™ç»™å­ç±»å®ç°
+		3.æ‰‹åŠ¨å¢åŠ bean(ignoreDependencyInterface,registerResolvableDependency,addBeans)
+		4.åå¤„ç†BeanFactory,å¯¹Applicationä¸€äº›ç‰¹æ®Šå¤„ç†
+		5.beanå·¥å‚å¤„ç†å™¨å¤„ç†
+		6.æ³¨å†Œbeanå¤„ç†å™¨
+		7.åˆå§‹åŒ–messageSource
+		8.åˆå§‹åŒ–äº‹ä»¶å¹¿æ’­å™¨
+		9.åˆå§‹åŒ–ç‰¹æ®Šç»„ä»¶,ç•™ç»™å­ç±»å®ç°
+	 10.æ³¨å†Œç›‘å¬å™¨
+	 11.åˆ›å»ºæ‰€æœ‰bean(weaverAwareName,setClassLoader(null),freezeConfiguration)
+	 12.åˆå§‹åŒ–lifecycleProcessor,é‡Šæ”¾äº‹ä»¶(ContextRefreshedEvent) 
 	 
-GenericApplicationContextÏµÁĞ
-		1.beanFactoryÌá¹©Ò»¸öÄ¬ÈÏbeanFactory
-		ÓÃ:registerBeanDefinitionÖØĞ´-->°ÑÏàÓ¦bean´æÔÚbeanFactory£¬ÄæÌìÏë·¨
+GenericApplicationContextç³»åˆ—
+		1.beanFactoryæä¾›ä¸€ä¸ªé»˜è®¤beanFactory
+		ç”¨:registerBeanDefinitioné‡å†™-->æŠŠç›¸åº”beanå­˜åœ¨beanFactoryï¼Œé€†å¤©æƒ³æ³•
 		
 	  GenericXmlApplicationContext
 	  	1.XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(this);
-	  	¶ÁÈ¡ÅäÖÃÎÄ¼ş×¢²á×îÖÕµ÷ÓÃGenericApplicationContextµÄ×¢²á·½·¨£¬×îÖÕ±£´æÉÏ²ãbeanFactory
+	  	è¯»å–é…ç½®æ–‡ä»¶æ³¨å†Œæœ€ç»ˆè°ƒç”¨GenericApplicationContextçš„æ³¨å†Œæ–¹æ³•ï¼Œæœ€ç»ˆä¿å­˜ä¸Šå±‚beanFactory
 	  GenericWebApplicationContext
-	  	1.Ôö¼ÓservletContext,themeSource
-	  	2.ÖØĞ´
+	  	1.å¢åŠ servletContext,themeSource
+	  	2.é‡å†™
 	  		1.createEnvironment==>StandardServletEnvironment
 	  		2.postProcessBeanFactory==>(ServletContextAwareProcessor,ServletContextAware)
 				
 				EmbeddedWebApplicationContext	
-						1.embeddedServletContainer:Ç¶ÈëÊ½ÈİÆ÷
-						2.servletConfig:ÅäÖÃ
-						3.ÖØĞ´
-							1.refresh() Ôö¼ÓË¢ĞÂÊ§°ÜÍ£Ö¹Ç¶ÈëÊ½ÈİÆ÷
-							2.onRefresh() ´´½¨Ç¶ÈëÊ½ÈİÆ÷
+						1.embeddedServletContainer:åµŒå…¥å¼å®¹å™¨
+						2.servletConfig:é…ç½®
+						3.é‡å†™
+							1.refresh() å¢åŠ åˆ·æ–°å¤±è´¥åœæ­¢åµŒå…¥å¼å®¹å™¨
+							2.onRefresh() åˆ›å»ºåµŒå…¥å¼å®¹å™¨
 									1.EmbeddedServletContainerFactory->EmbeddedServletContainer(Tomcat)
-									2.×¢Èë»Øµ÷º¯ÊıgetSelfInitializer,Ìí¼Óweb×é¼ş(servlet,filter,Listener)
-											selfInitialize:×¢²áweb×é¼ş,scop,application,WebEnvironment
-									3.Ôö¼ÓPropertySource
-							3.finishRefresh() Æô¶¯ÈİÆ÷
-							4.onClose()  Ôö¼ÓÍ£Ö¹Ç¶ÈëÊ½ÈİÆ÷
+									2.æ³¨å…¥å›è°ƒå‡½æ•°getSelfInitializer,æ·»åŠ webç»„ä»¶(servlet,filter,Listener)
+											selfInitialize:æ³¨å†Œwebç»„ä»¶,scop,application,WebEnvironment
+									3.å¢åŠ PropertySource
+							3.finishRefresh() å¯åŠ¨å®¹å™¨
+							4.onClose()  å¢åŠ åœæ­¢åµŒå…¥å¼å®¹å™¨
 							
 
 
 
-AbstractRefreshableApplicationContextÏµÁĞ
-	ÖØĞ´:refreshBeanFactory()
-		¼ÓÉÏËøµÄ¿ØÖÆÆô¶¯£¬loadBeanDefinitions,Áô¸ø×ÓÀàÊµÏÖ
+AbstractRefreshableApplicationContextç³»åˆ—
+	é‡å†™:refreshBeanFactory()
+		åŠ ä¸Šé”çš„æ§åˆ¶å¯åŠ¨ï¼ŒloadBeanDefinitions,ç•™ç»™å­ç±»å®ç°
 		
-		AbstractRefreshableConfigApplicationContext Èë¿Ú
-		  ÉèÖÃ×ÊÔ´Èë¿Ú
+		AbstractRefreshableConfigApplicationContext å…¥å£
+		  è®¾ç½®èµ„æºå…¥å£
 		 afterPropertiesSet
 		 
-		AbstractRefreshableWebApplicationContext ¼ÓÈëwebÔªËØ
-			servletContext£¬servletConfig£¬themeSource
+		AbstractRefreshableWebApplicationContext åŠ å…¥webå…ƒç´ 
+			servletContextï¼ŒservletConfigï¼ŒthemeSource
 		

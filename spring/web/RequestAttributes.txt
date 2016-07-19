@@ -1,37 +1,37 @@
-RequestAttributes
+ï»¿RequestAttributes
 
 AbstractRequestAttributes
-	requestActive:request±êÊ¾
-	requestDestructionCallbacks:requestCompletedÖ´ĞĞ×¢²áµÄÊÂ¼ş
+	requestActive:requestæ ‡ç¤º
+	requestDestructionCallbacks:requestCompletedæ‰§è¡Œæ³¨å†Œçš„äº‹ä»¶
 	
 	1.requestCompleted
-	requestActive£¬Ö´ĞĞrequestDestructionCallbacks
+	requestActiveï¼Œæ‰§è¡ŒrequestDestructionCallbacks
 	updateAccessedSessionAttributes
 
 ServletRequestAttributes
-	immutableValueTypes£º²»±äµÄÀàĞÍ
-	request£¬response,session
-	sessionAttributesToUpdate:²»±äµÄÀàĞÍĞèÒª¸üĞÂµÄÖµ
+	immutableValueTypesï¼šä¸å˜çš„ç±»å‹
+	requestï¼Œresponse,session
+	sessionAttributesToUpdate:ä¸å˜çš„ç±»å‹éœ€è¦æ›´æ–°çš„å€¼
 	
 ServletWebRequest
-	»ñÈ¡WebµÄĞÅÏ¢£¬»ñÈ¡Ô­Ê¼ÀàĞÍ£¬¿ÉÒÔÇĞ»»
+	è·å–Webçš„ä¿¡æ¯ï¼Œè·å–åŸå§‹ç±»å‹ï¼Œå¯ä»¥åˆ‡æ¢
 	
-	getNativeRequest(Class<T> requiredType) »ñÈ¡Ö¸ÒıµÄ°ü×°Àà
+	getNativeRequest(Class<T> requiredType) è·å–æŒ‡å¼•çš„åŒ…è£…ç±»
 
 DispatcherServletWebRequest
-  ÖØĞ´Local
+  é‡å†™Local
   
 StandardServletAsyncWebRequest
-	Òì³£request
+	å¼‚å¸¸request
 	
 
 
 HttpServletRequestWrapper(javax.servlet.http.HttpServletRequestWrapper)
 
 ShiroHttpServletRequest
-servletContext£º
-session£º
-httpSessions:httpSession±êÊ¾
-getRemoteUser£¬isUserInRole£¬getUserPrincipal
+servletContextï¼š
+sessionï¼š
+httpSessions:httpSessionæ ‡ç¤º
+getRemoteUserï¼ŒisUserInRoleï¼ŒgetUserPrincipal
 		
 	

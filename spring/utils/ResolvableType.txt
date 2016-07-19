@@ -1,14 +1,14 @@
-ResolvableType
-	1.type  有可能是除了class其它类型
+锘縍esolvableType
+	1.type  鏈夊彲鑳芥槸闄や簡class鍏跺畠绫诲瀷
 	2.typeProvider
 	3.variableResolver
-	4.componentType   如果是Array,collection
-	5.resolved   -->最终class
+	4.componentType   濡傛灉鏄疉rray,collection
+	5.resolved   -->鏈�缁坈lass
 	6.superType   superTypeResolvableType
 	7.interfaces   interfacesResolvableType
 	8.generics     genericsResolvableType
 	
-常用方法
-	1.getRawClass  返回class
-	2.isInstance(Object) 这个类型是Object
+甯哥敤鏂规硶
+	1.getRawClass  杩斿洖class
+	2.isInstance(Object) 杩欎釜绫诲瀷鏄疧bject
 	3.isAssignableFrom(ResolvableType other, Map<Type, Type> matchedBefore)

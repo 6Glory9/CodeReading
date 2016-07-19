@@ -1,34 +1,34 @@
-retryPolicy£ºÖØÊÔ²ßÂÔ¡£Ö´ĞĞÊ§°Ü£¬¾ö¶¨µ½µ×ÊÇ·ñÔÙÖ´ĞĞ(´ÎÊı,Ê±¼ä)
-backOffPolicy:²¹³¥²ßÂÔ¡£ÔÚÒì³£Ê±£¬²¹³¥²Ù×÷(ÔİÍ£Ò»¶ÎÊ±¼ä)
-listeners:ÖØÊÔ¼àÌı
-retryContextCache£ºÖØÊÔÉÏÏÂÎÄ»º´æ
+ï»¿retryPolicyï¼šé‡è¯•ç­–ç•¥ã€‚æ‰§è¡Œå¤±è´¥ï¼Œå†³å®šåˆ°åº•æ˜¯å¦å†æ‰§è¡Œ(æ¬¡æ•°,æ—¶é—´)
+backOffPolicy:è¡¥å¿ç­–ç•¥ã€‚åœ¨å¼‚å¸¸æ—¶ï¼Œè¡¥å¿æ“ä½œ(æš‚åœä¸€æ®µæ—¶é—´)
+listeners:é‡è¯•ç›‘å¬
+retryContextCacheï¼šé‡è¯•ä¸Šä¸‹æ–‡ç¼“å­˜
 
 
 doExecute(RetryCallback<T, E> retryCallback,RecoveryCallback<T> recoveryCallback, RetryState state)
-		retryCallback:ÖØÊÔ²Ù×÷
-		recoveryCallback:»Ö¸´²Ù×÷
-		state:ÖØÊÔ×´Ì¬
+		retryCallback:é‡è¯•æ“ä½œ
+		recoveryCallback:æ¢å¤æ“ä½œ
+		state:é‡è¯•çŠ¶æ€
 		
-1.retryPolicy.open³õÊ¼»¯ºÍ×¢²áretryContext(Ïß³Ì±äÁ¿±£´æretryContext)
-	retryPolicy¶ÔÓ¦ÏàÓ¦retryContext
+1.retryPolicy.openåˆå§‹åŒ–å’Œæ³¨å†ŒretryContext(çº¿ç¨‹å˜é‡ä¿å­˜retryContext)
+	retryPolicyå¯¹åº”ç›¸åº”retryContext
 		1.state==null
-		2.Ç¿ÖÆË¢ĞÂ
-		3.retryContextCache²»´æÔÚÏàÓ¦KEY
-2.¼àÌıÆ÷ÉúÃüÖÜÆÚopen
-3.backOffPolicy³õÊ¼»¯backOffContext
-		1.´ÓretryContextµÃµ½
-		2.backOffPolicy.start²úÉúÒ»¸öĞÂµÄ±£´æµ½retryContext
-4.Í¨¹ıretryPolicyÅĞ¶ÏÊÇ·ñÖØÊÔºÍ×´Ì¬£¨·ÇÇ¿ÖÆË¢ĞÂisExhaustedOnly£©
-		retryCallbackÖØÊÔ²Ù×÷
-5.(Èç¹û³É¹¦½áÊø£¬Òì³£Ö±½ÓÅ×³ö)
-6.Òì³£
-	     1.¼àÌıÆ÷ÉúÃüÖÜÆÚonError
-	     2.»º´æRetryContext£¬×¢²áÒì³££¨retryPolicy.registerThrowable£¬retryContextÏàÓ¦µÄÖµ±ä»¯£©
-			 3.²¹³¥´¦Àí£¬»òÕßÔİÍ£¼¸·ÖÖÓ
-			 4.ÅĞ¶ÏÊÇ·ñÅ×Òì³£(rollbackFor) return;¿ÉÒÔÖØĞÂ»Øµ½ÖØÊÔ¿ªÊ¼
-7.Èç¹ûÆ£±¹×´Ì¬£¬Å×Òì³£ return;
+		2.å¼ºåˆ¶åˆ·æ–°
+		3.retryContextCacheä¸å­˜åœ¨ç›¸åº”KEY
+2.ç›‘å¬å™¨ç”Ÿå‘½å‘¨æœŸopen
+3.backOffPolicyåˆå§‹åŒ–backOffContext
+		1.ä»retryContextå¾—åˆ°
+		2.backOffPolicy.startäº§ç”Ÿä¸€ä¸ªæ–°çš„ä¿å­˜åˆ°retryContext
+4.é€šè¿‡retryPolicyåˆ¤æ–­æ˜¯å¦é‡è¯•å’ŒçŠ¶æ€ï¼ˆéå¼ºåˆ¶åˆ·æ–°isExhaustedOnlyï¼‰
+		retryCallbacké‡è¯•æ“ä½œ
+5.(å¦‚æœæˆåŠŸç»“æŸï¼Œå¼‚å¸¸ç›´æ¥æŠ›å‡º)
+6.å¼‚å¸¸
+	     1.ç›‘å¬å™¨ç”Ÿå‘½å‘¨æœŸonError
+	     2.ç¼“å­˜RetryContextï¼Œæ³¨å†Œå¼‚å¸¸ï¼ˆretryPolicy.registerThrowableï¼ŒretryContextç›¸åº”çš„å€¼å˜åŒ–ï¼‰
+			 3.è¡¥å¿å¤„ç†ï¼Œæˆ–è€…æš‚åœå‡ åˆ†é’Ÿ
+			 4.åˆ¤æ–­æ˜¯å¦æŠ›å¼‚å¸¸(rollbackFor) return;å¯ä»¥é‡æ–°å›åˆ°é‡è¯•å¼€å§‹
+7.å¦‚æœç–²æƒ«çŠ¶æ€ï¼ŒæŠ›å¼‚å¸¸ return;
 8.handleRetryExhausted
-				1.É¾³ı»º´æRetryContext
-				2.ÖØÊÔÊ§°Ü»Ö¸´²Ù×÷ return;
-				3.Å×³öÒì³£			 			
+				1.åˆ é™¤ç¼“å­˜RetryContext
+				2.é‡è¯•å¤±è´¥æ¢å¤æ“ä½œ return;
+				3.æŠ›å‡ºå¼‚å¸¸			 			
 	 

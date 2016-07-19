@@ -1,24 +1,24 @@
-SessionRepositoryFilter
-	SessionRepository£ºspring session crud
-	httpSessionStrategy:1.sid »ñÈ¡ 2.sidÉú³É 3.sidÉ¾³ı
+ï»¿SessionRepositoryFilter
+	SessionRepositoryï¼šspring session crud
+	httpSessionStrategy:1.sid è·å– 2.sidç”Ÿæˆ 3.sidåˆ é™¤
 		1.getRequestedSessionId-->get sid
-		2.onNewSession-->¸ù¾İspring session »ØĞ´¿Í»§¶Ësid,ÈçÌí¼Ósession cookie
-	  3.onInvalidateSession-->ÖØĞ´cookie£¬¸Ä±äcookieµÄÊ±¼ä
+		2.onNewSession-->æ ¹æ®spring session å›å†™å®¢æˆ·ç«¯sid,å¦‚æ·»åŠ session cookie
+	  3.onInvalidateSession-->é‡å†™cookieï¼Œæ”¹å˜cookieçš„æ—¶é—´
 	
-	ÓÃ£ºdoFilterInternal
-		1.request±£´æsessionRepository
-		2.wrappedRequest£¬wrappedReponse
+	ç”¨ï¼šdoFilterInternal
+		1.requestä¿å­˜sessionRepository
+		2.wrappedRequestï¼ŒwrappedReponse
 		3.doFilter
 		4.commitSession
-				1.×¢ÏúÉ¾³ıcookie
-				2.·Ç×¢Ïú£¬ÖØĞ´cookie,Ë¢ĞÂ»º´æ
+				1.æ³¨é”€åˆ é™¤cookie
+				2.éæ³¨é”€ï¼Œé‡å†™cookie,åˆ·æ–°ç¼“å­˜
 	
 	Request.getSession()
 		1.request.getAttribute(CURRENT_SESSION_ATTR)
-		2.clientÖĞ»ñÈ¡sid,sessionRepository»ñÈ¡ÏàÓ¦session
-		3.sessionRepository´´½¨ĞÂµÄsession
+		2.clientä¸­è·å–sid,sessionRepositoryè·å–ç›¸åº”session
+		3.sessionRepositoryåˆ›å»ºæ–°çš„session
 	
 	requests.commitSession()
-		1.request.getAttribute(CURRENT_SESSION_ATTR)Îª¿Õ&&requestedSessionInvalidated
+		1.request.getAttribute(CURRENT_SESSION_ATTR)ä¸ºç©º&&requestedSessionInvalidated
 			 httpSessionStrategy.onInvalidateSession()
-		2.Í¬²½session±£´æ,Èç¹ûÊÇnewĞèÒªhttpSessionStrategy.onNewSession()
+		2.åŒæ­¥sessionä¿å­˜,å¦‚æœæ˜¯newéœ€è¦httpSessionStrategy.onNewSession()

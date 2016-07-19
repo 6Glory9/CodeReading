@@ -1,22 +1,22 @@
-HandlerMapping
+ï»¿HandlerMapping
 	AbstractHandlerMapping
 	  1.setsetServletContext()
 		2.setApplicationContext()
 		3.initApplicationContext()
-			  ¼ÓÔØInterceptors
+			  åŠ è½½Interceptors
 			  
 			  
-	 ÓÃ:getHandler(HttpServletRequest request) Ä£°å·½·¨
-			1.¸ù¾İrequestÕÒµ½ÏàÓ¦´¦Àíhandler,Èç²»´æÔÚ·µ»ØÄ¬ÈÏ´¦ÀíÆ÷
-			2.Æ¥ÅäHandlerInterceptor£¬×é×°·µ»ØHandlerExecutionChain
-			3.¸ù¾İrequestÊÇ·ñ¿çÓòÇëÇó£¬Ôö¼Ó(¿çÓòÔ¤ÇëÇó´¦ÀíÆ÷,¿çÓòÇëÇóÀ¹½Ø)
-				PS£¨https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)
-				1.PreFlightHandler(¿çÓòÔ¤ÇëÇó´¦ÀíÆ÷),»ØĞ´¼¸¸öÍ·×Ö¶Î¡£
-				2.CorsInterceptor£¨¿çÓòÔ¤ÇëÇó´¦ÀíÆ÷£©,´¦Àí·µ»ØÊÇ·ñÕıÈ·¡£
+	 ç”¨:getHandler(HttpServletRequest request) æ¨¡æ¿æ–¹æ³•
+			1.æ ¹æ®requestæ‰¾åˆ°ç›¸åº”å¤„ç†handler,å¦‚ä¸å­˜åœ¨è¿”å›é»˜è®¤å¤„ç†å™¨
+			2.åŒ¹é…HandlerInterceptorï¼Œç»„è£…è¿”å›HandlerExecutionChain
+			3.æ ¹æ®requestæ˜¯å¦è·¨åŸŸè¯·æ±‚ï¼Œå¢åŠ (è·¨åŸŸé¢„è¯·æ±‚å¤„ç†å™¨,è·¨åŸŸè¯·æ±‚æ‹¦æˆª)
+				PSï¼ˆhttps://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)
+				1.PreFlightHandler(è·¨åŸŸé¢„è¯·æ±‚å¤„ç†å™¨),å›å†™å‡ ä¸ªå¤´å­—æ®µã€‚
+				2.CorsInterceptorï¼ˆè·¨åŸŸé¢„è¯·æ±‚å¤„ç†å™¨ï¼‰,å¤„ç†è¿”å›æ˜¯å¦æ­£ç¡®ã€‚
 		
 		
 		AbstractHandlerMethodMapping
-			afterPropertiesSet(Èı¸öÄ£°å·½·¨)
+			afterPropertiesSet(ä¸‰ä¸ªæ¨¡æ¿æ–¹æ³•)
 				isHandler(beanType)
 				getMappingForMethod(method, userType)
 				getMappingPathPatterns(T mapping)
@@ -24,20 +24,20 @@ HandlerMapping
 				detectHandlerMethods(handlerType)
 				
 				
-		 ÓÃ:getHandlerInternal(HttpServletRequest request)
-		 			lookupHandlerMethod(String lookupPath, HttpServletRequest request)(Á½¸öÄ£°å·½·¨)
+		 ç”¨:getHandlerInternal(HttpServletRequest request)
+		 			lookupHandlerMethod(String lookupPath, HttpServletRequest request)(ä¸¤ä¸ªæ¨¡æ¿æ–¹æ³•)
 		 				getMatchingMapping(T mapping, HttpServletRequest request)
 		 				getMappingComparator(HttpServletRequest request)
 		 				
 		 				T->Comparator<T>
-					  Collections.sort(matches, comparator); ÕÒ³öÆ¥Åä×î¾«È·
+					  Collections.sort(matches, comparator); æ‰¾å‡ºåŒ¹é…æœ€ç²¾ç¡®
 		 				
 		 	RequestMappingInfoHandlerMapping
-					ÊµÏÖ£ºgetMappingPathPatterns
+					å®ç°ï¼šgetMappingPathPatterns
 								getMatchingMapping
 								getMappingComparator
 								
-					¸²¸Ç:handleMatch
+					è¦†ç›–:handleMatch
 							BEST_MATCHING_PATTERN_ATTRIBUTE,URI_TEMPLATE_VARIABLES_ATTRIBUTE
 					    MATRIX_VARIABLES_ATTRIBUTE,PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE
 					    
@@ -50,41 +50,41 @@ HandlerMapping
 							MATRIX_VARIABLES_ATTRIBUTE:{[q=22,33],[s=23]}
 					    
 					    handleNoMatch
-					    Å×ÏàÓ¦µÄÒì³£
+					    æŠ›ç›¸åº”çš„å¼‚å¸¸
 			RequestMappingHandlerMapping
 							setEmbeddedValueResolver()
-							¸²¸Ç£ºafterPropertiesSet()£¬initCorsConfiguration()
-							ÊµÏÖ£ºisHandler(Class<?> beanType)
+							è¦†ç›–ï¼šafterPropertiesSet()ï¼ŒinitCorsConfiguration()
+							å®ç°ï¼šisHandler(Class<?> beanType)
 							      getMappingForMethod(Method method, Class<?> handlerType)
 		
 		
 		
 		AbstractUrlHandlerMapping
-		   ÓÃ£ºgetHandlerInternal
+		   ç”¨ï¼šgetHandlerInternal
 		   1.mappedHandler
 			 2./ ->rootHandler
 			 3.null ->defaultHandler
 			 4.validateHandler(requestMethod,Params,Headers)
-			 5.Í¨¹ıInterceptor±©Â¶(BEST_MATCHING_PATTERN_ATTRIBUTE,URI_TEMPLATE_VARIABLES_ATTRIBUTE)
+			 5.é€šè¿‡Interceptoræš´éœ²(BEST_MATCHING_PATTERN_ATTRIBUTE,URI_TEMPLATE_VARIABLES_ATTRIBUTE)
 			 
-			 registerHandler(String urlPath, Object handler)(×ÓÀàÊ¹ÓÃ×¢²á)
+			 registerHandler(String urlPath, Object handler)(å­ç±»ä½¿ç”¨æ³¨å†Œ)
 			 		setRootHandler
 			 		setDefaultHandler
 			
 			
 			SimpleUrlHandlerMapping
-			  ¸²¸Ç£ºinitApplicationContext()£¬Ê¹ÓÃregisterHandlers
+			  è¦†ç›–ï¼šinitApplicationContext()ï¼Œä½¿ç”¨registerHandlers
 			  
 			
 			AbstractDetectingUrlHandlerMapping
-			  ¸²¸Ç£ºinitApplicationContext(),detectHandlers()
+			  è¦†ç›–ï¼šinitApplicationContext(),detectHandlers()
 			  			
-			  			determineUrlsForHandler£¨Ä£°å·½·¨,ÓÉ×ÓÀàÊµÏÖ£©
+			  			determineUrlsForHandlerï¼ˆæ¨¡æ¿æ–¹æ³•,ç”±å­ç±»å®ç°ï¼‰
 			 
 			DefaultAnnotationHandlerMapping
-					¸²¸Ç£ºdetermineUrlsForHandler
-									RequestMapping½âÎö
+					è¦†ç›–ï¼šdetermineUrlsForHandler
+									RequestMappingè§£æ
 									url<->handler
 								validateHandler
 			BeanNameUrlHandlerMapping
-					¸²¸Ç£ºdetermineUrlsForHandler
+					è¦†ç›–ï¼šdetermineUrlsForHandler

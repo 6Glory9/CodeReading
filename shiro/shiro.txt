@@ -1,9 +1,9 @@
-DefaultWebSubjectContext(Í³Ò»´æÔÚMAP¡£Ö±½Ó·ÃÎÊ»òÕß¼ä½Ó·ÃÎÊ)
+ï»¿DefaultWebSubjectContext(ç»Ÿä¸€å­˜åœ¨MAPã€‚ç›´æ¥è®¿é—®æˆ–è€…é—´æ¥è®¿é—®)
 	SERVLET_REQUEST(1.local 2.subject.getRequest)
 	SERVLET_RESPONSE(1.local 2.subject.getReponse)
 	
 	
-	SECURITY_MANAGER(1.local 2.Ïß³Ì)
+	SECURITY_MANAGER(1.local 2.çº¿ç¨‹)
 	SESSION_ID(local)
 	AUTHENTICATION_TOKEN
 	AUTHENTICATION_INFO
@@ -44,66 +44,66 @@ DefaultWebSecurityManager
 	
 	cacheManager
 	
-	principal:¸ºÔğÈË
-	Authorization:ÊÚÈ¨
-	Authentication£ºÈÏÖ¤ĞÅÏ¢
-	authenticator£ºÈÏÖ¤Õß
-	authenticate£ºÈÏÖ¤
+	principal:è´Ÿè´£äºº
+	Authorization:æˆæƒ
+	Authenticationï¼šè®¤è¯ä¿¡æ¯
+	authenticatorï¼šè®¤è¯è€…
+	authenticateï¼šè®¤è¯
 	
 login(AuthenticationToken token)
-	1.ÇåÀísession¸ºÔğÈË
-		securityManagerÈÏÖ¤
-		2.ÈÏÖ¤·µ»ØAuthenticationInfo
-		3.ÈÏÖ¤Ê§°ÜRememberMeManagerµÄonFailedLogin´¦Àí
-		4.´´½¨Ò»¸öĞÂµÄSubject
+	1.æ¸…ç†sessionè´Ÿè´£äºº
+		securityManagerè®¤è¯
+		2.è®¤è¯è¿”å›AuthenticationInfo
+		3.è®¤è¯å¤±è´¥RememberMeManagerçš„onFailedLoginå¤„ç†
+		4.åˆ›å»ºä¸€ä¸ªæ–°çš„Subject
 			SubjectContext(Authenticated,AuthenticationToken,AuthenticationInfo,subject)
 			1.copy subjectContext
-			2.½âÎöSecurityManager
-			3.½âÎöSession
-				(subjectContext(²»´æÔÚ),subject(´æÔÚ),cookie)
-			4.½âÎöÉí·İ
-				(subjectContext(²»´æÔÚ),AuthenticationInfo(´æÔÚ),subject(Éí·İ),session(Éí·İ),getRememberedIdentity(Éí·İ))
+			2.è§£æSecurityManager
+			3.è§£æSession
+				(subjectContext(ä¸å­˜åœ¨),subject(å­˜åœ¨),cookie)
+			4.è§£æèº«ä»½
+				(subjectContext(ä¸å­˜åœ¨),AuthenticationInfo(å­˜åœ¨),subject(èº«ä»½),session(èº«ä»½),getRememberedIdentity(èº«ä»½))
 			5.create subject
 			6.save subject
-		5.ÈÏÖ¤³É¹¦RememberMeManagerµÄonSuccessfulLogin´¦Àí
-	6.subjectÍ¬²½£¨Éí·İ,ÈÏÖ¤±êÊ¾£¬host£¬°ü×°Session)
+		5.è®¤è¯æˆåŠŸRememberMeManagerçš„onSuccessfulLoginå¤„ç†
+	6.subjectåŒæ­¥ï¼ˆèº«ä»½,è®¤è¯æ ‡ç¤ºï¼Œhostï¼ŒåŒ…è£…Session)
 
 logout()
-	1.ÇåÀísession¸ºÔğÈË
+	1.æ¸…ç†sessionè´Ÿè´£äºº
 	  securityManager.logout
-	  1.beforeLogout£¨rememberMeLogout£©
-	  2.Èç¹ûÓĞÉí·İÒªnotify(Çå³ı»º´æÈËÉí£¬Í¨Öª)
-	  3.É¾³ısubject(subject.delete)
-	  4.stopSession.stop(Í¨¹ısessionManagerÉ¾³ısession)
-	2.subjectÇå³ı£¨Éí·İ,ÈÏÖ¤±êÊ¾£¬°ü×°Session)
+	  1.beforeLogoutï¼ˆrememberMeLogoutï¼‰
+	  2.å¦‚æœæœ‰èº«ä»½è¦notify(æ¸…é™¤ç¼“å­˜äººèº«ï¼Œé€šçŸ¥)
+	  3.åˆ é™¤subject(subject.delete)
+	  4.stopSession.stop(é€šè¿‡sessionManageråˆ é™¤session)
+	2.subjectæ¸…é™¤ï¼ˆèº«ä»½,è®¤è¯æ ‡ç¤ºï¼ŒåŒ…è£…Session)
 	
 
 SpringShiroFilter
 	WebSecurityManager
-	filters:Êı¾İÔ´À´×Ôspring
+	filters:æ•°æ®æºæ¥è‡ªspring
 	filterChainDefinitionMap
 	
 	
 	
 	
-	1.beanPost-bean´¦ÀíÆ÷
-		°ÑËùÓĞfilter½øÈëfilters(beanName,Filter),È«¾ÖÉèÖÃ(loginUrl,SuccessUrl,UnauthorizedUrl)
+	1.beanPost-beanå¤„ç†å™¨
+		æŠŠæ‰€æœ‰filterè¿›å…¥filters(beanName,Filter),å…¨å±€è®¾ç½®(loginUrl,SuccessUrl,UnauthorizedUrl)
 	
-	2.createInstance´´½¨ÊµÀı
-		FilterChainManager£º¹ıÂËÆ÷Á´Â·¹ÜÀíÆ÷
-			1.filterµÄ²Ù×÷
-			2.chainµÄ²Ù×÷
+	2.createInstanceåˆ›å»ºå®ä¾‹
+		FilterChainManagerï¼šè¿‡æ»¤å™¨é“¾è·¯ç®¡ç†å™¨
+			1.filterçš„æ“ä½œ
+			2.chainçš„æ“ä½œ
 			3.proxy(FilterChain original, String chainName)
 			
-		1.Ìí¼ÓÄ¬ÈÏµÄ¹ıÂËÆ÷£¬²»ĞèÒªÖØÔØºÍinit,È«¾ÖÉèÖÃ(loginUrl,SuccessUrl,UnauthorizedUrl)
-		2.Ìí¼Ó×Ô¶¨Òå¹ıÂËÆ÷£¬²»init,ÖØÔØfilter,È«¾ÖÉèÖÃ(loginUrl,SuccessUrl,UnauthorizedUrl),ÔÚÕâÀï¿ÉÒÔ¸ÉµôÄ¬ÈÏfilter
+		1.æ·»åŠ é»˜è®¤çš„è¿‡æ»¤å™¨ï¼Œä¸éœ€è¦é‡è½½å’Œinit,å…¨å±€è®¾ç½®(loginUrl,SuccessUrl,UnauthorizedUrl)
+		2.æ·»åŠ è‡ªå®šä¹‰è¿‡æ»¤å™¨ï¼Œä¸init,é‡è½½filter,å…¨å±€è®¾ç½®(loginUrl,SuccessUrl,UnauthorizedUrl),åœ¨è¿™é‡Œå¯ä»¥å¹²æ‰é»˜è®¤filter
 			keyURL(chainName)=authc(filterName),roles[admin,user(chainSpecificFilterConfig)],perms[file:edit]
-		3.filterChains Ìí¼Ó£¨chainName) ¶ÔPathConfigProcessorÅäÖÃ´¦Àí
+		3.filterChains æ·»åŠ ï¼ˆchainName) å¯¹PathConfigProcessoré…ç½®å¤„ç†
 		
-	FilterChainResolver Ñ°ÕÒÆ¥ÅäµÄfilterChain+Ô­Ê¼filterChain
-		ps:¿ìËÙÑ°ÕÒ
+	FilterChainResolver å¯»æ‰¾åŒ¹é…çš„filterChain+åŸå§‹filterChain
+		ps:å¿«é€Ÿå¯»æ‰¾
 		
-	DefaultFilter Ã¶¾Ù
+	DefaultFilter æšä¸¾
 		anon(AnonymousFilter.class),
     authc(FormAuthenticationFilter.class),
     authcBasic(BasicHttpAuthenticationFilter.class),
@@ -116,55 +116,55 @@ SpringShiroFilter
     ssl(SslFilter.class),
     user(UserFilter.class);
     
-    doFilterInternal(filterÖĞ°üÁ´Â·)
+    doFilterInternal(filterä¸­åŒ…é“¾è·¯)
     		1.
-		    HttpServletRequest »á½øĞĞ°ü×°³ÉShiroHttpServletRequest(httpSession±êÊ¾)
-		    ServletResponse Èç¹ûÊÇwebÊÇ²»»á°ü×°
+		    HttpServletRequest ä¼šè¿›è¡ŒåŒ…è£…æˆShiroHttpServletRequest(httpSessionæ ‡ç¤º)
+		    ServletResponse å¦‚æœæ˜¯webæ˜¯ä¸ä¼šåŒ…è£…
 		    
-		    2.´´½¨subject
+		    2.åˆ›å»ºsubject
 		    	 1.subjectContext(request,response,SecurityManager)
 		    	 2.resolveSession
 		    	 		local,subject,(SessionKey->Session)
-		    	 		DelegatingSession[AbstractNativeSessionManager->Êı¾İ¿âÈ¥²éÑ¯]
+		    	 		DelegatingSession[AbstractNativeSessionManager->æ•°æ®åº“å»æŸ¥è¯¢]
 		    	 		HttpSession[ServletContainerSessionManager->request.getSession(false)]
 		    	 3.resolvePrincipals
 		    	 		local,AuthenticationInfo,Subject,session,getRememberedIdentity
 		    	 4.subject.save
 		    3.bind thread subject
-		    4.session.touch ¸üĞÂsessionµÄupdateTime
+		    4.session.touch æ›´æ–°sessionçš„updateTime
 		    
 		   
 		   OncePerRequestFilter
-		   	1.Á½¸öÅÅ³ıFilter·½Ê½
-		   		 1.alreadyFilteredAttributeName£¨name,fileConfig,getClass£©+.FILTERED
+		   	1.ä¸¤ä¸ªæ’é™¤Filteræ–¹å¼
+		   		 1.alreadyFilteredAttributeNameï¼ˆname,fileConfig,getClassï¼‰+.FILTERED
 		   		 2.!isEnabled(request, response) || shouldNotFilter(request
-		   	2.¹ıÂËÆ÷Ä£°å
+		   	2.è¿‡æ»¤å™¨æ¨¡æ¿
 		   	
 		   AdviceFilter
-		   	doFilterInternalÄ£°æ·½·¨
-		   	1.preHandle ·µ»Ø¼ÌĞø±êÊ¾
+		   	doFilterInternalæ¨¡ç‰ˆæ–¹æ³•
+		   	1.preHandle è¿”å›ç»§ç»­æ ‡ç¤º
 		   	2.executeChain
 		   	3.postHandle
 		   	4.cleanup
 		   	
 		 LogoutFilter
 		 		subject.logout();
-		 		issueRedirect:·¢ĞĞÌø×ª
+		 		issueRedirect:å‘è¡Œè·³è½¬
 		 		
 		 PathMatchingFilter
-		 		1.appliedPathsÆ¥Åärequest.URL
+		 		1.appliedPathsåŒ¹é…request.URL
 		    2.isEnabled
 		    3.onPreHandle
 		    
 		 NoSessionCreationFilter
-		 		²»´´½¨session±êÊ¾
+		 		ä¸åˆ›å»ºsessionæ ‡ç¤º
 		 AnonymousFilter
-		 		ÄäÃûÍ¨¹ı
+		 		åŒ¿åé€šè¿‡
 		AccessControlFilter
-			isAccessAllowed£¨È¨ÏŞÅĞ¶Ï£©||onAccessDenied(¾Ü¾ø´¦Àí)
+			isAccessAllowedï¼ˆæƒé™åˆ¤æ–­ï¼‰||onAccessDenied(æ‹’ç»å¤„ç†)
 			
 			redirectToSavedRequest
-			saveRequest  °ÑÏàÓ¦µÄÇëÇó´æÔÚsessionÖĞ
+			saveRequest  æŠŠç›¸åº”çš„è¯·æ±‚å­˜åœ¨sessionä¸­
 		 	 		
 		    	
 		    

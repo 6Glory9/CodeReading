@@ -1,12 +1,12 @@
-CommonAnnotationBeanPostProcessor
-  与相似AutowiredAnnotationBeanPostProcessor 
+锘緾ommonAnnotationBeanPostProcessor
+  涓庣浉浼糀utowiredAnnotationBeanPostProcessor 
   WebServiceRef
   EJB
   PostConstruct
   PreDestroy
   Resource
   
-  具体内容没看
+  鍏蜂綋鍐呭娌＄湅
 	
 
 			

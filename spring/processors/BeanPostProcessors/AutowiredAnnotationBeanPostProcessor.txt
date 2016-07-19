@@ -1,35 +1,35 @@
-AutowiredAnnotationBeanPostProcessor
+ï»¿AutowiredAnnotationBeanPostProcessor
 	
 BeanPostProcessor
 	1.postProcessBeforeInitialization(bean,beanName)
 	2.postProcessAfterInitialization(bean,beanName)
-ÔÚ³õÊ¼»¯½×¶Î   invokeInitMethods
+åœ¨åˆå§‹åŒ–é˜¶æ®µ   invokeInitMethods
 
 InstantiationAwareBeanPostProcessor
 	1.postProcessBeforeInstantiation(Class<?> beanClass, String beanName)
-		¶¯Ì¬´úÀí,ºóĞøÖ±½ÓÖ´ĞĞpostProcessAfterInitialization
+		åŠ¨æ€ä»£ç†,åç»­ç›´æ¥æ‰§è¡ŒpostProcessAfterInitialization
 	2.postProcessAfterInstantiation(Object bean, String beanName)
-		·µ»ØÖµÖ±½ÓÓ°ÏìÊÇ·ñcontinueWithPropertyPopulation 
+		è¿”å›å€¼ç›´æ¥å½±å“æ˜¯å¦continueWithPropertyPopulation 
 	3.postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName)
 		
-ÔÚÊµÀı»¯½×¶Î
+åœ¨å®ä¾‹åŒ–é˜¶æ®µ
 
 MergedBeanDefinitionPostProcessor
 
 SmartInstantiationAwareBeanPostProcessor  determineCandidateConstructors
 
 	postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName)
-		ĞŞ¸ÄRootBeanDefinition
+		ä¿®æ”¹RootBeanDefinition
 		
 		
 		
 			
 		1.determineCandidateConstructors
-			»º´æ¹¹Ôì·½·¨±êÓĞ×¢½â
+			ç¼“å­˜æ„é€ æ–¹æ³•æ ‡æœ‰æ³¨è§£
 		
 		2.postProcessMergedBeanDefinition
-			»º´æInjectionMetadata£¨AutowiredFieldElement£¬AutowiredMethodElement£© list
-			checkConfigMembers È¥µô
+			ç¼“å­˜InjectionMetadataï¼ˆAutowiredFieldElementï¼ŒAutowiredMethodElementï¼‰ list
+			checkConfigMembers å»æ‰
 		
 		3.postProcessPropertyValues
 			InjectedElement.inject
@@ -37,13 +37,13 @@ SmartInstantiationAwareBeanPostProcessor  determineCandidateConstructors
 			1.Field
 			2.methodParameter
 			
-			¶ÔÓÚ@value @Qualifier Ö§³ÖQualifierAnnotationAutowireCandidateResolver
+			å¯¹äº@value @Qualifier æ”¯æŒQualifierAnnotationAutowireCandidateResolver
 			Array
 			Collection && Interface
 			Map && InterFace
 			other
 			
-			determinePrimaryCandidate  primary||name match  Èç¹ûQualifierÇ°Ãæ»áÆ¥Åä
+			determinePrimaryCandidate  primary||name match  å¦‚æœQualifierå‰é¢ä¼šåŒ¹é…
 			
 			
 			

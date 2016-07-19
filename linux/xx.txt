@@ -1,24 +1,24 @@
-##Èí¼ş¿ØÖÆÃæ°å
-rpm -ivh filename.rpm ##°²×°Èí¼ş
-rpm -Uvh filename.rpm ##Éı¼¶Èí¼ş
-rpm -e filename.rpm   ##Ğ¶ÔØÈí¼ş
-rpm -qpi filename.rpm ##²éÑ¯Èí¼şµÄÃèÊöĞÅÏ¢
-rpm -qpl filename.rpm ##ÁĞ³öÈí¼şµÄĞÅÏ¢
-rpm -qf fiename       ##²éÑ¯ÎÄ¼şÊôÓÚÄÇ¸öRPM
+ï»¿##è½¯ä»¶æ§åˆ¶é¢æ¿
+rpm -ivh filename.rpm ##å®‰è£…è½¯ä»¶
+rpm -Uvh filename.rpm ##å‡çº§è½¯ä»¶
+rpm -e filename.rpm   ##å¸è½½è½¯ä»¶
+rpm -qpi filename.rpm ##æŸ¥è¯¢è½¯ä»¶çš„æè¿°ä¿¡æ¯
+rpm -qpl filename.rpm ##åˆ—å‡ºè½¯ä»¶çš„ä¿¡æ¯
+rpm -qf fiename       ##æŸ¥è¯¢æ–‡ä»¶å±äºé‚£ä¸ªRPM
 
-##yumÈí¼ş²Ö¿â
-yum²Ö¿âµÄÎÄ¼ş¾ùĞè.repo½áÎ²²¢´æ·ÅÔÚ/etc/yum.respos.d/Ä¿Â¼ÖĞ
-yum²Ö¿â¸ñÊ½
-[rhel-media]:yumÔ´µÄÃû³Æ£¬¿É×Ô¶¨Òå
-baseurl:Ìá¹©·½Ê½°üÀ¨FTP
-enabled=1:ÉèÖÃ´ËÔ´·ñ¿ÉÓÃ
-gpgcheck=1:ÉèÖÃ´ËÔ´ÊÇ·ñ¼ìÑéÎÄ¼ş
+##yumè½¯ä»¶ä»“åº“
+yumä»“åº“çš„æ–‡ä»¶å‡éœ€.repoç»“å°¾å¹¶å­˜æ”¾åœ¨/etc/yum.respos.d/ç›®å½•ä¸­
+yumä»“åº“æ ¼å¼
+[rhel-media]:yumæºçš„åç§°ï¼Œå¯è‡ªå®šä¹‰
+baseurl:æä¾›æ–¹å¼åŒ…æ‹¬FTP
+enabled=1:è®¾ç½®æ­¤æºå¦å¯ç”¨
+gpgcheck=1:è®¾ç½®æ­¤æºæ˜¯å¦æ£€éªŒæ–‡ä»¶
 gpgkey:key
 
 
 yum repolist all
 yum list all
-yum info      Èí¼ş°üÃû³Æ
-yum install   Èí¼ş°üÃû³Æ
-yum reinstall Èí¼ş°üÃû³Æ
-yum update    Èí¼ş°üÃû³Æ
+yum info      è½¯ä»¶åŒ…åç§°
+yum install   è½¯ä»¶åŒ…åç§°
+yum reinstall è½¯ä»¶åŒ…åç§°
+yum update    è½¯ä»¶åŒ…åç§°

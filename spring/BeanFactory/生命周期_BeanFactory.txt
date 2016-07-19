@@ -1,36 +1,36 @@
-resolveBeforeInstantiation (ÊµÀı»¯¶ÔÏóÇ°)
-	aop proxy´úÀí¶ÔÏó¿ÉÒÔÕâÀïÉú³É
-	1.beanPostProcessorsBeforeInstantiation ÊµÀı»¯Ö®Ç°
-	2.beanPostProcessorsAfterInitialization ³õÊ¼»¯Ö®ºó
+ï»¿resolveBeforeInstantiation (å®ä¾‹åŒ–å¯¹è±¡å‰)
+	aop proxyä»£ç†å¯¹è±¡å¯ä»¥è¿™é‡Œç”Ÿæˆ
+	1.beanPostProcessorsBeforeInstantiation å®ä¾‹åŒ–ä¹‹å‰
+	2.beanPostProcessorsAfterInitialization åˆå§‹åŒ–ä¹‹å
 	
-createBeanInstance (ÊµÀı»¯¶ÔÏó)
-	 1.·½·¨ÊµÀı»¯(¾²Ì¬£¬¶¯Ì¬)
-	 2.¹¹Ôì·½·¨ÊµÀı»¯
+createBeanInstance (å®ä¾‹åŒ–å¯¹è±¡)
+	 1.æ–¹æ³•å®ä¾‹åŒ–(é™æ€ï¼ŒåŠ¨æ€)
+	 2.æ„é€ æ–¹æ³•å®ä¾‹åŒ–
 
-MergedBeanDefinitionPostProcessor(ĞŞ¸ÄBeanDefinition)
+MergedBeanDefinitionPostProcessor(ä¿®æ”¹BeanDefinition)
 	 
-InstantiationAwareBeanPostProcessor(ÊµÀı»¯¶ÔÏóºó)
+InstantiationAwareBeanPostProcessor(å®ä¾‹åŒ–å¯¹è±¡å)
 	 postProcessAfterInstantiation
 	 
-×Ô¶¯¼ÓÔØautowireByNameºÍautowireByType
+è‡ªåŠ¨åŠ è½½autowireByNameå’ŒautowireByType
 
-InstantiationAwareBeanPostProcessor(ÊµÀı»¯ÊôĞÔ´¦Àí)
-	 postProcessPropertyValues Ã¿¸öÊôĞÔ´¦Àí(×¢½â×¢Èë¾ÍÔÚÕâÀï´¦Àí£¬xmlÅäÖÃÔÚºóÃæ¿ÉÒÔÖØÔØ)
+InstantiationAwareBeanPostProcessor(å®ä¾‹åŒ–å±æ€§å¤„ç†)
+	 postProcessPropertyValues æ¯ä¸ªå±æ€§å¤„ç†(æ³¨è§£æ³¨å…¥å°±åœ¨è¿™é‡Œå¤„ç†ï¼Œxmlé…ç½®åœ¨åé¢å¯ä»¥é‡è½½)
 	 
-populationÊôĞÔ
+populationå±æ€§
 	 
 invokeAwareMethods
 
-applyBeanPostProcessorsBeforeInitialization(³õÊ¼»¯Ç°´¦Àí)
+applyBeanPostProcessorsBeforeInitialization(åˆå§‹åŒ–å‰å¤„ç†)
 afterPropertiesSet,initMethod
-applyBeanPostProcessorsAfterInitialization(³õÊ¼»¯ºó´¦Àí)
+applyBeanPostProcessorsAfterInitialization(åˆå§‹åŒ–åå¤„ç†)
 
 Singleton registerDisposableBean
 scope.registerDestructionCallback
 
-1.×¢½âµÄ×¢Èë£¬²»»á±»ºöÂÔ£¬¼°Ê±ÄãÉèÖÃ¹ıAbstractAutowireCapableBeanFactory(ignoredDependencyTypes,ignoredDependencyInterfaces)
-2.ÒÀÀµµÄ×¢ÈëresolveDependency->findAutowireCandidates->beanNamesForTypeIncludingAncestors->getBeanNamesForType
-						1.Èç¹ûBeanFactory´æÔÚFactoryBean»áÏÈ´´½¨Æğ²ÅÈ¡µÃ¶ÔÏóµÄÀàĞÍ£¬×îÖÕ½øĞĞÆ¥Åä¡£×îÖÕÆ¥Åä³É¹¦ÔÙ´´½¨¡£
-							Ö»»á±£´æÒ»¸öfactoryBeanInstanceCache(BeanWrapper)
-						2.Èç¹û·ÇBeanFactory,Ö±½Ó¸ù¾İBeanDefineÅĞ¶ÏÀàĞÍ£¬Æ¥Åä³É¹¦ÔÙ´´½¨¡£
-						3.×¢ÒâÊÇ·ñÓĞBeanPostProcessor
+1.æ³¨è§£çš„æ³¨å…¥ï¼Œä¸ä¼šè¢«å¿½ç•¥ï¼ŒåŠæ—¶ä½ è®¾ç½®è¿‡AbstractAutowireCapableBeanFactory(ignoredDependencyTypes,ignoredDependencyInterfaces)
+2.ä¾èµ–çš„æ³¨å…¥resolveDependency->findAutowireCandidates->beanNamesForTypeIncludingAncestors->getBeanNamesForType
+						1.å¦‚æœBeanFactoryå­˜åœ¨FactoryBeanä¼šå…ˆåˆ›å»ºèµ·æ‰å–å¾—å¯¹è±¡çš„ç±»å‹ï¼Œæœ€ç»ˆè¿›è¡ŒåŒ¹é…ã€‚æœ€ç»ˆåŒ¹é…æˆåŠŸå†åˆ›å»ºã€‚
+							åªä¼šä¿å­˜ä¸€ä¸ªfactoryBeanInstanceCache(BeanWrapper)
+						2.å¦‚æœéBeanFactory,ç›´æ¥æ ¹æ®BeanDefineåˆ¤æ–­ç±»å‹ï¼ŒåŒ¹é…æˆåŠŸå†åˆ›å»ºã€‚
+						3.æ³¨æ„æ˜¯å¦æœ‰BeanPostProcessor

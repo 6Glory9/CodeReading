@@ -1,71 +1,71 @@
-login.html
+ï»¿login.html
 	
 
-	1.initialFlowSetupAction(´Ó»º´æ»ñÈ¡ticketGrantingTicketId,warnCookieValue,requestÖĞservice,¶¼´æÔÚflowScop)
+	1.initialFlowSetupAction(ä»ç¼“å­˜è·å–ticketGrantingTicketId,warnCookieValue,requestä¸­service,éƒ½å­˜åœ¨flowScop)
 		URL:http://marmot.yjpay.hk/cas/login?
 		service=http%3A%2F%2Fboss.yjpay.hk%2Fboss%2Fboss%2Fauth%2FauthPermission.htm&redirect=4131025JL
 		1.warnCookieGenerator
 		2.ticketGrantingTicketCookieGenerator
-		3.pathPopulated ÉèÖÃdomain
+		3.pathPopulated è®¾ç½®domain
 		4.flowScop(null,null,SimpleWebApplicationServiceImpl('http%3A%2F%2Fboss.yjpay.hk%2Fboss%2Fboss%2Fauth%2FauthPermission.htm&redirect=4131025JL','http%3A%2F%2Fboss.yjpay.hk%2Fboss%2Fboss%2Fauth%2FauthPermission.htm&redirect=4131025JL',null))
 		
-	2.ticketGrantingTicketCheck(¼ì²éticketGrantingTicketIdÓĞĞ§ĞÔ)
-		1.notExists ²»´æÔÚ
+	2.ticketGrantingTicketCheck(æ£€æŸ¥ticketGrantingTicketIdæœ‰æ•ˆæ€§)
+		1.notExists ä¸å­˜åœ¨
 				gatewayRequestCheck
 				
-				1.ÓĞgateway²ÎÊı,ÓÉÓÚ²»´æÔÚTGC,TGT,ST¿Ï¶¨ÕÒ²»µ½£¬Ö»ÊÇcheck service Ö±½Ó·µ»ØÌø×ªservice»òpost»ØÈ¥¡£
-				2.Ã»ÓĞgateway²ÎÊı£¬check RegisteredService ->generateLoginTicket->submit
+				1.æœ‰gatewayå‚æ•°,ç”±äºä¸å­˜åœ¨TGC,TGT,STè‚¯å®šæ‰¾ä¸åˆ°ï¼Œåªæ˜¯check service ç›´æ¥è¿”å›è·³è½¬serviceæˆ–postå›å»ã€‚
+				2.æ²¡æœ‰gatewayå‚æ•°ï¼Œcheck RegisteredService ->generateLoginTicket->submit
 						submit:
 							1.validate LoginTicket
-							2.request´æÔÚTGT&&request´æÔÚrenew->new ST,±£´ærequest->warn(ÓĞ¾¯¸æĞÅÏ¢Õ¹Ê¾£¬È»ºóÔÙÌø¡£Ö±½ÓÌø)
+							2.requestå­˜åœ¨TGT&&requestå­˜åœ¨renew->new ST,ä¿å­˜request->warn(æœ‰è­¦å‘Šä¿¡æ¯å±•ç¤ºï¼Œç„¶åå†è·³ã€‚ç›´æ¥è·³)
 								
-							3.Éú³ÉTGT,±£´æflowScop->successWithWarnings->sendTicketGrantingTicketAction(cookie)->ĞèÒªÉóºË
+							3.ç”ŸæˆTGT,ä¿å­˜flowScop->successWithWarnings->sendTicketGrantingTicketAction(cookie)->éœ€è¦å®¡æ ¸
 											              ->success->sendTicketGrantingTicketAction(cookie)
 											              
 											              sendTicketGrantingTicketAction
-											              1.warn¹ıÀ´,request´æÔÚTGT,flowscop²»´æÔÚ Ö±½ÓÉóºË
-											              2.¶¼ÊÇÈ¡µÄflowscopµÄÖµ£¬µ«ÓÉÓÚÖµÊÇÏàÍ¬£¬Ö±½ÓÍ¨¹ı
-							4.check service; 1. service exit  -->generateServiceTicket-->Éú³ÉST,±£´ærequest
-							                 2. service exit  -->viewGenericLoginSuccess(¿ÉÒÔÉèÖÃÄ¬ÈÏµØÖ·)
+											              1.warnè¿‡æ¥,requestå­˜åœ¨TGT,flowscopä¸å­˜åœ¨ ç›´æ¥å®¡æ ¸
+											              2.éƒ½æ˜¯å–çš„flowscopçš„å€¼ï¼Œä½†ç”±äºå€¼æ˜¯ç›¸åŒï¼Œç›´æ¥é€šè¿‡
+							4.check service; 1. service exit  -->generateServiceTicket-->ç”ŸæˆST,ä¿å­˜request
+							                 2. service exit  -->viewGenericLoginSuccess(å¯ä»¥è®¾ç½®é»˜è®¤åœ°å€)
 		2.invalid
 			  terminateSession
-			  1.¸ù¾İticketGrantingTicketIdÕÒµ½ÏàÓ¦TicketGrantingTicket
-			  2.TicketGrantingTicket==>loginOutService£¬É¾³ıÆäËüÕ¾µã
-			  3.É¾³ıTGT,TGC,±£´ælogoutRequests
-			  4.generateLoginTicket,Ìø×ªµÇÂ½Ò³Ãæ
+			  1.æ ¹æ®ticketGrantingTicketIdæ‰¾åˆ°ç›¸åº”TicketGrantingTicket
+			  2.TicketGrantingTicket==>loginOutServiceï¼Œåˆ é™¤å…¶å®ƒç«™ç‚¹
+			  3.åˆ é™¤TGT,TGC,ä¿å­˜logoutRequests
+			  4.generateLoginTicket,è·³è½¬ç™»é™†é¡µé¢
 		3.valid
 				renewRequestCheck
 				1.if renew is not serviceAuthorizationCheck
-						ÖØĞÂµÇÂ½£¬submit:3µÄÂ·Ïß,TGT¿Ï¶¨ÊÇ´æÔÚ
-						1.Èç¹ûrequestÒ²´æÔÚ£¬¾Í»áÄÃrequest TGTÉú³ÉÏàÓ¦TGC,Èç¹ûÕâÊ±¸úflowµÄTGT²»Í¬£¬Ïú»ÙFLOW TGT¼°¶ÔÓ¦ST
-						2.Ö»ÊÇflow´æÔÚ,Ö±½ÓÍ¨¹ı
-				2.generateServiceTicket Ö±½ÓÌø×ª»ØÈ¥£¬´ø×ÅÏàÓ¦µÄÊı¾İ¡£
-  3.gatewayRequestCheck(Á½ÖÖ·½Ê½)
-  	1.gatewayServicesManagementCheck·½Ê½£¨requestParameters.gateway != '' and requestParameters.gateway != null£©
-  		   check service ÊÇ·ñ´æÔÚ,Ö±½ÓÌø×ª»Ø¼Ò,Ê²Ã´¶¼ÁôÏÂ£¨¿ÉÒÔ²ÉÓÃ²»µÇÂ½£¬gatawayÏëµã°ì·¨£©
-  	2.serviceAuthorizationCheck ·½Ê½
-  			 check service ÊÇ·ñ´æÔÚºÍ¿ªÆô£¬È»ºóÉú³ÉloginToken£¨ÊäÈëÕËºÅºÍÃÜÂë£©-->realSubmit
+						é‡æ–°ç™»é™†ï¼Œsubmit:3çš„è·¯çº¿,TGTè‚¯å®šæ˜¯å­˜åœ¨
+						1.å¦‚æœrequestä¹Ÿå­˜åœ¨ï¼Œå°±ä¼šæ‹¿request TGTç”Ÿæˆç›¸åº”TGC,å¦‚æœè¿™æ—¶è·Ÿflowçš„TGTä¸åŒï¼Œé”€æ¯FLOW TGTåŠå¯¹åº”ST
+						2.åªæ˜¯flowå­˜åœ¨,ç›´æ¥é€šè¿‡
+				2.generateServiceTicket ç›´æ¥è·³è½¬å›å»ï¼Œå¸¦ç€ç›¸åº”çš„æ•°æ®ã€‚
+  3.gatewayRequestCheck(ä¸¤ç§æ–¹å¼)
+  	1.gatewayServicesManagementCheckæ–¹å¼ï¼ˆrequestParameters.gateway != '' and requestParameters.gateway != nullï¼‰
+  		   check service æ˜¯å¦å­˜åœ¨,ç›´æ¥è·³è½¬å›å®¶,ä»€ä¹ˆéƒ½ç•™ä¸‹ï¼ˆå¯ä»¥é‡‡ç”¨ä¸ç™»é™†ï¼Œgatawayæƒ³ç‚¹åŠæ³•ï¼‰
+  	2.serviceAuthorizationCheck æ–¹å¼
+  			 check service æ˜¯å¦å­˜åœ¨å’Œå¼€å¯ï¼Œç„¶åç”ŸæˆloginTokenï¼ˆè¾“å…¥è´¦å·å’Œå¯†ç ï¼‰-->realSubmit
   			 
-  4.realSubmit µÇÂ½ÑéÖ¤
-  	1.ticketGrantingTicketId && service´æÔÚ && renew ,ticketGrantingTicketIdÊÇ´ÓrequestÈ¡³ö£¬µ«cookieÊ§Ğ§¡£
-  	   1.Éú³ÉServiceTicket±£´æserviceTicketRegistry,ServiceTicketId±£´ærequest£¬ÊÇÒ»¸öĞÂµÄServiceTicketID
-  	   2.ifÉú³ÉwarnCookieGenerator  
-  	   ===>×îÖÕ´øÓĞServiceTicketId·µ»ØÇëÇó¶Ë
+  4.realSubmit ç™»é™†éªŒè¯
+  	1.ticketGrantingTicketId && serviceå­˜åœ¨ && renew ,ticketGrantingTicketIdæ˜¯ä»requestå–å‡ºï¼Œä½†cookieå¤±æ•ˆã€‚
+  	   1.ç”ŸæˆServiceTicketä¿å­˜serviceTicketRegistry,ServiceTicketIdä¿å­˜requestï¼Œæ˜¯ä¸€ä¸ªæ–°çš„ServiceTicketID
+  	   2.ifç”ŸæˆwarnCookieGenerator  
+  	   ===>æœ€ç»ˆå¸¦æœ‰ServiceTicketIdè¿”å›è¯·æ±‚ç«¯
   	   
-  	2.ticketGrantingTicketId  ²»´æÔÚ
-  	   1.Éú³ÉticketGrantingTicket¡£±£´æflowscopµÄticketGrantingTicketId
-  	   2.ifÉú³ÉwarnCookieGenerator
+  	2.ticketGrantingTicketId  ä¸å­˜åœ¨
+  	   1.ç”ŸæˆticketGrantingTicketã€‚ä¿å­˜flowscopçš„ticketGrantingTicketId
+  	   2.ifç”ŸæˆwarnCookieGenerator
   	   
-  	   SUCCESS_WITH_WARNINGS==>ÓĞÒ»¸öÉóºËµÄ¹ı³Ì===>sendTicketGrantingTicket(ÄÑµÀÊÚÈ¨¾ÍÊÇÕâÑù´¦Àí)
+  	   SUCCESS_WITH_WARNINGS==>æœ‰ä¸€ä¸ªå®¡æ ¸çš„è¿‡ç¨‹===>sendTicketGrantingTicket(éš¾é“æˆæƒå°±æ˜¯è¿™æ ·å¤„ç†)
   	   SUCCESS==>sendTicketGrantingTicket
   	   
-  5.sendTicketGrantingTicket ³É¹¦
+  5.sendTicketGrantingTicket æˆåŠŸ
   		sendTicketGrantingTicketAction
-  			Éú³ÉTGTC(cookie)
-  		1.´æÔÚservice
+  			ç”ŸæˆTGTC(cookie)
+  		1.å­˜åœ¨service
   				generateServiceTicket
-  		2.²»´æÔÚservice
-  				²»ÓÃÌø×ª
+  		2.ä¸å­˜åœ¨service
+  				ä¸ç”¨è·³è½¬
   				
  6.generateServiceTicket
- ¸ù¾İticketGrantingTicketÉú³ÉServiceTicket,ServiceTicketId±£´ærequest,×îÖÕÌø×ª»Ø¿Í·ş¶Ë
+ æ ¹æ®ticketGrantingTicketç”ŸæˆServiceTicket,ServiceTicketIdä¿å­˜request,æœ€ç»ˆè·³è½¬å›å®¢æœç«¯

@@ -1,44 +1,44 @@
-superblock:��¼filesystem������Ϣ��
-inode:��¼���������ԣ�һ������ռ��һ��inode��ͬʱ�Ǐ��˵������������ڵ�block���;
-block:ʵ�ʼǏ����������ݣ�������̫��ʱ����ռ�ö��block��
+﻿superblock:记录filesystem整体信息。
+inode:记录档案的属性，一个档案占用一个inode，同时记彔此档案的数据所在的block编号;
+block:实际记彔档案的内容，若档案太大时，会占用多个block。
 
-Ext2������ʽ�ļ�ϵͳ��inode��¼block��λ��������
+Ext2，索引式文件系统，inode记录block的位置索引。
 
-������(����)��FAT��ʽ����������������� block ��һ��ʼ�Ͷ�ȡ������
-ÿ�� block ���붼��¼��ǰһ�� block ����
-������ļ�ϵͳû�а취һ������֪���ĸ� block �ĺ��룬����Ҫһ��һ���Ľ� block ������
-�Ż�֪����һ�� block �ںδ��� ���ͬһ����������д��� block ��ɢ�m̫������ʱ��
-�����ǵĴ��̽��޷��ڴ���תһȦ�Ͷ������аm���ݣ�
-��˴��̾ͻ��ת�ü�Ȧ������������������������ݣ������ʱ��Ҫ����������
+随身碟(闪存)，FAT格式。将这个档案的所有 block 在一开始就读取出来。
+每个 block 号码都记录在前一个 block 当中
+但这个文件系统没有办法一口气就知道四个 block 的号码，他得要一个一个的将 block 读出后，
+才会知道下一个 block 在何处。 如果同一个档案数据写入的 block 分散癿太过厉害时，
+则我们的磁盘将无法在磁盘转一圈就读到所有癿数据，
+因此磁盘就会多转好几圈可能完整读到这个档案的内容！因此有时需要磁盘整理。
 
 Ext2
-��������(boot sector)��block group
+启动扇区(boot sector)，block group
 
-block group��Ҫ˵��
+block group主要说明
 1.block data
-  ԭ���ϣ�block�Ĵ�С�������ڸ�ʽ����Ͳ��ܹ��ٸķ���(�������¸�ʽ��)��
-   ÿ�� block �����ֻ�ܹ�����һ�����������ݣ�
-   ���ϣ������������ һ��block �Ĵ�С����һ��������ռ�ö�� block ������
-   ���ϣ�������С��block,��� block��ʣ�������Ͳ��ܹ��ٱ�ʹ����(���̿ռ���˷�)��
+  原则上，block的大小不数量在格式化完就不能够再改发了(除非重新格式化)；
+   每个 block 内最多只能够放置一个档案的数据；
+   承上，如果档案大于 一个block 的大小，则一个档案会占用多个 block 数量；
+   承上，若档案小于block,则该 block的剩余容量就不能够再被使用了(磁盘空间会浪费)。
  
- �ʵ�����block�Ĵ�С
- 			block�Ĵ�С   1k      2k    4k 
- 				�����ĵ�    16G     256G  2T
- 				�ļ�ϵͳ    2T      8T    16T
+ 适当划分block的大小
+ 			block的大小   1k      2k    4k 
+ 				单个文档    16G     256G  2T
+ 				文件系统    2T      8T    16T
  				
-2.inode table (inode ����)
-�õ����Ĵ�ȡģʽ(read/write/excute)��
-�õ�����ӵ�е�Ⱥ��(owner/group)��
-�õ���������
-�õ�����ʱ��
-�������Եı�ʾ(flag)���� SetUID...��
-�õ�����������ָ��(pointer)
+2.inode table (inode 表格)
+该档案的存取模式(read/write/excute)；
+该档案的拥有的群组(owner/group)；
+该档案的容量
+该档案的时间
+档案特性的标示(flag)，如 SetUID...；
+该档案真正内容指向(pointer)
 
-ÿ�� inode ��С���̶�Ϊ 128 bytes��
-ÿ������������ռ��һ�� inode ���ѣ�
-���ϣ�����ļ�ϵͳ�ܹ������ĵ���������inode�������йأ�
-ϵͳ��ȡ����ʱ��Ҫ���ҵ� inode���Է��� inode ���Ǐ���Ȩ�޲��û��Ƿ���ϣ�
-�����ϲ��ܹ���ʼʵ�ʶ�ȡblock�����ݡ�
+每个 inode 大小均固定为 128 bytes；
+每个档案都仅会占用一个 inode 而已；
+承上，因此文件系统能够建立的档案数量与inode的数量有关；
+系统读取档案时需要先找到 inode，幵分析 inode 所记彔的权限不用户是否符合，
+若符合才能够开始实际读取block的内容。
 
-3.Superblock (��������)
+3.Superblock (超级区块)
 1024bytes

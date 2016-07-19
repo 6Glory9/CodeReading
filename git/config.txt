@@ -1,23 +1,23 @@
-ÒÑÌá½»£¨committed£© °ÑÒÑÔİ´æÌá½»µ½Ô¶³Ì
-ÒÑĞŞ¸Ä£¨modified£©	°Ñ¹¤×÷ÎÄ¼ş½øĞĞĞŞ¸Ä
-ÒÑÔİ´æ£¨staged£©    °ÑĞŞ¸ÄÎÄ¼ş½øĞĞadd,¾Í´æÔÚÔİ´æ
+ï»¿å·²æäº¤ï¼ˆcommittedï¼‰ æŠŠå·²æš‚å­˜æäº¤åˆ°è¿œç¨‹
+å·²ä¿®æ”¹ï¼ˆmodifiedï¼‰	æŠŠå·¥ä½œæ–‡ä»¶è¿›è¡Œä¿®æ”¹
+å·²æš‚å­˜ï¼ˆstagedï¼‰    æŠŠä¿®æ”¹æ–‡ä»¶è¿›è¡Œadd,å°±å­˜åœ¨æš‚å­˜
 
-git config µÄ¹¤¾ß ÓĞÈı¸öµØ·½±£´æ
-1./etc/gitconfig ÎÄ¼ş  ÓÃgit configÊ±ÓÃ --system Ñ¡Ïî
-2.~/.gitconfig         ÓÃ git config Ê±ÓÃ --global Ñ¡Ïî
-3.git Ä¿Â¼ÖĞµÄÅäÖÃÎÄ¼ş£¨Ò²¾ÍÊÇ¹¤×÷Ä¿Â¼ÖĞµÄ .git/config ÎÄ¼ş£©
+git config çš„å·¥å…· æœ‰ä¸‰ä¸ªåœ°æ–¹ä¿å­˜
+1./etc/gitconfig æ–‡ä»¶  ç”¨git configæ—¶ç”¨ --system é€‰é¡¹
+2.~/.gitconfig         ç”¨ git config æ—¶ç”¨ --global é€‰é¡¹
+3.git ç›®å½•ä¸­çš„é…ç½®æ–‡ä»¶ï¼ˆä¹Ÿå°±æ˜¯å·¥ä½œç›®å½•ä¸­çš„ .git/config æ–‡ä»¶ï¼‰
 
-ÓÃ»§ĞÅÏ¢
+ç”¨æˆ·ä¿¡æ¯
 	$ git config --global user.name "John Doe"
   $ git config --global user.email johndoe@example.com
 
-ÎÄ±¾±à¼­Æ÷
-	$ git config --global core.editor emacs  (Vi »òÕß Vim,Emacs)
+æ–‡æœ¬ç¼–è¾‘å™¨
+	$ git config --global core.editor emacs  (Vi æˆ–è€… Vim,Emacs)
 	
-²îÒì·ÖÎö¹¤¾ß
+å·®å¼‚åˆ†æå·¥å…·
 	$ git config --global merge.tool vimdiff
 	
-²é¿´ÅäÖÃĞÅÏ¢
+æŸ¥çœ‹é…ç½®ä¿¡æ¯
 	git config --list
 	git config user.name
 	

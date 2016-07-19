@@ -1,11 +1,11 @@
-DispatcherServlet->servlet
+ï»¿DispatcherServlet->servlet
 	defaultStrategies->classpath:DispatcherServlet.properties
 	
 	init
-		1.Í¨¹ıBeanWrapper°ÑservletConfig×ª±äDispatcherServletÀ´
+		1.é€šè¿‡BeanWrapperæŠŠservletConfigè½¬å˜DispatcherServletæ¥
 		2.initServletBean
-				1.´ÓwebÈ¡¸¸ÀàparentContext
-				2.´ÓwebÈ¡×ÓÀàapplicationContext
+				1.ä»webå–çˆ¶ç±»parentContext
+				2.ä»webå–å­ç±»applicationContext
 				setServletContext,setServletConfig,setNamespace
 				addApplicationListener,initPropertySources,
 		3.refreshEventReceived
@@ -19,6 +19,6 @@ doDispatch
 	1.checkMultipart
 	2.request->HandlerMapping->Handler->HandlerAdapter
 			1.URL->handler,DefaultHandler,string->handler
-			2.Éú³ÉHandlerExecutionChain
+			2.ç”ŸæˆHandlerExecutionChain
 			3.add (PreFlightHandler|CorsInterceptor)
 	3.HandlerAdapter.handle(Handler)

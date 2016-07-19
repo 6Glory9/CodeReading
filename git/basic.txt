@@ -1,49 +1,49 @@
-��Ŀ��ʼ��
-1.���س�ʼ��
+﻿项目初始化
+1.本地初始化
 git init
 git add *.java
 git commit -m 'init project'
 
-2.�����вֿ��¡
+2.从现有仓库克隆
 
 git clone git://github.com/schacon/grit.git
 git clone git://github.com/schacon/grit.git mygit
 git clone  (git://|http(s)://|ssh)  
 
-״̬
-1.untracked   �µ��ļ��ڹ���Ŀ¼����ʾû�и���
+状态
+1.untracked   新的文件在工作目录是显示没有跟踪
 2.unmodified
-3.modified  ���Դ��ݴ�����ȡ֮ǰ����ļ�(git checkout -- read.txt)
+3.modified  可以从暂存区获取之前存的文件(git checkout -- read.txt)
 4.staged  git commit -m 'coment'
 
-ps:�����ӵ��ļ� git add �ͻ����ӵ�staged���ݴ����У�
-	 git rm --cached  fileName ɾ���ݴ����ļ�
+ps:新增加的文件 git add 就会增加到staged（暂存区中）
+	 git rm --cached  fileName 删除暂存区文件
 	 
 	 
-3.����ĳЩ�ļ�
-ͨ������Щ�Զ����ɵ��ļ���������־�ļ������߱�������д�������ʱ�ļ��ȡ�
-���ǿ��Դ���һ����Ϊ .gitignore ���ļ����г�Ҫ���Ե��ļ�ģʽ
+3.忽略某些文件
+通常都是些自动生成的文件，比如日志文件，或者编译过程中创建的临时文件等。
+我们可以创建一个名为 .gitignore 的文件，列出要忽略的文件模式
 
-1.���п��л�����ע�ͷ��� �� ��ͷ���ж��ᱻ Git ���ԡ�
-2.����ʹ�ñ�׼�� glob ģʽƥ�䡣
-3.ƥ��ģʽ������б�ܣ�/��˵��Ҫ���Ե���Ŀ¼��
-4.Ҫ����ָ��ģʽ������ļ���Ŀ¼��������ģʽǰ���Ͼ�̾�ţ�!��ȡ����
+1.所有空行或者以注释符号 ＃ 开头的行都会被 Git 忽略。
+2.可以使用标准的 glob 模式匹配。
+3.匹配模式最后跟反斜杠（/）说明要忽略的是目录。
+4.要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。
 
 
-4.�ļ��Ա�
-git diff    �Աȹ���Ŀ¼���ݴ�������
+4.文件对比
+git diff    对比工作目录与暂存区差异
 git diff --staged
-git diff --cached  �Ա��ݴ���֮ǰ����
+git diff --cached  对比暂存区之前差异
 
-5.�ύ�ļ�
-git commit -m 'ע��'
-git commit -a -m 'ע��'  ����ʹ���ݴ�����
-git �ͻ��Զ��������Ѿ����ٹ����ļ��ݴ�����һ���ύ���Ӷ����� git add
+5.提交文件
+git commit -m '注解'
+git commit -a -m '注解'  跳过使用暂存区域
+git 就会自动把所有已经跟踪过的文件暂存起来一并提交，从而跳过 git add
 
-6.�ƶ��ļ�
-rm -rf first.java  ֻ�Ǵӹ���Ŀ¼�ƶ��ļ�
-git checkout -- first.java ���ݴ��ȡ�ϴλ���
-git rm -f first.java  ���ݴ�͹���Ŀ¼��ɾ��
-git rm --cached log.log ֻ���ݴ����ļ�ɾ��
+6.移动文件
+rm -rf first.java  只是从工作目录移动文件
+git checkout -- first.java 从暂存获取上次缓存
+git rm -f first.java  把暂存和工作目录都删除
+git rm --cached log.log 只把暂存区文件删除
 
 

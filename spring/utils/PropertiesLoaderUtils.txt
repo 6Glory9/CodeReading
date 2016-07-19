@@ -1,4 +1,4 @@
-PropertiesLoaderUtils
+﻿PropertiesLoaderUtils
 	Properties<->Resource<->.xml|.properties
 	PropertiesPersister
 	

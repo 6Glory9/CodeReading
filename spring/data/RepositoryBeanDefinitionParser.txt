@@ -1,4 +1,4 @@
-
+ï»¿
 JpaRepositoryConfigExtension
 
 	RepositoryInterfaceAwareBeanPostProcessor(repositoryInterface)
@@ -9,7 +9,7 @@ JpaRepositoryConfigExtension
 RepositoryConfigurationSource
 	RepositoryConfigurationSourceSupport
 		1.getCandidates
-				getExcludeFilters,getBasePackages ÓÉ×ÓÀà»ñÈ¡ÏàÓ¦ÅäÖÃ
+				getExcludeFilters,getBasePackages ç”±å­ç±»è·å–ç›¸åº”é…ç½®
 	AnnotationRepositoryConfigurationSource
 	XmlRepositoryConfigurationSource
 	

@@ -1,13 +1,13 @@
-TransactionInterceptor
+ï»¿TransactionInterceptor
 	getTransaction
 		1.isExistingTransaction
 			
 		
 		2.newTransaction
-			suspend(null); //Çå¿Õµ±Ç°Ïß³Ì±äÁ¿,Í¬²½SynchronizationSuspend ·µ»Øµ±Ç°³¡ÇéĞÅÏ¢£¨ÊÂÎñSuspendedResourcesHolder£©
-			 doSuspend£¨Transaction£©;//Çå¿Õµ±Ç°ÊÂÎñµÄConnectionHolderºÍÏß³ÌÖĞ
+			suspend(null); //æ¸…ç©ºå½“å‰çº¿ç¨‹å˜é‡,åŒæ­¥SynchronizationSuspend è¿”å›å½“å‰åœºæƒ…ä¿¡æ¯ï¼ˆäº‹åŠ¡SuspendedResourcesHolderï¼‰
+			 doSuspendï¼ˆTransactionï¼‰;//æ¸…ç©ºå½“å‰äº‹åŠ¡çš„ConnectionHolderå’Œçº¿ç¨‹ä¸­
 			newTransactionStatus
-				doBegin();//transaction£¬ConnectionHolderÉèÖÃ´¦Àí£¬
+				doBegin();//transactionï¼ŒConnectionHolderè®¾ç½®å¤„ç†ï¼Œ
 				newTransaction bind ConnectionHolder
 			
 			
@@ -19,14 +19,14 @@ TransactionInterceptor
 		
 		1.rollbackToHeldSavepoint
 		2.NewTransaction  con.rollback();
-		3.oldTransaction  Ä¬ÈÏÊÇglobalRollbackOnParticipationFailure=true  ÊÂÎñÉèÖÃsetRollbackOnly
+		3.oldTransaction  é»˜è®¤æ˜¯globalRollbackOnParticipationFailure=true  äº‹åŠ¡è®¾ç½®setRollbackOnly
 		
 		triggerAfterCompletion
 		
 		cleanupAfterCompletion
-			1.ÉèÖÃÍê³É±êÊ¾
-			2.isNewSynchronization Çå¿ÕTransactionSynchronizationManager
-			3.isNewTransaction   ÊÍ·Å×ÊÔ´
+			1.è®¾ç½®å®Œæˆæ ‡ç¤º
+			2.isNewSynchronization æ¸…ç©ºTransactionSynchronizationManager
+			3.isNewTransaction   é‡Šæ”¾èµ„æº
 			4.getSuspendedResources resume
 			 
 			

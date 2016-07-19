@@ -1,32 +1,32 @@
-1.<Server>
-��Ԫ�ض�Ӧ��������Servlet���������������õĶ���Ԫ�أ���org.apache.catalina.Server�ӿ������壬Ĭ�ϵ�ʵ������
-org.apache.catalina.core. StandardServer����Ԫ�ؿ����õ�������Ҫ��port��shutdown���ֱ�ָ���Ǽ���shutdown����Ķ˿ں������ڸ�Ԫ���п��Զ���һ������<Service>Ԫ�أ��������⻹���Զ���һЩȫ�ֵ���Դ���������
+﻿1.<Server>
+此元素对应的是整个Servlet容器，是整个配置的顶层元素，由org.apache.catalina.Server接口来定义，默认的实现类是
+org.apache.catalina.core. StandardServer。该元素可配置的属性主要是port和shutdown，分别指的是监听shutdown命令的端口和命令在该元素中可以定义一个或多个<Service>元素，除此以外还可以定义一些全局的资源或监听器。
 
 
 2.<Service>
-��Ԫ����org.apache.catalina.Service�ӿڶ��壬Ĭ�ϵ�ʵ����Ϊorg.apache.catalina.core. StandardService��
-1��<Engine>Ԫ��
-1������<Connector>Ԫ��,����Engine
+此元素由org.apache.catalina.Service接口定义，默认的实现类为org.apache.catalina.core. StandardService。
+1个<Engine>元素
+1个或多个<Connector>元素,共享Engine
 
 
 3.<Connector>
-Ԫ����org.apache.catalina.connector.< Connector>�ǽ��ܿͻ���������������û����շ�����Ӧ����������
-��Ԫ��λ��<Service>Ԫ���У����Զ������������ǵ�ʾ�����������������ֱ����AJP�����HTTP����
-��������,��ҪΪ���ƶ������Э��Ͷ˿ںš�
+元素由org.apache.catalina.connector.< Connector>是接受客户端浏览器请求并向用户最终返回响应结果的组件。
+该元素位于<Service>元素中，可以定义多个，在我们的示例中配置了两个，分别接受AJP请求和HTTP请求，
+在配置中,需要为其制定服务的协议和端口号。
 
 4.<Engine>-Container
 org.apache.catalina.core. StandardEngine
-<Engine>Ԫ�ػ���������<Service>������<Connector>���յ���������<Engine>�п��Զ�����<Host>Ԫ����Ϊ����������<Engine>��Tomcat�����е�һ��ʵ��org.apache.catalina.Container�Ľӿڣ���˿��������ж���һϵ�е���Ԫ����<Realm>��<Valve>��
+<Engine>元素会用来处理<Service>中所有<Connector>接收到的请求，在<Engine>中可以定义多个<Host>元素作为虚拟主机。<Engine>是Tomcat配置中第一个实现org.apache.catalina.Container的接口，因此可以在其中定义一系列的子元素如<Realm>、<Valve>。
 
 
 5.<Host>
-Ԫ����org.apache.catalina.Host�ӿ������壬Ĭ��ʵ��Ϊorg.apache.catalina.core. StandardHost��
-��Ԫ�ض�����<Engine>�У����Զ�������ÿ��<Host>Ԫ�ض�����һ������������
-�����԰���һ������WebӦ�ã�ͨ��<Context>Ԫ�������ж���
-��Ϊ<Host>Ҳ��������Ԫ�أ����Կ��������ж�����Ԫ����<Realm>��<Valve>��
+元素由org.apache.catalina.Host接口来定义，默认实现为org.apache.catalina.core. StandardHost，
+该元素定义在<Engine>中，可以定义多个。每个<Host>元素定义了一个虚拟主机，
+它可以包含一个或多个Web应用（通过<Context>元素来进行定义
+因为<Host>也是容器类元素，所以可以在其中定义子元素如<Realm>、<Valve>。
 
 6.<Context>
-Ԫ����org.apache.catalina.Context�ӿ������壬Ĭ��ʵ����Ϊorg.apache.catalina.core. StandardContext��
-��Ԫ��Ҳ���Ǵ���õ�����Ԫ�أ������ж������WebӦ�á�
-һ��<Host>�п��Զ�����<Context>Ԫ�أ��ֱ��Ӧ��ͬ��WebӦ�á�
-��Ԫ�ص����ԣ���Ҿ������õ���path��reloadable�ȣ�������<Context>�ж�����Ԫ����<Realm>��<Valve>��
+元素由org.apache.catalina.Context接口来定义，默认实现类为org.apache.catalina.core. StandardContext。
+该元素也许是大家用的最多的元素，在其中定义的是Web应用。
+一个<Host>中可以定义多个<Context>元素，分别对应不同的Web应用。
+该元素的属性，大家经常会用到如path、reloadable等，可以在<Context>中定义子元素如<Realm>、<Valve>。

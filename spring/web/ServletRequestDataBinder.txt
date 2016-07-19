@@ -1,19 +1,19 @@
-ServletRequestDataBinder
+ï»¿ServletRequestDataBinder
 
 	MutablePropertyValues,PropertyValue
 	
 	MutablePropertyValues(requestParameterNames,MultipartRequest,uriTemplateVariables)
 	
-	1.checkFieldDefaults  ¹ıÂËÃû×Ö alisName -> ProertyName
-	2.checkFieldMarkers   ±ê¼ÇÃû×Ö value ÉèÖÃÎª¿Õ
-	3.checkAllowedFields  ¼ì²é½ûÓÃÔÊĞíÊôĞÔ BeanPropertyBindingResult(BeanWrapper)
-	4.checkRequiredFields ¼ì²é±ØĞèÊôĞÔ  BindingErrorProcessor
+	1.checkFieldDefaults  è¿‡æ»¤åå­— alisName -> ProertyName
+	2.checkFieldMarkers   æ ‡è®°åå­— value è®¾ç½®ä¸ºç©º
+	3.checkAllowedFields  æ£€æŸ¥ç¦ç”¨å…è®¸å±æ€§ BeanPropertyBindingResult(BeanWrapper)
+	4.checkRequiredFields æ£€æŸ¥å¿…éœ€å±æ€§  BindingErrorProcessor
 	
 	BeanWrapper
 	
-	propertyName->AbstractNestablePropertyAccessor  ¸ù¾İpropertyNameÕÒµ½ÏàÓ¦AbstractNestablePropertyAccessor
-	Àıa.b.c = AbstractNestablePropertyAccessor(object=b)
-	Àıa.b[c] = AbstractNestablePropertyAccessor(object=a)
+	propertyName->AbstractNestablePropertyAccessor  æ ¹æ®propertyNameæ‰¾åˆ°ç›¸åº”AbstractNestablePropertyAccessor
+	ä¾‹a.b.c = AbstractNestablePropertyAccessor(object=b)
+	ä¾‹a.b[c] = AbstractNestablePropertyAccessor(object=a)
 	b=actualName
 	b[c]=canonicalName
 	keys ={c}
@@ -26,13 +26,13 @@ ServletRequestDataBinder
 		
 	convertIfNecessary(String propertyName, Object oldValue, Object newValue, 
 	Class<?> requiredType,TypeDescriptor td)
-	oldValue  POJOÄ¬ÈÏÖµ
-	newValue  ×Ö·û´®
-	requiredType ´ı×ªµÄclass
-	td           ´ı×ªµÄÀàËÆÃèÊö
+	oldValue  POJOé»˜è®¤å€¼
+	newValue  å­—ç¬¦ä¸²
+	requiredType å¾…è½¬çš„class
+	td           å¾…è½¬çš„ç±»ä¼¼æè¿°
 	
 	
-	validate  ¿´²»Ì«¶®
+	validate  çœ‹ä¸å¤ªæ‡‚
 		validate(T object, Class<?>... groups)
 		beanMetaDataManager
 			createBeanMetaData

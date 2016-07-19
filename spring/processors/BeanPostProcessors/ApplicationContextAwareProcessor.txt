@@ -1,6 +1,6 @@
-ApplicationContextAwareProcessor
+ï»¿ApplicationContextAwareProcessor
 
-	³õÊ¼»¯Ê±
+	åˆå§‹åŒ–æ—¶
 	
 	if (bean instanceof Aware) {
 			if (bean instanceof EnvironmentAware) {

@@ -1,29 +1,29 @@
-ClassPathBeanDefinitionScanner
-1.BeanDefinitionRegistry  ÈİÆ÷
+ï»¿ClassPathBeanDefinitionScanner
+1.BeanDefinitionRegistry  å®¹å™¨
 2.BeanNameGenerator
 3.ScopeMetadataResolver
-4.ResourcePatternResolver   ¸ù¾İËüµÃµ½classµÄResource
-5.MetadataReaderFactory     ¸ù¾İresourceµÃµ½MetadataReader
-6.MetadataReader  =====AnnotationMetadataReadingVisitor  (Êı¾İ×îÖÕ²úÎï)
+4.ResourcePatternResolver   æ ¹æ®å®ƒå¾—åˆ°classçš„Resource
+5.MetadataReaderFactory     æ ¹æ®resourceå¾—åˆ°MetadataReader
+6.MetadataReader  =====AnnotationMetadataReadingVisitor  (æ•°æ®æœ€ç»ˆäº§ç‰©)
 		Resource,ClassMetadata,AnnotationMetadata
 		
 	isCandidateComponent
-	¸ù¾İMetadataReader,MetadataReaderFactory,typeFilter×öÑéÖ¤£¬×îÖÕconditionEvaluator×öÅĞ¶Ï
-	×îÖÕ²úÎï
+	æ ¹æ®MetadataReader,MetadataReaderFactory,typeFilteråšéªŒè¯ï¼Œæœ€ç»ˆconditionEvaluatoråšåˆ¤æ–­
+	æœ€ç»ˆäº§ç‰©
 	1.ScannedGenericBeanDefinition(MetadataReader)  parent(AnnotatedBeanDefinition)
 	2.ScopeMetadata(proxyMode,scop)-->AnnotatedBeanDefinition->AnnotationMetadata(AnnotationConfigUtils,AnnotationAttributes)
 	3.beanNameGenerator->beanName(Component,default)
-	4.·Ö²ã½âÎöScannedGenericBeanDefinition
-			ps:BeanDefinition(AnnotatedBeanDefinition-xml,AbstractBeanDefinition-annotation) Á½¸ö´ó·ÖÀà
+	4.åˆ†å±‚è§£æScannedGenericBeanDefinition
+			ps:BeanDefinition(AnnotatedBeanDefinition-xml,AbstractBeanDefinition-annotation) ä¸¤ä¸ªå¤§åˆ†ç±»
 	5.BeanDefinitionHolder
 	ConfigurationClassPostProcessor,AutowiredAnnotationBeanPostProcessor,RequiredAnnotationBeanPostProcessor
 	CommonAnnotationBeanPostProcessor,PersistenceAnnotationBeanPostProcessor,EventListenerMethodProcessor
-	DefaultEventListenerFactory  Æß´óÀà×¢½â
+	DefaultEventListenerFactory  ä¸ƒå¤§ç±»æ³¨è§£
 	
 	ObjectFactory
-		1.×Ô¶¯×¢½â£¬ÊÇÎŞ·¨×¢Èë
-		2.ref£¨È¡µÃ¶ÔÏó£¬È»ºógetObject»ñÈ¡×îÖÕ¶ÔÏó£©
+		1.è‡ªåŠ¨æ³¨è§£ï¼Œæ˜¯æ— æ³•æ³¨å…¥
+		2.refï¼ˆå–å¾—å¯¹è±¡ï¼Œç„¶ågetObjectè·å–æœ€ç»ˆå¯¹è±¡ï¼‰
 	
-	ClassPathMapperScanner ´úÂë¾ÍºÜ¼òµ¥
-	ÓÉÓÚËüÊµÏÖSqlSessionDaoSupport ËùÒÔ¿ÉÒÔ×Ô¶¯×¢½â
+	ClassPathMapperScanner ä»£ç å°±å¾ˆç®€å•
+	ç”±äºå®ƒå®ç°SqlSessionDaoSupport æ‰€ä»¥å¯ä»¥è‡ªåŠ¨æ³¨è§£
 	

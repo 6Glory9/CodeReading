@@ -1,16 +1,16 @@
-ValidatorImpl
-	validationOrderGenerator:Éú³ÉÒ»¸öÑéÖ¤ÇëÇóDefaultValidationOrder
+ï»¿ValidatorImpl
+	validationOrderGenerator:ç”Ÿæˆä¸€ä¸ªéªŒè¯è¯·æ±‚DefaultValidationOrder
 		DefaultValidationOrder
-		1.groupList£ºËùÓĞ½Ó¿Ú¼°¸¸Àà£¨Group£©
-		2.½Ó¿ÚµÄ@GroupSequenceËùÓĞGroup(Sequence)
-	constraintValidatorFactory:Ô¼ÊøÑéÖ¤¹¤³§
+		1.groupListï¼šæ‰€æœ‰æ¥å£åŠçˆ¶ç±»ï¼ˆGroupï¼‰
+		2.æ¥å£çš„@GroupSequenceæ‰€æœ‰Group(Sequence)
+	constraintValidatorFactory:çº¦æŸéªŒè¯å·¥å‚
 	messageInterpolator:
-	traversableResolver£º
+	traversableResolverï¼š
 	beanMetaDataManager:
 	
 validateInContext
-	valueContext(¶ÔÏóµÄÖµ)
-	validationOrder£¨£©
+	valueContext(å¯¹è±¡çš„å€¼)
+	validationOrderï¼ˆï¼‰
 	context
 	
 	

@@ -1,17 +1,17 @@
-View
+ï»¿View
 	AbstractView
 	1.beanName
 	2.contentType(text/html;charset=ISO-8859-1)
-	3.requestContextAttribute(ModelµÄÃû×Ökey)
-	4.staticAttributes(¾²Ì¬ÊôĞÔ)¡¾csv¡¿
-	5.exposePathVariables(±©Â¶PathVariables±êÊ¾)
-	6.exposeContextBeansAsAttributes(application context ×÷ÎªÊôĞÔ±êÊ¾)
-	7.exposedContextBeanNames(application context of bean names ×÷ÎªÊôĞÔ±êÊ¾)
-	ÓÃ:render
+	3.requestContextAttribute(Modelçš„åå­—key)
+	4.staticAttributes(é™æ€å±æ€§)ã€csvã€‘
+	5.exposePathVariables(æš´éœ²PathVariablesæ ‡ç¤º)
+	6.exposeContextBeansAsAttributes(application context ä½œä¸ºå±æ€§æ ‡ç¤º)
+	7.exposedContextBeanNames(application context of bean names ä½œä¸ºå±æ€§æ ‡ç¤º)
+	ç”¨:render
 	 1.createMergedOutputModel
 	 		mergedModel(staticAttributes+model+pathVars(if)+RequestContext(if))
 	 2.prepareResponse
-	 3.renderMergedOutputModel(³éÏó·½·¨)
+	 3.renderMergedOutputModel(æŠ½è±¡æ–¹æ³•)
 	 
 	 FastJsonJsonView
 	 	
