@@ -1,0 +1,53 @@
+ActivityExecutorContainer
+	1.NotifierBus:事件通知总线
+	2.DBPlugin:数据库插件
+	3.ExceptionMonitor:异常处理器
+	4.DomainFactory:领域工厂
+	5.RegistryCodeVerify:请求码
+	6.invokElements:调用元素
+
+	创建：afterPropertiesSet
+		1.checkElement
+		2.注册监听器
+		3.发布init事件
+
+	用:
+	1.accept(Param parameter, String serviceName,OperationContext operationContext)
+		1.创建服务上下文
+		2.serviceName(invokElements<serviceName,InvokeElement>)->InvokeElement
+		3.发布服务请求事件(ServiceApplyEvent)-->
+		4.InvokeElement（before,invoke,after）
+		5.发布服务完成事件(ServiceFinishEvent)
+		6.InvokeElement（end）-->
+		7.异常处理
+
+	2.registerInvockService
+	    1.创建InvokeElement
+	    2.创建InvokeService(InvokServiceProxyFactory->InvokeService)
+	    	1.AsyncProxyFilter:同步异步
+	    	2.TransactionProxyFilter:事务的设置
+	    	3.SerialProxyFilter：序列化锁设置(必须存在事务)
+
+	    	NameMatchMethodPointcutAdvisor(MappedName:invoke,拦截器是一个递归调用)
+
+
+NotifierBus
+	1.ReentrantReadWriteLock:读写锁
+	2.dispacher:分发器
+	3.cache:SubscriberWrapper的缓存
+
+	创建:
+	1.register
+		cache(eventType,List<SubscriberWrapper>)
+	2.unregister
+		cache()-->remove
+
+	用:dispatcher
+		调用SubscriberWrapper对应的方法
+
+
+DomainFactory
+	1.domainObjectCreatorMapper<Class<DomainObject>, DomainObjectCreator>:DomainObjectCreator Mapping
+	
+	1.refresh
+

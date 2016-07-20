@@ -1,0 +1,52 @@
+AbstractFlowContext
+	flowDefXmlDocumentReader(AbstractFlowContext):工作流程文件读取工具
+	FlowEngine:流程引擎
+
+	创建
+	1.flowDefXmlDocumentReader.parse()
+		AbstractFlowContext.registry(Flow flow)
+		flowEngine.registry(flow)
+
+StandardFlowContext
+	1.location
+
+	用:execute
+	flowEngine.execute
+
+
+
+FlowEngine
+	1.InvokeDelegateContext:调用代理上下文
+	2.ListenerDelegateContext:监听器代理上下文
+	3.mvelScriptContext:mvel多态script
+	4.FlowsHolder:flow Mapping(flowKey)
+	5.FlowExceptionMonitorHolder:Exception Mapping(flowkey)
+
+	创建:
+	registry(Flow flow)
+	1.listenerDelegateContext添加监听器Mapping(flowkey)
+	2.invokeDelegateContext addNode(startNode,endNode,Node) mapping(flowkey,nodeName)
+	3.mvelScriptContext addMvel mapping(flowkey,nodeName)
+	4.FlowExceptionMonitorHolder mapping(flowKey)
+	5.FlowsHolder.put(key, flow)
+
+
+	用:
+	execute(String flowName, String activeNode, int version, Object target, Map<String, Object> args)
+	1.获取flow
+	2.创建Execution(FlowEngine,NodeExecution,flow)
+	3.获取当前执行FlowNode
+	4.创建NodeExecution(Execution,FlowNode)
+	5.NodeExecution.start()
+	6.Node执行模板方法(Before,Executor,After,Error,End),只会对Executor|Error返回的decision进行判断
+	7.如果是ActivityNode，获取Condition，并且condition.execute(execution)
+	8.条件判断
+		1.StartNode->first transition.start
+		2.EndNode->return
+		3.根据decision不为空时做判断
+			1.DecisionCode.STOP_DECISION->end
+			2.!DecisionCode.SKIP_DECISION->Mapping(decision)->发布事件(decision[eventName[transition name]])->transition.start
+		4.根据Condition执行的结果不为空时做判断
+		5.根据mvelScript执行结果不为空时做判断
+		6.上面3,4,5都没有返回结果，直接transition.start
+		7.抛出异常
