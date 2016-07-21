@@ -95,13 +95,13 @@ RuleBasedTransactionAttribute
  PlatformTransactionManager
 
  AbstractPlatformTransactionManager系列
- 	1.transactionSynchronization:
+ 	1.transactionSynchronization:同步事务抉择
  	2.defaultTimeout:默认超时时间
  	3.nestedTransactionAllowed:内嵌事务标示
  	4.validateExistingTransaction:验证事务存在标示
- 	5.globalRollbackOnParticipationFailure
- 	6.failEarlyOnGlobalRollbackOnly
- 	7.rollbackOnCommitFailure
+ 	5.globalRollbackOnParticipationFailure:部分status异常是否设置全局回滚标示
+ 	6.failEarlyOnGlobalRollbackOnly:全局回滚(time-out)早暴露异常标示
+ 	7.rollbackOnCommitFailure:提交错误需要回滚标示(false)
 
  	用:
  	1.getTransaction(TransactionDefinition definition);
@@ -113,11 +113,11 @@ RuleBasedTransactionAttribute
  				1.suspend(transaction)
  					1.如果存在同步TransactionSynchronization
  						1.同步事务全部挂起操作
- 						2.挂起本地事务操作 子类操作
+ 						2.doSuspend挂起本地事务操作 子类操作
  						3.清理TransactionSynchronizationManager事务同步管理器
  						4.返回SuspendedResourcesHolder
  					2.不存在同步
- 						1.挂起本地事务操作 子类操作
+ 						1.doSuspend挂起本地事务操作 子类操作
  						2.SuspendedResourcesHolder
  				2.返回newTransactionStatus
  				DefaultTransactionStatus
@@ -157,16 +157,19 @@ RuleBasedTransactionAttribute
  			processRollback(DefaultTransactionStatus status)
  				1.triggerBeforeCompletion，同步事务BeforeCompletion操作
  				2.保留点回滚(1.存在保留点)
- 				3.doRollback(status)(2.新的事务) 子类操作
+ 				3.doRollback(status)(2.NewTransaction新的事务) 子类操作
  				4.doSetRollbackOnly(3.存在事务且回滚标示) 子类操作
  				5.triggerAfterCompletion,同步事务BeforeCompletion操作
  				6.cleanupAfterCompletion
  					1.设置DefaultTransactionStatus完成标示
  					2.if NewSynchronization 事务同步管理clear
- 					3.if NewTransaction   子类操作
+ 					3.if NewTransaction   doCleanupAfterCompletion(恢复现在.connection.setAutoFlat(true))  子类操作
  					4.if SuspendedResources
- 						1.if suspendedResources  子类操作
- 						2.if suspendedSynchronizations 保存同步事务管理器
+ 						resume呼醒操作
+ 						1.if suspendedResources  
+ 							resume 子类操作
+ 						2.if suspendedSynchronizations 
+
  		3.if shouldCommitOnGlobalRollbackOnly
  			processRollback
  		4.commit
