@@ -1,0 +1,63 @@
+PropertyResourceConfigurer
+	用:postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
+		1.mergeProperties()--Properties(数据源)
+		2.Properties可以转换--子类可以重写
+		3.processProperties替换--子类操作
+
+
+PropertyOverrideConfigurer
+	实现processProperties(ConfigurableListableBeanFactory beanFactory, Properties props)
+	eg:beanName.key=value
+		PropertyValue pv = new PropertyValue(property, value);
+		pv.setOptional(this.ignoreInvalidKeys);
+		bd.getPropertyValues().addPropertyValue(pv);
+
+
+
+PlaceholderConfigurerSupport
+	工具:doProcessProperties(ConfigurableListableBeanFactory beanFactoryToProcess,StringValueResolver valueResolver)
+		1.创建BeanDefinitionVisitor访问器,通过替换工具StringValueResolver
+			visitParentName(beanDefinition);
+			visitBeanClassName(beanDefinition);
+			visitFactoryBeanName(beanDefinition);
+			visitFactoryMethodName(beanDefinition);
+			visitScope(beanDefinition);
+			visitPropertyValues(beanDefinition.getPropertyValues());
+			ConstructorArgumentValues cas = beanDefinition.getConstructorArgumentValues();
+			visitIndexedArgumentValues(cas.getIndexedArgumentValues());
+			visitGenericArgumentValues(cas.getGenericArgumentValues());
+
+		2.遍历所有BeanDefinition进行替换工作
+		3.遍历所有Aliases进行替换工作
+		4.BeanFactory增加addEmbeddedValueResolver
+
+PropertySourcesPlaceholderConfigurer
+	重写:postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
+		1.if propertySources dataSource
+		2.propertySources(environment,Local),localOverride标示first和last
+		3.create PropertySourcesPropertyResolver(this.propertySources)
+		4.create StringValueResolver(PropertySourcesPropertyResolver 处理)
+		5.doProcessProperties 调用父类
+
+
+PropertyPlaceholderConfigurer
+	实现:processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props)
+		1.create PlaceholderResolvingStringValueResolver
+				1.PropertyPlaceholderHelper(规则)
+				2.PlaceholderResolver(解析参数模式先后顺序)默认SYSTEM_PROPERTIES_MODE_FALLBACK
+					1.if SYSTEM_PROPERTIES_MODE_OVERRIDE  resolveSystemProperty(placeholder) 子类重写
+					2.if local resolvePlaceholder(placeholder, props) 子类重写
+					3.if SYSTEM_PROPERTIES_MODE_FALLBACK  resolveSystemProperty(placeholder) 子类重写
+		2.doProcessProperties
+
+PreferencesPlaceholderConfigurer
+	重写:1.resolvePlaceholder(placeholder, props)
+
+
+
+PropertyPlaceholderHelper
+PropertySource属性源
+PropertySources属性源复合
+PropertyResolver属性解析器
+
+
