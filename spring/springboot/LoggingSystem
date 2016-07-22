@@ -1,0 +1,30 @@
+LoggingSystem
+	1.SYSTEM_PROPERTY:自定义logging系统查询关键字
+	2.SYSTEMS:LoggingSystem Mapping
+
+	用:1.beforeInitialize,initialize,cleanUp,getShutdownHandler,setLogLevel
+	   2.get()获取LoggingSystem
+	   		1.如果存在SYSTEM_PROPERTY，直接create LoggingSystem(自定义日志系统)
+	   		2.遍历SYSTEMS相应key存在,first look up,then create LoggingSystem(系统预定义)
+
+AbstractLoggingSystem
+	1.initialize(LoggingInitializationContext initializationContext,String configLocation, LogFile logFile)
+		1.if configLocation-->loadConfiguration()  子类操作
+		2.if getStandardConfigLocations 子类操作->reinitialize(自己还可以修改)->configLocation->loadConfiguration()
+		3.if loadDefaults  子类操作
+
+JavaLoggingSystem
+	1.beforeInitialize() 默认设置root.setLevel(Level.SEVERE)
+	2.loadConfiguration(LoggingInitializationContext initializationContext,String location, LogFile logFile) 
+		1.StandardConfigLocations:logging.properties; loadDefaults:logging-file.properties,logging.properties
+		2.LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(configuration.getBytes()))
+	3.setLogLevel(String loggerName, LogLevel level)
+	4.getShutdownHandler()
+
+Slf4JLoggingSystem
+	1.beforeInitialize()-->configureJdkLoggingBridgeHandler
+	2.cleanUp()-->removeJdkLoggingBridgeHandler()
+	3.loadConfiguration(LoggingInitializationContext initializationContext,String location, LogFile logFile) 父类做一些基本操作
+		LoggingSytem一些基础配置 from logFile and environment 最终设置到系统变量中
+		
+YijiLogbackLoggingSystem
