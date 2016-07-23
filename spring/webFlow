@@ -6,7 +6,7 @@ FlowExecutor
 	用:launchExecution(String flowId, MutableAttributeMap input, ExternalContext context)
 		1.线程变量保存外部变量
 		2.根据flowId获取Flow
-		2.FlowExecutionRepository()-->FlowExecution(Flow)
+		2.FlowExecutionRepository()-->FlowExecution(Flow),没有flowExecutionKey
 				1.flow:流程
 				2.status:流程状态
 				3.flowSessions:
@@ -45,6 +45,11 @@ AbstractFlowExecutionRepository
 	   		1.conversationManager根据executionId获取conversation
 	   		2.conversation直接end操作
 
+AbstractSnapshottingFlowExecutionRepository
+	1.FlowExecutionSnapshotFactory：快照工厂
+
+DefaultFlowExecutionRepository
+	
 
 
 ConversationManager
@@ -59,3 +64,14 @@ SessionBindingConversationManager
     3.getConversation(ConversationId id)
     	1.遍历ConversationContainer的conversations
     4.parseConversationId(String encodedId)
+
+
+ Conversation(Session(key,ConversationConversationContainer))
+ 	1.ConversationContainer
+ 	2.ConversationLock
+ 	3.attributes---(SNAPSHOT_GROUP_ATTRIBUTE,FlowExecutionSnapshotGroup),Snapshot(FlowExecutionSnapshot)
+ 	4.attributes---(scope,flowExecution.getConversationScope())
+
+
+ FlowExecutionKey
+ CompositeFlowExecutionKey(executionId,snapshotId)   ContainedConversation(executionId=id)

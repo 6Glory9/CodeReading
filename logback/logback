@@ -1,0 +1,22 @@
+logback
+
+org.slf4j.LoggerFactory
+	Logger getLogger(String name)
+		1.没有初始化
+		2.正在初始化 返回TEMP_FACTORY
+		3.初始化成功
+		4.初始化异常
+		5.初始化fALLBACK
+
+
+
+
+LoggerContext
+	1.statusManager:状态管理器(Status,StatusLisenter)
+
+
+
+
+JoranConfigurator
+	1.LoggerContext.objectMap增加ConfigurationWatchList用于观察配置是否修改(CONFIGURATION_WATCH_LIST,CONFIGURATION_WATCH_LIST_RESET)
+	2.
