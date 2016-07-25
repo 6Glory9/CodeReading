@@ -1,0 +1,44 @@
+SqlSessionTemplate
+	1.sqlSessionFactory
+	2.executorType:处理器的类型
+	3.sqlSessionProxy：代理sqlSession
+	4.exceptionTranslator:异常处理器
+
+SqlSessionInterceptor
+	1.getSqlSession
+		1.事务同步管理获取SqlSessionHolder，存在直接获取SqlSession
+		2.创建一个新的SqlSession(configuration,executor),executor(configuration,Transaction,interceptor)
+		3.同步事务同步管理器
+			1.TransactionSynchronizationManager.isSynchronizationActive()&&SpringManagedTransactionFactory
+				1.绑定资源TransactionSynchronizationManager.bindResource(sessionFactory, holder)
+				2.注册registerSynchronization
+			2.TransactionSynchronizationManager.isSynchronizationActive()
+				没有做任何操作
+	2.SqlSession方法操作
+	3.!isSqlSessionTransactional，session.commit()强制提交
+	4.异常处理
+	5.closeSqlSession
+		1.存在注册SqlSessionHolder，释放SqlSessionHolder
+		2.session.close()
+
+
+SqlSession
+	1.selectOne(String statement, Object parameter) 
+		1.selectList(String statement, Object parameter, RowBounds rowBounds)
+		2.from configuration get MappedStatement
+		3.Executor.query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler)
+			1.get BoundSql(sql,parameter,ParameterMapping) from MappedStatement
+			2.create cacheKey()
+	    4.query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
+	    	1.if flushLocal--->localCache.clear(); localOutputParameterCache.clear();
+	    	2.if resultHandler==null 查询本地,如果CALLABLE做相应的处理
+	    	3.query from database
+	    		1.localCache.put(key)
+	    		2.doQuery
+	    			1.create StatementHandler
+	    			2.StatementHandler.prepare(connection)==>Statement
+	    		3.localCache.remove(key)
+	    		4.localCache.putObject(key, list)
+	    		5.if StatementType.CALLABLE localOutputParameterCache
+	    	4.处理处理返回值
+	    	5.LocalCacheScope.STATEMENT,localCache.clear()
