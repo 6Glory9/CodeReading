@@ -1,17 +1,40 @@
 1.预售权交易
 	1.requestId安全域检查
-	2.保存异步通知信息
-	3.检查商户，商户渠道
+	2.保存异步通知信息OrderNotifyInfo(gid)
+	3.检查商户，商户渠道,渠道信息
 	4.路由出相应渠道
-	5.保存orderInfo及幂等校验
+	5.保存orderInfo,orderdetail,goods,orderInfoStatus及幂等校验
 	6.更新额外orderInfo信息
-	7.调用支付引擎预售权交易
+	7.调用支付引擎预授权交易(OrderNotifyInfo->OrderNotifyTask->异步通知)
 	8.成功过Cybersource检查，这样减少成本
 		1.成功->等待商户预售权确认
 		2.拒绝->主动预授权撤销
 		3.待查->等待商户预售权确认
 
+
 2.预售权确认及取消
-	1.预售权确认和取消
+	1.取消有时间验证
+	2.调用支付引擎
+
+3.普通退款
+	1.lock orderInfo and check status
+	2.ValidateUser
+	3.validateRefund(退款金额检查,全额退款手续费标示，退款允许检查)
+	4.calculate_rate(refundChargeAmount)
+	5.CheckBalance(1.refundChargeAmount<=balance 2.refundAmount=(退款余额+refundChargeAmount),3.refundAmount>blance)手续费必须从余额得到
+								1.refundUnfreezeAmount=balance+refundUnfreezeAmount 2.refundUnfreezeAmount<balance&&refundUnfreezeAmount=0
+	6.ChoiceChannel 路由渠道
+	7.orderBusinessRepository幂等性  第一阶段
+	8.计退款手续费，冻结
+	9.解冻差的金额(refundUnfreezeAmount)
+    10.发起退款申请
+
+    第二阶段
+    11.计算冻结金额
+    12.交易手续费是否退
+    13.退款手续费收费
+    14.最终通知
+
+
 
 
