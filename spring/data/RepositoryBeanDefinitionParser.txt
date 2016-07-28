@@ -1,4 +1,35 @@
-﻿
+﻿AbstractRepositoryConfigurationSourceSupport
+	用:registerBeanDefinitions(AnnotationMetadata importingClassMetadata,BeanDefinitionRegistry registry)
+		1.RepositoryConfigurationDelegate(RepositoryConfigurationSource)
+		2.RepositoryConfigurationDelegate.registerRepositoriesIn(registry,RepositoryConfigurationExtension)
+
+		重写:1.getConfiguration(),getAnnotation()==>RepositoryConfigurationSource(子类实现)
+			 2.getRepositoryConfigurationExtension() 子类实现
+
+
+JpaRepositoriesAutoConfigureRegistrar
+	1.EnableJpaRepositories，EnableJpaRepositoriesConfiguration
+	2.JpaRepositoryConfigExtension
+
+
+
+RepositoryConfigurationDelegate
+	1.AnnotationRepositoryConfigurationSource
+	2.JpaRepositoryConfigExtension
+	3.1.if JpaRepositoryFactory ==>inMultiStoreMode=true
+	用:registerRepositoriesIn(registry,getRepositoryConfigurationExtension())
+		1.registerBeansForRoot
+			1.RepositoryInterfaceAwareBeanPostProcessor(predictBeanType),代理类的类型查询
+			2.EntityManagerBeanDefinitionRegistrarPostProcessor===>SharedEntityManagerCreator(EntityManagerFactory) AbstractEntityManagerFactoryBean(EntityManagerFactory),EntityManagerFactory
+			3.JpaMetamodelMappingContextFactoryBean==>JpaMetamodelMappingContext(EntityManagerFactory->Metamodel(PersistenceProvider enum)->PersistenceProvider)
+			4.DefaultJpaContext(entityManager Mapping)
+
+
+
+
+
+
+
 JpaRepositoryConfigExtension
 
 	RepositoryInterfaceAwareBeanPostProcessor(repositoryInterface)
@@ -12,24 +43,3 @@ RepositoryConfigurationSource
 				getExcludeFilters,getBasePackages 由子类获取相应配置
 	AnnotationRepositoryConfigurationSource
 	XmlRepositoryConfigurationSource
-	
-RepositoryConfigurationDelegate
-		ClassPathScanningCandidateComponentProvider
-		
-		inMultiStoreMode=true (JpaRepositoryFactory)
-		LenientAssignableTypeFilter
-			AssignableTypeFilter  ->RepositoryFactorySupport
-				AbstractTypeHierarchyTraversingFilter
-				match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)
-				1.matchSelf(metadataReader)
-				2.matchClassName
-				3.matchSuperClass  match Type
-				4.matchInterface match Type
-				
-		
-		registerRepositoriesIn(BeanDefinitionRegistry registry,RepositoryConfigurationExtension extension)
-			
-			
-			
-			RepositoryConfigurationSource(BeanDefinition,RepositoryConfigurationSource)
-			->JpaRepositoryFactoryBean
