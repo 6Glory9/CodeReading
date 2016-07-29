@@ -24,22 +24,30 @@ RepositoryConfigurationDelegate
 			3.JpaMetamodelMappingContextFactoryBean==>JpaMetamodelMappingContext(EntityManagerFactory->Metamodel(PersistenceProvider enum)->PersistenceProvider)
 			4.DefaultJpaContext(entityManager Mapping)
 
+		2.getRepositoryConfigurations
+			1.RepositoryConfigurationSource.getCandidates(loader);根据条件得到候选beanDefine
+			2.如果不是严格选择或明确用过滤器，直接添加候选人
+			3.根据确认类型或注解来判断(JpaRepository,Entity,MappedSuperclass)
+			4.builderRepository(JpaRepositoryFactoryBean)
+				JpaRepositoryFactoryBean(repositoryInterface,queryLookupStrategyKey,lazyInit,repositoryBaseClass,namedQueries,customImplementation,evaluationContextProvider)
+			5.postProcess
+				JpaRepositoryFactoryBean(transactionManager,entityManager,mappingContext)
+			6.postProcess(2)
+				JpaRepositoryFactoryBean(enableDefaultTransactions)
 
 
+RepositoryFactoryBeanSupport
+	1.afterPropertiesSet
+		1.createRepositoryFactory子类实现
+		2.RepositoryFactorySupport.getRepository
+			1.getRepositoryInformation(customImplementationClass,repositoryBaseClass,metadata)
+				RepositoryBaseClass(QueryDslJpaRepository,SimpleJpaRepository)
+				SimpleJpaRepository(entityInformation,entityManager)
+				setRepositoryMethodMetadata
+			2.create proxy
+				1.target(SimpleJpaRepository),Interfaces(repositoryInterface,Repository,if TransactionalProxy 标示)
+				2.add advice(ExposeInvocationInterceptor,DefaultMethodInvokingMethodInterceptor,QueryExecutorMethodInterceptor,QueryExecutorMethodInterceptor)
+				3.TransactionInterceptor,CrudMethodMetadataPostProcessor,PersistenceExceptionTranslationInterceptor
 
 
-
-
-JpaRepositoryConfigExtension
-
-	RepositoryInterfaceAwareBeanPostProcessor(repositoryInterface)
-	EntityManagerBeanDefinitionRegistrarPostProcessor(SharedEntityManagerCreator)
-	JpaMetamodelMappingContextFactoryBean
-	PersistenceAnnotationBeanPostProcessor
-
-RepositoryConfigurationSource
-	RepositoryConfigurationSourceSupport
-		1.getCandidates
-				getExcludeFilters,getBasePackages 由子类获取相应配置
-	AnnotationRepositoryConfigurationSource
-	XmlRepositoryConfigurationSource
+JpaRepositoryFactoryBean
