@@ -1,121 +1,152 @@
 ﻿HandlerAdapter
-			1.HttpRequestHandlerAdapter
-					实现HttpRequestHandler接口
-							1.1 HessianServiceExporter，
-							使用简单的方法提供了RMI的功能.相比WebService，Hessian更简单、快捷。采用的是二进制RPC协议，
-							因为采用的是二进制协议，所以它很适合于发送二进制数据。
-							
-							1.2 BurlapServiceExporter
-							1.3 HttpInvokerServiceExporter  http协议的RMI
-							1.4 PreFlightHandler   跨域验证
-							1.5 DefaultServletHttpRequestHandler
-							     setServletContext找一个servlet(default,_ah_default,resin-file,FileServlet,SimpleFileServlet)
-							     forward处理
-							1.6 ResourceHttpRequestHandler
-										ResourceResolverChain(ResourceResolver)
-										ResourceTransformerChain（ResourceTransformer）
-										
-										根据URL查找相应Resource,最后writeContent
+1.HttpRequestHandlerAdapter
+	实现HttpRequestHandler接口
+	1.1 HessianServiceExporter，
+		使用简单的方法提供了RMI的功能.相比WebService，Hessian更简单、快捷。采用的是二进制RPC协议，
+		因为采用的是二进制协议，所以它很适合于发送二进制数据。
+	1.2 BurlapServiceExporter
+	1.3 HttpInvokerServiceExporter  http协议的RMI
+	1.4 PreFlightHandler   跨域验证
+	1.5 DefaultServletHttpRequestHandler
+		setServletContext找一个servlet(default,_ah_default,resin-file,FileServlet,SimpleFileServlet)
+		forward处理
+	1.6 ResourceHttpRequestHandler
+		ResourceResolverChain(ResourceResolver)
+		ResourceTransformerChain（ResourceTransformer）
+		根据URL查找相应Resource,最后writeContent
+
 			
-			2.SimpleServletHandlerAdapter
-						servlet
-			3.AnnotationMethodHandlerAdapter
-			      支持handlerMethods不为空
-						ServletHandlerMethodResolver 解析handlerMethods,initBinderMethods,modelAttributeMethods
-						typeLevelMapping,(sessionAttributeNames,sessionAttributeTypes)
-						
-						用:handle(HttpServletRequest request, HttpServletResponse response, Object handler)
-								  ServletHandlerMethodResolver(patterns, methods, params, headers)
-								  ServletHandlerMethodInvoker
-					   具体流程可以去瞧瞧，已经废弃
-	     4.SimpleControllerHandlerAdapter
-	     		  Controller的实现
-	     
-	     5.AbstractHandlerMethodAdapter
-	     		支持:HandlerMethod && supportsInternal(method)
-	     		 
-	     		 RequestMappingHandlerAdapter
-	     		 		1.initControllerAdviceCache(ModelAttribute,InitBinder,RequestBodyAdvice,ResponseBodyAdvice)
-	     		 		2.argumentResolvers
-	     		 		3.initBinderArgumentResolvers
-	     		 		4.returnValueHandlers			
-	     		 		
-	     		 		用:handleInternal
-	     		 		  HandlerMethod
-	     		 		  InvocableHandlerMethod(WebDataBinderFactory,HandlerMethodArgumentResolverComposite,ParameterNameDiscoverer)
-	     		 		  ServletInvocableHandlerMethod(HttpStatus,responseReason,HandlerMethodReturnValueHandlerComposite)
-	     		 		  ConcurrentResultHandlerMethod
-	     		 		  
-	     		 		    1.ServletWebRequest
-	     		 		    2.WebDataBinderFactory-->DataBinder(DataBinder,WebDataBinder,ServletRequestDataBinder,
-	     		 		    																		ExtendedServletRequestDataBinder)
-	     		 		    	 1.create WebDataBinder
-	     		 		    	 2.initializer.initBinder
-	     		 		    	 3.initBinder(WebDataBinder binder, NativeWebRequest request)
-	     		 		    3.ModelFactory(modelMethods,dataBinderFactory,sessionAttributesHandler)
-	     		 		    4.ServletInvocableHandlerMethod(HttpStatus,responseReason,HandlerMethodReturnValueHandlerComposite)
-	     		 		    5.ModelAndViewContainer
-	     		 		    		1.inputFlashMap
-	     		 		    		2.sessionAttributes(Session)
-	     		 		    		3.@ModelAttribute Method
-	     		 		    		4.HandlerMethod @ModelAttribute 类型相同,但名字跟sessionAttributes又不相同
-	     		 		    		
-	     		 		    invokeAndHandle
-	     		 		    	1.invokeForRequest
-	     		 		    	2.setResponseStatus(@ResponseStatus)-->setRequestHandled
-	     		 		    	3.handleReturnValue
-	     		 		    	
-	     		 		    getModelAndView
-	     		 		    	 1.updateModel
-	     		 		    	 		1.根据ModelAndViewContainer的SessionStatus做相应的操作
-	     		 		    	 		2.添加非简单参数进行转化
-	     		 		    	 2.ModelAndViewContainer-->ModelMap
-	     		 		    	 3.if OutputFlashMap.addAttributes
-	     		 		    	
+2.SimpleServletHandlerAdapter
+		servlet
+
+3.AnnotationMethodHandlerAdapter
+    支持handlerMethods不为空
+	ServletHandlerMethodResolver 解析handlerMethods,initBinderMethods,modelAttributeMethods
+	typeLevelMapping,(sessionAttributeNames,sessionAttributeTypes)
+	
+	用:handle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			  ServletHandlerMethodResolver(patterns, methods, params, headers)
+			  ServletHandlerMethodInvoker
+   具体流程可以去瞧瞧，已经废弃
+
+4.SimpleControllerHandlerAdapter
+		Controller的实现
+
+5.AbstractHandlerMethodAdapter
+	支持:HandlerMethod && supportsInternal(method)
+	 
+RequestMappingHandlerAdapter
+	1.initControllerAdviceCache(ModelAttribute,InitBinder,RequestBodyAdvice,ResponseBodyAdvice)
+	2.argumentResolvers
+	3.initBinderArgumentResolvers
+	4.returnValueHandlers
+
+	ps:
+	1.HandlerMethod 数据源
+	2.InvocableHandlerMethod(WebDataBinderFactory,HandlerMethodArgumentResolverComposite,ParameterNameDiscoverer)
+		参数处理器,数据绑定工具
+	3.ServletInvocableHandlerMethod(HttpStatus,responseReason,HandlerMethodReturnValueHandlerComposite)返回值处理器
+	4.ConcurrentResultHandlerMethod		
+	
+	用:handleInternal
+	    1.ServletWebRequest
+	    2.WebDataBinderFactory-->DataBinder[DataBinder,WebDataBinder,ServletRequestDataBinder,ExtendedServletRequestDataBinder]
+	      创:1.hanlderMethod==>handlerType==> InitBinder method ==>InvocableHandlerMethod
+	      	 2.Global InvocableHandlerMethod
+	      	 3.WebDataBinderFactory(binderMethods,webBindingInitializer)
+
+	      用:createBinder(NativeWebRequest webRequest, Object target, String objectName)
+	      	 1.createDataBinder
+	    	 2.webBindingInitializer.initBinder
+	    	 3.initBinder(WebDataBinder binder,NativeWebRequest request)
+	    	 	binderMethod.invokeForRequest(request, null, binder)由于提供providedArgs所有不会做参数解析操作
+
+	    3.ModelFactory(modelMethods,dataBinderFactory,sessionAttributesHandler)
+	      创:1.hanlderMethod==>handlerType==> ModelAttribute&&!RequestMapping method ==>InvocableHandlerMethod
+	      	 2.Global InvocableHandlerMethod
+	      	 3.ModelFactory(ModelAttributeMethods,WebDataBinderFactory,SessionAttributesHandler)
+
+	      用:initModel(NativeWebRequest request, ModelAndViewContainer mavContainer, HandlerMethod handlerMethod)
+	         1.sessionAttributesHandler获取数据
+	         2.invokeModelAttributeMethods
+	         	1.选择没有依赖的ModelAttributeMethod
+	         	2.method ModelAttribute 在ModelAndViewContainer存在，直接过滤
+	         	3.invokeForRequest(参数解析),有返回值 add ModelAndViewContainer|getNameForReturnValue获取名字
+	         3.hanlerMethod==>ParameterAnnotation ModelAttribute && sessionAttributesHandler(name) ==>session获取
+	         	store mavContainer
+
+	         updateModel(NativeWebRequest request, ModelAndViewContainer mavContainer)
+	         1.清算SessionAttributesHandler值或保存默认Model的值
+	         2.没有处理完成，添加default model所有Object一个BindingResult，用于点位？
+
+	    4.ServletInvocableHandlerMethod(HttpStatus,responseReason,HandlerMethodReturnValueHandlerComposite)
+	      用:invokeAndHandle(ServletWebRequest webRequest,ModelAndViewContainer mavContainer, Object... providedArgs)
+	      	 1.调用父类invokeAndHandle(1.参数处理 2.方法调用返回值)
+	      	 2.设置响应状态
+	      	 3.设置是否处理标示 return;
+	      	 4.返回值处理
+
+	    5.ModelAndViewContainer
+    		 1.inputFlashMap
+    		 2.sessionAttributes(Session)
+    		 3.@ModelAttribute Method
+    		 4.HandlerMethod @ModelAttribute 类型相同,但名字跟sessionAttributes又不相同
+
+	    	
+	    getModelAndView
+	    	 1.updateModel
+    	 		1.根据ModelAndViewContainer的SessionStatus做相应的操作
+    	 		2.添加非简单参数进行转化
+    	 	 2.处理过直接返回null
+	    	 3.ModelAndViewContainer-->ModelMap
+	    	 4.if OutputFlashMap.addAttributes 保存到session
+
+	 		    	
 HandlerMethodArgumentResolver
-		MapMethodProcessor(Map)-->(map = mavContainer)
-		PathVariableMapMethodArgumentResolver(@PathVariable&&Map)-->(URI_TEMPLATE_VARIABLES_ATTRIBUTE=Map)
+	MapMethodProcessor(Map)-->(map = mavContainer)
+
+	PathVariableMapMethodArgumentResolver(@PathVariable&&Map)-->(URI_TEMPLATE_VARIABLES_ATTRIBUTE=Map)
 		AbstractNamedValueMethodArgumentResolver
-			用:1.createNamedValueInfo->NamedValueInfo(name,required,defaultValue)
-         2.resolveName->Object
-         3.handleResolvedValue
-       RequestHeaderMethodArgumentResolver(@RequestHeader)-->request.getHeaders
-       RequestParamMethodArgumentResolver(@RequestParam,@RequestPart)-->multipartRequest.getFile(name)
-       AbstractCookieValueMethodArgumentResolver(@CookieValue)
-       	ServletCookieValueMethodArgumentResolver--->Cookie
-       ExpressionValueMethodArgumentResolver(@value)
-       MatrixVariableMethodArgumentResolver(@MatrixVariable&&Map)-->(MATRIX_VARIABLES_ATTRIBUTE)
-       PathVariableMethodArgumentResolver(@PathVariable&&Map)-->(URI_TEMPLATE_VARIABLES_ATTRIBUTE)
-       RedirectAttributesMethodArgumentResolver(RedirectAttributes)-->1.设置RedirectModel 2.返回ModelMap
-       ModelAttributeMethodProcessor(@ModelAttribute||Object)
-       	1.name,value(mavContainer,new)
-       	2.createBinder-->WebDataBinder
-       	3.bindRequestParameters(内部属性转化)
-       	4.validateIfApplicable及增加验证结果
-       	5.外部对象的转换
-       	ServletModelAttributeMethodProcessor
-       			1.createAttribute重写,（从request取相应的值（1对多情况），再进行转换）
-       			2.bindRequestParameters重写
-        ProxyingHandlerMethodArgumentResolver
-        
-        AbstractMessageConverterMethodArgumentResolver
-        用：readWithMessageConverters
-        		1.HttpInputMessage 把index复原
-        		2.MediaType contentType -->HttpMessageConverter
-        		3.RequestResponseBodyAdviceChain 前后处理
-        		4.HttpMessageConverter.T read(Type type, Class<?> contextClass, HttpInputMessage inputMessage)处理
-        		
-        AbstractMessageConverterMethodProcessor
-        用:writeWithMessageConverters
-        		1.getAcceptableMediaTypes,根据contentNegotiationManager的策略寻相应MediaTypes。
-        		2.requestedMediaTypes&&producibleMediaTypes==>compatibleMediaTypes==>selectedMediaType
-        		3.((HttpMessageConverter<T>) messageConverter).write(returnValue,selectedMediaType, outputMessage);
- 
-HandlerMethodArgumentResolver
-		MapMethodProcessor(Map)-->mavContainer.addAllAttributes((Map) returnValue);
-		ModelAndViewMethodReturnValueHandler(ModelAndView)==>setRedirectModelScenario
-			1.viewName(start "redirect:")
-			2.SmartView
-	 ViewMethodReturnValueHandler(View) ==>setRedirectModelScenario(true)
-	 ViewNameMethodReturnValueHandler(String)==>setRedirectModelScenario
-	 如有参数需要配置RedirectAttributesMethodArgumentResolver来处理
+		用:1.createNamedValueInfo->NamedValueInfo(name,required,defaultValue)
+		2.resolveName->Object
+		3.handleResolvedValue
+	RequestHeaderMethodArgumentResolver(@RequestHeader)-->request.getHeaders
+	RequestParamMethodArgumentResolver(@RequestParam,@RequestPart)-->multipartRequest.getFile(name)
+	AbstractCookieValueMethodArgumentResolver(@CookieValue)
+	ServletCookieValueMethodArgumentResolver--->Cookie
+	ExpressionValueMethodArgumentResolver(@value)
+	MatrixVariableMethodArgumentResolver(@MatrixVariable&&Map)-->(MATRIX_VARIABLES_ATTRIBUTE)
+	PathVariableMethodArgumentResolver(@PathVariable&&Map)-->(URI_TEMPLATE_VARIABLES_ATTRIBUTE)
+	RedirectAttributesMethodArgumentResolver(RedirectAttributes)-->1.设置RedirectModel 2.返回ModelMap
+	ModelAttributeMethodProcessor(@ModelAttribute||Object)
+		1.name,value(mavContainer,new)
+		2.createBinder-->WebDataBinder
+		3.bindRequestParameters(内部属性转化)
+		4.validateIfApplicable及增加验证结果
+		5.外部对象的转换
+	ServletModelAttributeMethodProcessor
+		1.createAttribute重写,（从request取相应的值（1对多情况），再进行转换）
+		2.bindRequestParameters重写
+	ProxyingHandlerMethodArgumentResolver
+
+	AbstractMessageConverterMethodArgumentResolver
+		用：readWithMessageConverters
+		1.HttpInputMessage 把index复原
+		2.MediaType contentType -->HttpMessageConverter
+		3.RequestResponseBodyAdviceChain 前后处理
+		4.HttpMessageConverter.T read(Type type, Class<?> contextClass, HttpInputMessage inputMessage)处理
+
+	AbstractMessageConverterMethodProcessor
+		用:writeWithMessageConverters
+		1.getAcceptableMediaTypes,根据contentNegotiationManager的策略寻相应MediaTypes。
+		2.requestedMediaTypes&&producibleMediaTypes==>compatibleMediaTypes==>selectedMediaType
+		3.((HttpMessageConverter<T>) messageConverter).write(returnValue,selectedMediaType, outputMessage);
+
+HandlerMethodReturnValueHandler
+	MapMethodProcessor(Map)-->mavContainer.addAllAttributes((Map) returnValue);
+	ModelAndViewMethodReturnValueHandler(ModelAndView)==>setRedirectModelScenario
+		1.viewName(start "redirect:")
+		2.SmartView
+	ViewMethodReturnValueHandler(View) ==>setRedirectModelScenario(true)
+	ViewNameMethodReturnValueHandler(String)==>setRedirectModelScenario
+		如有参数需要配置RedirectAttributesMethodArgumentResolver来处理
