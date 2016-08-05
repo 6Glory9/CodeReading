@@ -1,0 +1,50 @@
+﻿DataBinder
+	1.target:绑定对象
+	2.objectName:绑定对象名称
+	3.bindingResult:绑定结果
+	4.typeConverter:类型转换工具
+	5.ignoreUnknownFields:忽略未知字段标示
+	6.ignoreInvalidFields:忽略非法字段标示
+	7.autoGrowNestedPaths:自动实例化标示
+	8.autoGrowCollectionLimit:自动实例化层数
+	9.allowedFields,disallowedFields,requiredFields
+   10.bindingErrorProcessor:绑定错误处理器
+   11.validators:验证器
+   12.conversionService:类型转换器
+
+	ps:
+	1.WebDataBinderFactory的binderMethods,webBindingInitializer方法对DataBinder包装,相关属性进行处理
+	2.DataBinder相当于只是对bindingResult包装，实际完成任务全部是由bindingResult去实现
+
+
+	用:1.validate
+	     1.hibernate validate ==>Set<ConstraintViolation<Object>>
+	     2.processConstraintViolations(Set<ConstraintViolation<Object>> violations, Errors(bindingResult))
+
+	   2.convertIfNecessary
+	   	 typeConverter|bindingResult.getPropertyAccessor 类型转换
+
+	   3.bind(PropertyValues pvs)
+	   	 doBind(MutablePropertyValues mpvs)
+	   	 1.checkAllowedFields
+	   	 2.checkRequiredFields
+	   	 3.ConfigurablePropertyAccessor.(mpvs,isIgnoreUnknownFields(), isIgnoreInvalidFields())
+	   	 4.bindingErrorProcessor.processPropertyAccessException(exception,bindingResult)
+
+
+WebDataBinder
+	   1.Override:doBind(MutablePropertyValues mpvs)
+	   	  1.checkFieldDefaults(mpvs);
+		  2.checkFieldMarkers(mpvs);
+
+WebRequestDataBinder
+	   bind(WebRequest request) 增加WebRequest入口,把request属性转化成MutablePropertyValues
+	   	  1.支持MultipartRequest
+	   	  2.addBindValues子类实现
+
+ServletRequestDataBinder
+	   bind(ServletRequest request)增加ServletRequest入口,把request属性转化成MutablePropertyValues
+
+ExtendedServletRequestDataBinder
+	   Override:addBindValues
+	   	   支持uriTemplateVariables

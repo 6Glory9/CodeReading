@@ -1,10 +1,11 @@
 ﻿ClassPathBeanDefinitionScanner
-1.BeanDefinitionRegistry  容器
+
+1.BeanDefinitionRegistry:BeanDefinition容器
 2.BeanNameGenerator
 3.ScopeMetadataResolver
-4.ResourcePatternResolver   根据它得到class的Resource
-5.MetadataReaderFactory     根据resource得到MetadataReader
-6.MetadataReader  =====AnnotationMetadataReadingVisitor  (数据最终产物)
+4.ResourcePatternResolver:根据它得到class的Resource
+5.MetadataReaderFactory:根据resource得到MetadataReader
+6.MetadataReader:AnnotationMetadataReadingVisitor(数据最终产物)
 		Resource,ClassMetadata,AnnotationMetadata
 		
 	isCandidateComponent
