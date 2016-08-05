@@ -19,9 +19,9 @@
 		7.初始化messageSource
 		8.初始化事件广播器
 		9.初始化特殊组件,留给子类实现
-	 10.注册监听器
-	 11.创建所有bean(weaverAwareName,setClassLoader(null),freezeConfiguration)
-	 12.初始化lifecycleProcessor,释放事件(ContextRefreshedEvent) 
+	 	10.注册监听器
+	 	11.创建所有bean(weaverAwareName,setClassLoader(null),freezeConfiguration)
+	 	12.初始化lifecycleProcessor,释放事件(ContextRefreshedEvent) 
 	 
 GenericApplicationContext系列
 		1.beanFactory提供一个默认beanFactory
@@ -36,21 +36,19 @@ GenericApplicationContext系列
 	  		1.createEnvironment==>StandardServletEnvironment
 	  		2.postProcessBeanFactory==>(ServletContextAwareProcessor,ServletContextAware)
 				
-				EmbeddedWebApplicationContext	
-						1.embeddedServletContainer:嵌入式容器
-						2.servletConfig:配置
-						3.重写
-							1.refresh() 增加刷新失败停止嵌入式容器
-							2.onRefresh() 创建嵌入式容器
-									1.EmbeddedServletContainerFactory->EmbeddedServletContainer(Tomcat)
-									2.注入回调函数getSelfInitializer,添加web组件(servlet,filter,Listener)
-											selfInitialize:注册web组件,scop,application,WebEnvironment
-									3.增加PropertySource
-							3.finishRefresh() 启动容器
-							4.onClose()  增加停止嵌入式容器
+EmbeddedWebApplicationContext	
+		1.embeddedServletContainer:嵌入式容器
+		2.servletConfig:配置
+		3.重写
+			1.refresh() 增加刷新失败停止嵌入式容器
+			2.onRefresh() 创建嵌入式容器
+					1.EmbeddedServletContainerFactory->EmbeddedServletContainer(Tomcat)
+					2.注入回调函数getSelfInitializer,添加web组件(servlet,filter,Listener)
+							selfInitialize:注册web组件,scop,application,WebEnvironment
+					3.增加PropertySource
+			3.finishRefresh() 启动容器
+			4.onClose()  增加停止嵌入式容器
 							
-
-
 
 AbstractRefreshableApplicationContext系列
 	重写:refreshBeanFactory()

@@ -1,4 +1,5 @@
-﻿resolveBeforeInstantiation (实例化对象前)
+﻿
+resolveBeforeInstantiation (实例化对象前)
 	aop proxy代理对象可以这里生成
 	1.beanPostProcessorsBeforeInstantiation 实例化之前
 	2.beanPostProcessorsAfterInitialization 初始化之后
@@ -15,7 +16,7 @@ InstantiationAwareBeanPostProcessor(实例化对象后)
 自动加载autowireByName和autowireByType
 
 InstantiationAwareBeanPostProcessor(实例化属性处理)
-	 postProcessPropertyValues 每个属性处理(注解注入就在这里处理，xml配置在后面可以重载)
+	 postProcessPropertyValues每个属性处理(注解注入就在这里处理，xml配置在后面可以重载)
 	 
 population属性
 	 
