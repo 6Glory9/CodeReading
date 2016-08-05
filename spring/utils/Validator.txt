@@ -1,20 +1,44 @@
-﻿ValidatorImpl
-	validationOrderGenerator:生成一个验证请求DefaultValidationOrder
-		DefaultValidationOrder
-		1.groupList：所有接口及父类（Group）
-		2.接口的@GroupSequence所有Group(Sequence)
-	constraintValidatorFactory:约束验证工厂
-	messageInterpolator:
-	traversableResolver：
-	beanMetaDataManager:
-	
-validateInContext
-	valueContext(对象的值)
-	validationOrder（）
-	context
-	
-	
-	BeanMetaData
-	
-	
-	validateConstraintsForCurrentGroup
+﻿Validator
+SmartValidator
+SpringValidatorAdapter
+	1.targetValidator:目标验证器
+
+用:validate(Object target, Errors errors)
+	 	1.targetValidator.validate(target)==>Set<ConstraintViolation<T>>
+	 	2.processConstraintViolations(Set<ConstraintViolation<Object>> violations, Errors errors)
+	 		1.determineErrorCode==>annotation SimpleName==>errorCode
+	 		2.errorArgs==>DefaultMessageSourceResolvable,!internalAnnotationAttributes value
+	 		3.violation.getMessage()==>defaultMessage
+	 		4.getRejectedValue=>bindingResult.getRawFieldValue(field)==>rejectedValue
+
+CustomValidatorBean
+		1.validatorFactory:validator工厂
+		2.messageInterpolator:message解析器
+		3.traversableResolver
+
+用:afterPropertiesSet()
+		1.组装validatorFactory
+		2.生成Validator
+
+
+LocalValidatorFactoryBean
+	    1.providerClass
+	    2.messageInterpolator:message解析器
+		3.constraintValidatorFactory
+		4.parameterNameDiscoverer:参数名字生成器
+		5.mappingLocations:错误信息文件资源
+		6.validationPropertyMap:validation配置属性
+		7.applicationContext:容器
+		8.validatorFactory:validator工厂
+
+
+用:afterPropertiesSet()
+		1.providerClass==>Configuration
+		2.configuration.externalClassLoader(applicationContext.getClassLoader())
+		3.configuration.messageInterpolator
+		4.configuration.traversableResolver
+		5.configuration.constraintValidatorFactory
+		6.configureParameterNameProviderIfPossible 通过parameterNameDiscoverer代理
+		7.addMapping &&configuration.addProperty(
+		8.postProcessConfiguration() 子类处理
+		9.configuration.buildValidatorFactory()

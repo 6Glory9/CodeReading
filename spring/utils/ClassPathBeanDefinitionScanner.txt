@@ -1,30 +1,59 @@
-﻿ClassPathBeanDefinitionScanner
+﻿ClassPathScanningCandidateComponentProvider
+	1.environment:环境变量
+	2.resourcePatternResolver:资源解析器
+	3.metadataReaderFactory:metaData工厂
+	3.includeFilters,excludeFilters
+	4.conditionEvaluator:条件评判器
 
-1.BeanDefinitionRegistry:BeanDefinition容器
-2.BeanNameGenerator
-3.ScopeMetadataResolver
-4.ResourcePatternResolver:根据它得到class的Resource
-5.MetadataReaderFactory:根据resource得到MetadataReader
-6.MetadataReader:AnnotationMetadataReadingVisitor(数据最终产物)
-		Resource,ClassMetadata,AnnotationMetadata
-		
-	isCandidateComponent
-	根据MetadataReader,MetadataReaderFactory,typeFilter做验证，最终conditionEvaluator做判断
-	最终产物
-	1.ScannedGenericBeanDefinition(MetadataReader)  parent(AnnotatedBeanDefinition)
-	2.ScopeMetadata(proxyMode,scop)-->AnnotatedBeanDefinition->AnnotationMetadata(AnnotationConfigUtils,AnnotationAttributes)
-	3.beanNameGenerator->beanName(Component,default)
-	4.分层解析ScannedGenericBeanDefinition
-			ps:BeanDefinition(AnnotatedBeanDefinition-xml,AbstractBeanDefinition-annotation) 两个大分类
-	5.BeanDefinitionHolder
-	ConfigurationClassPostProcessor,AutowiredAnnotationBeanPostProcessor,RequiredAnnotationBeanPostProcessor
-	CommonAnnotationBeanPostProcessor,PersistenceAnnotationBeanPostProcessor,EventListenerMethodProcessor
-	DefaultEventListenerFactory  七大类注解
-	
-	ObjectFactory
-		1.自动注解，是无法注入
-		2.ref（取得对象，然后getObject获取最终对象）
-	
-	ClassPathMapperScanner 代码就很简单
-	由于它实现SqlSessionDaoSupport 所以可以自动注解
+用:1.resetFilters(boolean useDefaultFilters)
+	条件允许添加三个AnnotationTypeFilter(Component,ManagedBean,Named)
+   2.findCandidateComponents(String basePackage)
+   		1.basePackage==>/path/**/*.class==>Resources
+   		2.metadataReaderFactory(Resource)==>MetadataReader
+   		3.isCandidateComponent(includeFilters,excludeFilters,conditionEvaluator)==>ScannedGenericBeanDefinition
+   			ps:需求容器子类实现
+
+
+
+ClassPathBeanDefinitionScanner
+	1.BeanDefinitionRegistry:BeanDefinition容器
+	2.beanDefinitionDefaults:默认beanDefinition的值
+	3.autowireCandidatePatterns:成为自动候选人匹配Patterns
+	4.BeanNameGenerator
+	5.ScopeMetadataResolver
+	6.includeAnnotationConfig:annotation config processors 标示
+
+用：scan(String... basePackages)
+		1.doScan(basePackages)
+			1.findCandidateComponents(basePackage) 父类方法调用
+			2.scopeMetadataResolver==>scop;beanNameGenerator==>beanName
+			3.postProcessBeanDefinition(beanDefinitionDefaults,自动候选标示)
+			4.processCommonDefinitionAnnotations(Lazy,Primary,DependsOn,Role,Description)
+			5.checkCandidate
+			6.if ScopedProxyCreator and registerBeanDefinition
+		2.registerAnnotationConfigProcessors
+			AnnotationAwareOrderComparator,ContextAnnotationAutowireCandidateResolver
+			ConfigurationClassPostProcessor,AutowiredAnnotationBeanPostProcessor
+			RequiredAnnotationBeanPostProcessor,CommonAnnotationBeanPostProcessor
+			PersistenceAnnotationBeanPostProcessor,EventListenerMethodProcessor
+			DefaultEventListenerFactory
+
+
+ClassPathMapperScanner
+	1.sqlSessionFactory,sqlSessionTemplate,sqlSessionTemplateBeanName,sqlSessionFactoryBeanName
+	2.annotationClass,markerInterface:过滤标示
+	3.mapperFactoryBean:mapper工厂
+	4.addToConfig
+
+用:1.registerFilters()
+	1.增加明确AnnotationTypeFilter(annotationClass)和AssignableTypeFilter(markerInterface)
+	2.不明确accepts all classes and exclude package-info
+   
+   2.doScan(String... basePackages)
+   	 1.super.doScan(basePackages)
+   	 2.processBeanDefinitions(beanDefinitions)  偷天换日
+   	 	1.addGenericArgumentValue(definition.getBeanClassName());setBeanClass(mapperFactoryBean);addToConfig
+   	 	2.明确设置sqlSessionTemplate和sqlSessionFactory
+   	 	3.不明确设置自动注入
+
 	
