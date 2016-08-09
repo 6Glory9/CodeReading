@@ -1,23 +1,80 @@
-﻿HandlerExceptionResolver
-	1.ModelAndViewDefiningException 抛这个异常，里面相应ModelAndView
-	2.DefaultErrorAttributes  request.setAttribute(ERROR_ATTRIBUTE, ex);
-	3.AbstractHandlerExceptionResolver
-		用:resolveException，模板方法
-		1.判断是否捕捉异常
-		2.打印日志
-		3.初始化Response
-		4.doResolveException
-		SimpleMappingExceptionResolver
-		  1.exceptionMappings(Exception)-->viewName
-		  2.if determineStatusCode-->statusCodes(viewName)
-		  3.ModelAndView
-		  
-		DefaultHandlerExceptionResolver
-			各种异常
-			
-		ResponseStatusExceptionResolver(@ResponseStatus)
-		
-		AbstractHandlerMethodExceptionResolver
-			1.shouldApplyTo 处理
-		
-		ExceptionHandlerExceptionResolver 这个类真没有怎么看懂
+﻿
+1.ModelAndViewDefiningException:抛这种异常,直接取相应的ModelAndView,不需要再处理
+2.processHandlerException(HttpServletRequest request, HttpServletResponse response,Object handler, Exception ex)
+	1.handlerExceptionResolver解析出ModelAndView
+	2.ModelAndView.isEmpty 直接返回null
+	3.getDefaultViewName(request);exposeErrorRequestAttributes 返回ModelAndView
+
+HandlerExceptionResolver
+
+DefaultErrorAttributes
+	request.setAttribute(ERROR_ATTRIBUTE, ex);
+
+
+AbstractHandlerExceptionResolver
+	1.mappedHandlers:是否处理mappedHandler
+	2.mappedHandlerClasses:是否处理mappedHandlerClasse
+	3.warnLogger:可以由外部统一设置，统一规划
+	4.preventResponseCaching:客服端缓存标示
+
+   用:resolveException(HttpServletRequest request, HttpServletResponse response,Object handler, Exception ex)
+   		1.判断是否匹配异常处理(mappedHandlers==null&&mappedHandlerClasses所有都处理)，否则返回null(加强可以子类实现)
+   		2.打印日志
+   		3.客服端缓存标示设置
+   		4.doResolveException 子类实现
+
+
+SimpleMappingExceptionResolver
+	1.exceptionMappings
+	2.excludedExceptions:排除不处理异常
+	3.defaultErrorView:默认viewName
+	4.defaultStatusCode:默认statusCode
+	5.statusCodes:status mapping<viewName,statusCode>
+	6.exceptionAttribute:Model的异常的key值
+
+	用:doResolveException(HttpServletRequest request, HttpServletResponse response,Object handler, Exception ex)
+		1.determineViewName(1.excludedExceptions排除 2.匹配所有异常父类和异常长度优先 3.默认defaultErrorView)
+		2.determineStatusCode:根据viewName寻找statusCode，默认defaultStatusCode
+		3.response设置状态码
+		4.model设置异常值
+
+DefaultHandlerExceptionResolver
+根据异常相应IF处理，好low
+
+
+ResponseStatusExceptionResolver
+	1.messageSource:数据源
+
+	用:doResolveException(HttpServletRequest request, HttpServletResponse response,Object handler, Exception ex)
+		1.根据异常的ResponseStatus返回状态码但返回空ViewAndModel(messageSource(statusCode)==>reason)
+		2.递归调用原始的异常
+
+
+AbstractHandlerMethodExceptionResolver
+	用:shouldApplyTo(HttpServletRequest request, Object handler) 重写,路由处理器
+
+ExceptionHandlerExceptionResolver
+	1.customArgumentResolvers,customReturnValueHandlers:自定义参数和返回值处理器,PS:获取默认处理器回调get方法
+	2.argumentResolvers,returnValueHandlers:参数和返回值处理器
+	3.messageConverters:message处理器
+	4.contentNegotiationManager:内容协议管理器
+	5.responseBodyAdvice:responseBody的增加
+	6.applicationContext
+	7.exceptionHandlerCache：运行期异常方法处理器缓存
+	8.exceptionHandlerAdviceCache:全局异常方法处理器缓存
+
+	创:1.构造函数对messageConverters初始化
+	   2.afterPropertiesSet()
+	   		1.initExceptionHandlerAdviceCache(ControllerAdvice&&ExceptionHandler ResponseBodyAdvice)
+	   		2.DefaultArgumentResolvers,DefaultReturnValueHandlers
+
+	用:doResolveHandlerMethodException(HttpServletRequest request,
+			HttpServletResponse response, HandlerMethod handlerMethod, Exception exception)
+		1.获取异常处理方法(ServletInvocableHandlerMethod)
+			1.查找本地缓存exceptionHandlerCache(handlerType,ExceptionHandlerMethodResolver)
+			2.ExceptionHandlerMethodResolver(Exception,Method),这里也一个缓存，可能直接返回ServletInvocableHandlerMethod
+			3.全局异常方法处理器缓存 可能返回ServletInvocableHandlerMethod
+		2.prepare ServletInvocableHandlerMethod(new mavContainer,argumentResolvers,returnValueHandlers)
+		3.调用异常处理方法(exception和handlerMethod不会被参数解析器处理)
+		4.如果isRequestHandled直接返回一个空ModelAndView
+
