@@ -1,0 +1,65 @@
+insert into channel_route_rule (ID, RULE_ID, BIZ_CODE, SUB_BIZ_CODE, MERCHANT_CODE, INST_CHANNEL_API, STATUS, INST_BANK_ID, TRANSACTION_TYPE, SUB_TRANSACTION_TYPE, PERSONAL_CORPORATE_TYPE, MUTABLE_TYPE, DEBIT_CREDIT_TYPE, PRIORITY, WEIGHT, PRIORITY_TYPE, MEMO, RAW_ADD_TIME, RAW_UPDATE_TIME, CURRENCY)
+values (channel_route_rule_id_seq.nextval, 'UNION810521EASEAS00002', 'EASY_CROSS_BORDER_PAY', 'DEFAULT', 'DEFAULT', 'cdx2901', 'ON', 'CDX', 'WITHDRAW', 'OFFLINE', '', '', '', 100, 0, '', '', to_date('22-09-2014 16:27:05', 'dd-mm-yyyy hh24:mi:ss'), to_date('03-03-2016 11:35:45', 'dd-mm-yyyy hh24:mi:ss'), '');
+
+insert into inst_channel_api (ID, INST_CHANNEL_API, INST_CHANNEL_API_DESC, INST_BANK_ID, STATUS, CHANNEL_TYPE, TRANSACTION_TYPE, SUB_TRANSACTION_TYPE, PERSONAL_CORPORATE_TYPE, DEBIT_CREDIT_TYPE, IS_CROSS_BANK, IS_CROSS_REGION, QUOTA_TYPE, QUOTA, DAY_QUOTA, MONTH_QUOTA, QUARTER_QUOTA, YEAR_QUOTA, REF_ACCOUNT_CODE, BANK_CHARGE_TYPE, BANK_CHARGE_RATE, EXTEND_FIELD, CHECK_EXPRESSION, RAW_ADD_TIME, RAW_UPDATE_TIME)
+values (inst_channel_api_id_seq.Nextval, 'cdx2901', '线下提现渠道', 'CDX', 'ON', 'QUERY', 'WITHDRAW', 'OFFLINE', '', '', 'N', '', '', 5000000, 5000000, 5000000, 500000000, 500000000, 'CDX230101', '', '', '', '', to_date('22-09-2014 15:54:07', 'dd-mm-yyyy hh24:mi:ss'), to_date('03-03-2016 11:48:17', 'dd-mm-yyyy hh24:mi:ss'));
+
+
+insert into business_rule
+  (ID,
+   LOGIC_ID,
+   BIZ_CFG_ID,
+   MERCHANT_CODE,
+   SYSTEM_ID,
+   PRODUCT_CODE,
+   INST_BANK_ID,
+   TRANSACTION_TYPE,
+   SUB_TRANSACTION_TYPE,
+   PERSONAL_CORPORATE_TYPE,
+   DEBIT_CREDIT_TYPE,
+   MUTABLE_TYPE,
+   RULE_NAME,
+   STATUS,
+   QUOTA,
+   DAY_QUOTA,
+   QUOTA_TYPE,
+   MONTH_QUOTA,
+   QUARTER_QUOTA,
+   YEAR_QUOTA,
+   CHANNEL_QUOTA,
+   CHANNEL_DAY_QUOTA,
+   RANK,
+   CURRENCY,
+   MEMO,
+   RAW_ADD_TIME,
+   RAW_UPDATE_TIME)
+values
+  (business_rule_id_seq.Nextval,
+   'UNION810521EASEAS0633',
+   1,
+   'DEFAULT',
+   'null',
+   '',
+   'CDX',
+   'WITHDRAW',
+   'OFFLINE',
+   'PERSONAL',
+   'DEBIT_CREDIT',
+   '',
+   '',
+   'ON',
+   50000000,
+   50000000,
+   'null',
+   10000000000,
+   10000000000,
+   0,
+   0,
+   0,
+   '',
+   'null',
+   '',
+   to_date('05-09-2014 16:18:42', 'dd-mm-yyyy hh24:mi:ss'),
+   to_date('03-03-2016 13:30:45', 'dd-mm-yyyy hh24:mi:ss'));
+
+

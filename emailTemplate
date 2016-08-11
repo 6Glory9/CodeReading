@@ -24,4 +24,42 @@ ${accountName} 流水号${gid} 在香港YJP平台发起一笔人民币提现
 手续费：	   ${chargeAmount}   	${currency}   
 到账金额       ${realWithdrawAmount}  ${currency}   
 
-具体提现信息请登录香港YJP的BOSS后台 ：商户提现管理功能中进行操作Boss.yjpay.hk
+具体提现信息请登录香港YJP的BOSS后台 ：商户提现管理功能中进行操作boss.yjpay.hk
+
+
+
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>邮件内容</title>
+</head>
+<body style="background:#fff; font-size:12px; color:#666; font-weight:normal; font-family:'宋体',Verdana; padding:0; margin:0;">
+<table border="0" align="center" cellspacing="0" width="700" style="width:730px;">
+    <tr>
+        <td>
+            <div style="width:730px; margin:0 auto; border-bottom:1px solid #d7d7d7; margin:0 0 35px 0;">
+            </div>
+            <div style="padding:0 60px 0 40px; color:#666;">
+                <p style="margin:0 0 30px; font-size:14px">${accountName} 流水号${gid} 在香港YJP平台发起一笔人民币提现 </p>
+            </div>
+            <div style="padding:0 60px 0 40px; color:#666;">
+                <p style="margin:0 0 30px; font-size:14px">申请提现时间： ${withdrawDate}    ${withdrawTime} </p>
+            </div>
+            <div style="padding:0 60px 0 40px; color:#666;">
+                <p style="margin:0 0 30px; font-size:14px">申请提现金额： ${chargeAmount}  	${currency}    </p>
+            </div>
+            <div style="padding:0 60px 0 40px; color:#666;">
+                <p style="margin:0 0 30px; font-size:14px">手续费：	   ${chargeAmount}   	${currency} </p>
+            </div>
+
+            <div style="padding:0 60px 0 40px; color:#666;">
+                <p style="margin:0 0 30px; font-size:14px">到账金额       ${realWithdrawAmount}  ${currency}  </p>
+            </div>
+            <p style="padding:10px 50px 0 40px; border-top:1px solid #d7d7d7; color:#999; margin:0 0 20px; line-height:22px;">此为${env}环境系统邮件，请勿回复<br />具体提现信息请登录香港YJP的BOSS后台 ：商户提现管理功能中进行操作boss.yjpay.hk<br/></p>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
