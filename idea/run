@@ -1,0 +1,24 @@
+Run
+
+1.Alt+F10:返回当前运行断点
+
+2.F7:step in
+3.Shift+F7:select step in
+4.Alt+shift+F7:force step in 强制步入
+
+5.F8:step over
+6.Shift+F8:step out method
+
+7.Alt+F9:跳转到鼠标处
+
+8.Shift+F10:Run
+9.Shift+F9:debug Run
+10.Ctrl+Shift+F10:config Run
+11.Ctrl+shift+F9: config Run
+run with converge:便于收集信息
+
+12.Ctrl+F2:stop
+
+13.Ctrl + F8:打断点(类,方法，属性[观察])
+14.Ctrl + Shift + F8: 断点框(1.无断点时,最大化断点框;有断点时,简单断点框)
+
