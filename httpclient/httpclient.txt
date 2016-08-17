@@ -1,0 +1,32 @@
+httpclient
+
+用
+1.execute(HttpUriRequest request)==>HttpResponse
+2.HttpResponse execute(HttpUriRequest request, HttpContext context)
+3.HttpResponse execute(HttpHost target, HttpRequest request)
+4.HttpResponse execute(HttpHost target, HttpRequest request,HttpContext context)  重点
+5.<T> T execute(HttpHost target,HttpRequest request,ResponseHandler<? extends T> responseHandler,HttpContext context) 重点
+
+CloseableHttpClient
+用
+1.CloseableHttpResponse doExecute(HttpHost target, HttpRequest request,HttpContext context) 重点
+2.determineTarget(final HttpUriRequest request) (equest.getURI()==>HttpHost，绝对地址)
+3.T execute(final HttpHost target, final HttpRequest request, final ResponseHandler<? extends T> responseHandler, final HttpContext context)
+	1.执行处理请求
+	2.处理结果返回对象
+		异常:消耗资源断开连结,抛出异常
+	3.消耗资源断开连结
+
+
+InternalHttpClient
+创
+1.execChain:
+2.connManager:
+3.routePlanner:
+4.cookieSpecRegistry:
+5.authSchemeRegistry:
+6.cookieStore:
+7.credentialsProvider:
+8.defaultConfig:
+9.closeables:
+
