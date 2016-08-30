@@ -93,4 +93,18 @@ DefaultResultSetHandler
 
    用:handleResultSets(Statement stmt)
    		1.get first ResultSetWrapper(resultSet,columnNames,jdbcTypes,classNames)
-   		2.
+   		2.handleResultSet(rsw, resultMap, multipleResults, null)
+   		   handleRowValuesForSimpleResultMap(ResultSetWrapper rsw, ResultMap resultMap, ResultHandler<?> resultHandler, RowBounds rowBounds, ResultMapping parentMapping)
+   		   		1.skip rows
+   		   		2.resultContext是否达到rowBoundr的限制&&还有数据不
+   		   			1.获取辨别过后ResultMap
+   		   			2.getRowValue(rsw, discriminatedResultMap)
+   		   				1.createResultObject
+   		   					1.resultType有相应typeHandlerRegistry  ==>typeHandler.getResult(rsw.getResultSet(), columnName)
+   		   					2.!constructorMappings.isEmpty() ==>fund (parameterType,value) ==>create Object
+   		   					3.接口或默认构造函数==>create object
+   		   					4.autoMapping==>createByConstructorSignature
+   		   					5.lazy property ==>create lazy
+   		   				2.自动匹配(根据rule计算出columName，然后再setter)
+   		   				3.根据resultMap获取相应value(typeHandler.getResult(rs, column)),然后setter
+   		   			3.resultContext保存数据&&ResultHandler做相应处理
