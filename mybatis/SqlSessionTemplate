@@ -7,19 +7,21 @@ SqlSessionTemplate
 SqlSessionInterceptor
 	1.getSqlSession
 		1.事务同步管理获取SqlSessionHolder，存在直接获取SqlSession
-		2.创建一个新的SqlSession(configuration,executor),executor(configuration,Transaction,interceptor)
+		2.创建一个新的SqlSession(configuration,executor),new executor(configuration,new Transaction,interceptor)
+			Environment==>TransactionFactory==>Transaction(SpringManagedTransaction)==>DataSourceUtils获取同一个connection
 		3.同步事务同步管理器
 			1.TransactionSynchronizationManager.isSynchronizationActive()&&SpringManagedTransactionFactory
 				1.绑定资源TransactionSynchronizationManager.bindResource(sessionFactory, holder)
+					 ps:事务模板绑定(dataSource,ConnectionHolder),SqlSessionHolder(sqlSession,executorType,exceptionTranslator)
 				2.注册registerSynchronization
 			2.TransactionSynchronizationManager.isSynchronizationActive()
 				没有做任何操作
 	2.SqlSession方法操作
-	3.!isSqlSessionTransactional，session.commit()强制提交
+	3.!isSqlSessionTransactional==>session.commit()强制提交
 	4.异常处理
 	5.closeSqlSession
-		1.存在注册SqlSessionHolder，释放SqlSessionHolder
-		2.session.close()
+		1.存在注册SqlSessionHolder,释放请求数，关闭连接交给事务模板
+		2.session.close(),强行关闭
 
 
 SqlSession
@@ -27,18 +29,82 @@ SqlSession
 		1.selectList(String statement, Object parameter, RowBounds rowBounds)
 		2.from configuration get MappedStatement
 		3.Executor.query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler)
-			1.get BoundSql(sql,parameter,ParameterMapping) from MappedStatement
+			1.get BoundSql(sql,parameter,ParameterMapping) from MappedStatement,SqlSource.getBoundSql
 			2.create cacheKey()
-	    4.query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
-	    	1.if flushLocal--->localCache.clear(); localOutputParameterCache.clear();
-	    	2.if resultHandler==null 查询本地,如果CALLABLE做相应的处理
-	    	3.query from database
-	    		1.localCache.put(key)
-	    		2.doQuery
-	    			1.create StatementHandler
-	    			2.StatementHandler.prepare(connection)==>Statement
-	    		3.localCache.remove(key)
-	    		4.localCache.putObject(key, list)
-	    		5.if StatementType.CALLABLE localOutputParameterCache
-	    	4.处理处理返回值
-	    	5.LocalCacheScope.STATEMENT,localCache.clear()
+	    4.【cache】 query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey key, BoundSql boundSql)
+	    	1.if flushCacheIfRequired--->清理缓存
+	    	2.if resultHandler==null && useCache  ==>use cache load object
+	    	3.【Base】query
+	    	    1.fist && flushCacheIfRequired==>清除本地缓存(localCache,localOutputParameterCache)
+	    	    2.resultHandler == null ==>用本地缓存load,不然就空
+	    	    3.OutputParameters handle
+	    	    4.queryFromDatabase
+	    	    	doQuery&&localCache,localOutputParameterCache缓存
+	    	    		1.create StatementHandler&&interceptorChain.pluginAll(statementHandler)
+	    	    			ps:RoutingStatementHandler(SimpleStatementHandler,PreparedStatementHandler,CallableStatementHandler)路由
+	    	    				   parameterHandler，resultSetHandler，boundSql，KeyGenerator.
+
+	    	    		2.prepareStatement
+	    	    			1.getConnection==>from transaction ==> SpringManagedTransaction ==>DataSourceUtils获取同一个connection
+	    	    			2.StatementHandler.prepare
+	    	    				1.instantiateStatement==>create Statement 子类处理
+	    	    				2.setStatementTimeout
+	    	    				3.setFetchSize
+	    	    		    3.StatementHandler.parameterize
+	    	    		    	ps:CallableStatementHandler:设置registerOutputParameters&&parameterHandler.setParameters
+	    	    		    	   PreparedStatementHandler：ParameterHandler.setParameters((PreparedStatement) statement)
+
+	    	    		3.StatementHandler.query
+	    	    			ResultSetHandler(handleResultSets,handleOutputParameters)
+	    	    		4.close Statement
+
+
+ParameterHandler
+DefaultParameterHandler
+	创:1.mappedStatement:xml所配置信息
+	   2.parameterObject:入参(object,Map)
+	   3.typeHandlerRegistry:对应mappedStatement类型转换器
+	   4.configuration:总的数据源
+
+	用:setParameters(PreparedStatement ps)
+	   	xml所有的 !out的ParameterMapping处理
+	   		1.AdditionalParameter
+	   		2.空值处理
+	   		3.parameterObject直接有相应类型转换器处理
+	   		4.get value propertyName of Object
+	   		    ==>value
+	   		5.ParameterMapping的typeHandler做相应处理
+
+ResultSetHandler
+DefaultResultSetHandler
+	创:1.executor:执行器
+	   2.configuration:数据源
+	   3.mappedStatement:Statement的数据源
+	   4.rowBounds:行的边界
+	   5.parameterHandler:
+	   6.resultHandler:
+	   7.boundSql:SQL的边界
+	   8.typeHandlerRegistry:类型处理器
+	   9.objectFactory,reflectorFactory
+
+	  10.nestedResultObjects,ancestorObjects,ancestorColumnPrefix
+	  11.nextResultMaps,pendingRelations
+	  12.autoMappingsCache:自动mapping缓存
+
+   用:handleResultSets(Statement stmt)
+   		1.get first ResultSetWrapper(resultSet,columnNames,jdbcTypes,classNames)
+   		2.handleResultSet(rsw, resultMap, multipleResults, null)
+   		   handleRowValuesForSimpleResultMap(ResultSetWrapper rsw, ResultMap resultMap, ResultHandler<?> resultHandler, RowBounds rowBounds, ResultMapping parentMapping)
+   		   		1.skip rows
+   		   		2.resultContext是否达到rowBoundr的限制&&还有数据不
+   		   			1.获取辨别过后ResultMap
+   		   			2.getRowValue(rsw, discriminatedResultMap)
+   		   				1.createResultObject
+   		   					1.resultType有相应typeHandlerRegistry  ==>typeHandler.getResult(rsw.getResultSet(), columnName)
+   		   					2.!constructorMappings.isEmpty() ==>fund (parameterType,value) ==>create Object
+   		   					3.接口或默认构造函数==>create object
+   		   					4.autoMapping==>createByConstructorSignature
+   		   					5.lazy property ==>create lazy
+   		   				2.自动匹配(根据rule计算出columName，然后再setter)
+   		   				3.根据resultMap获取相应value(typeHandler.getResult(rs, column)),然后setter
+   		   			3.resultContext保存数据&&ResultHandler做相应处理
