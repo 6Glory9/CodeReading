@@ -10,6 +10,7 @@
 		1.成功->等待商户预售权确认
 		2.拒绝->主动预授权撤销
 		3.待查->等待商户预售权确认
+		4.处理中->
 
 
 2.预售权确认及取消
@@ -22,7 +23,7 @@
 	3.validateRefund(退款金额检查,全额退款手续费标示，退款允许检查)
 	4.calculate_rate(refundChargeAmount)
 	5.CheckBalance(1.refundChargeAmount<=balance 2.refundAmount=(退款余额+refundChargeAmount),3.refundAmount>blance)手续费必须从余额得到
-								1.refundUnfreezeAmount=balance+refundUnfreezeAmount 2.refundUnfreezeAmount<balance&&refundUnfreezeAmount=0
+		1.refundUnfreezeAmount=balance+refundUnfreezeAmount 2.refundUnfreezeAmount<balance&&refundUnfreezeAmount=0
 	6.ChoiceChannel 路由渠道
 	7.orderBusinessRepository幂等性  第一阶段
 	8.计退款手续费，冻结
@@ -34,6 +35,49 @@
     12.交易手续费是否退
     13.退款手续费收费
     14.最终通知
+
+4.快速退款
+	1.lock orderInfo(pid,merchantOrderNo)
+	2.insert fast refund log
+	3.update orderInfo ESP_REFUNDING("ESP_REFUNDING", "退款中"),
+
+
+定时任务
+1.RefundProcessingScheduleService(处理退款和拒付处理中)
+	1.load data from orderBusiness(退款和拒付处理中)
+	2.做相应的处理
+		1.lock Nowait from OrderBusiness
+		2.sample check again
+		3.lock orderInfo && context(setter orderInfo,OrderBusiness)
+		4.模拟出之前originalServiceContext
+		5.路由相应的流程操作
+			1.refund,OrderBusiness.node
+			2.dishonor,OrderBusiness.node
+
+2.OnAccountExceptionProcessScheduleService(上账异常处理)
+	1.上账
+	2.交易手续费
+	3.冻结提现保证金
+	4.冻结交易保证金
+
+3.NotifyScheduleCallBackService
+	1.load notifyTask
+	2.load notifyInfo(查询相应通知记录)
+	3.组装数据
+	4.notifierBus.dispatcher(notifyEvent)
+
+4.CreditUnfreezeCasherAndGranted(解冻提现和交易保证金)
+	没有任务锁
+	1.load 15day,提现保证金
+	2.load 180day,交易保证金
+
+5.CreditAcquiringExceptionProcessService
+    没有锁订单
+	1.支付处理中，查询相应的结果。
+	2.支付完成，查询出数据做相应操作，重复操作cbs
+
+
+
 
 
 
