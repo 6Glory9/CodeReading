@@ -1,0 +1,24 @@
+﻿SessionRepositoryFilter
+	SessionRepository：spring session crud
+	httpSessionStrategy:1.sid 获取 2.sid生成 3.sid删除
+		1.getRequestedSessionId-->get sid
+		2.onNewSession-->根据spring session 回写客户端sid,如添加session cookie
+	  3.onInvalidateSession-->重写cookie，改变cookie的时间
+	
+	用：doFilterInternal
+		1.request保存sessionRepository
+		2.wrappedRequest，wrappedReponse
+		3.doFilter
+		4.commitSession
+				1.注销删除cookie
+				2.非注销，重写cookie,刷新缓存
+	
+	Request.getSession()
+		1.request.getAttribute(CURRENT_SESSION_ATTR)
+		2.client中获取sid,sessionRepository获取相应session
+		3.sessionRepository创建新的session
+	
+	requests.commitSession()
+		1.request.getAttribute(CURRENT_SESSION_ATTR)为空&&requestedSessionInvalidated
+			 httpSessionStrategy.onInvalidateSession()
+		2.同步session保存,如果是new需要httpSessionStrategy.onNewSession()

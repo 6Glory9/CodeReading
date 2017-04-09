@@ -1,0 +1,11 @@
+﻿logout
+   某个app发起注销请求       1个点请求---->中心----->再分发到各点----->请求跳转指定页面
+	1.根据TGC查找相应TicketGrantingTicket
+	2.根据TicketGrantingTicket的services找到所有ST（ST ID），根据services找到相应地址，传递相应st id过去。
+	   客服端根据st id找相应session,最终做注销操作。
+	   
+	3.请求客服端返回的结果
+	
+	doLogout
+		用：1.允许跳转指定页面(相应服务注册&&存在service)
+		    2.如果返回的结果还存在没有执行，切换渠道循环重试一次。

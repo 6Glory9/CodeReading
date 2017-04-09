@@ -1,0 +1,71 @@
+﻿login.html
+	
+
+	1.initialFlowSetupAction(从缓存获取ticketGrantingTicketId,warnCookieValue,request中service,都存在flowScop)
+		URL:http://marmot.yjpay.hk/cas/login?
+		service=http%3A%2F%2Fboss.yjpay.hk%2Fboss%2Fboss%2Fauth%2FauthPermission.htm&redirect=4131025JL
+		1.warnCookieGenerator
+		2.ticketGrantingTicketCookieGenerator
+		3.pathPopulated 设置domain
+		4.flowScop(null,null,SimpleWebApplicationServiceImpl('http%3A%2F%2Fboss.yjpay.hk%2Fboss%2Fboss%2Fauth%2FauthPermission.htm&redirect=4131025JL','http%3A%2F%2Fboss.yjpay.hk%2Fboss%2Fboss%2Fauth%2FauthPermission.htm&redirect=4131025JL',null))
+		
+	2.ticketGrantingTicketCheck(检查ticketGrantingTicketId有效性)
+		1.notExists 不存在
+				gatewayRequestCheck
+				
+				1.有gateway参数,由于不存在TGC,TGT,ST肯定找不到，只是check service 直接返回跳转service或post回去。
+				2.没有gateway参数，check RegisteredService ->generateLoginTicket->submit
+						submit:
+							1.validate LoginTicket
+							2.request存在TGT&&request存在renew->new ST,保存request->warn(有警告信息展示，然后再跳。直接跳)
+								
+							3.生成TGT,保存flowScop->successWithWarnings->sendTicketGrantingTicketAction(cookie)->需要审核
+											              ->success->sendTicketGrantingTicketAction(cookie)
+											              
+											              sendTicketGrantingTicketAction
+											              1.warn过来,request存在TGT,flowscop不存在 直接审核
+											              2.都是取的flowscop的值，但由于值是相同，直接通过
+							4.check service; 1. service exit  -->generateServiceTicket-->生成ST,保存request
+							                 2. service exit  -->viewGenericLoginSuccess(可以设置默认地址)
+		2.invalid
+			  terminateSession
+			  1.根据ticketGrantingTicketId找到相应TicketGrantingTicket
+			  2.TicketGrantingTicket==>loginOutService，删除其它站点
+			  3.删除TGT,TGC,保存logoutRequests
+			  4.generateLoginTicket,跳转登陆页面
+		3.valid
+				renewRequestCheck
+				1.if renew is not serviceAuthorizationCheck
+						重新登陆，submit:3的路线,TGT肯定是存在
+						1.如果request也存在，就会拿request TGT生成相应TGC,如果这时跟flow的TGT不同，销毁FLOW TGT及对应ST
+						2.只是flow存在,直接通过
+				2.generateServiceTicket 直接跳转回去，带着相应的数据。
+  3.gatewayRequestCheck(两种方式)
+  	1.gatewayServicesManagementCheck方式（requestParameters.gateway != '' and requestParameters.gateway != null）
+  		   check service 是否存在,直接跳转回家,什么都留下（可以采用不登陆，gataway想点办法）
+  	2.serviceAuthorizationCheck 方式
+  			 check service 是否存在和开启，然后生成loginToken（输入账号和密码）-->realSubmit
+  			 
+  4.realSubmit 登陆验证
+  	1.ticketGrantingTicketId && service存在 && renew ,ticketGrantingTicketId是从request取出，但cookie失效。
+  	   1.生成ServiceTicket保存serviceTicketRegistry,ServiceTicketId保存request，是一个新的ServiceTicketID
+  	   2.if生成warnCookieGenerator  
+  	   ===>最终带有ServiceTicketId返回请求端
+  	   
+  	2.ticketGrantingTicketId  不存在
+  	   1.生成ticketGrantingTicket。保存flowscop的ticketGrantingTicketId
+  	   2.if生成warnCookieGenerator
+  	   
+  	   SUCCESS_WITH_WARNINGS==>有一个审核的过程===>sendTicketGrantingTicket(难道授权就是这样处理)
+  	   SUCCESS==>sendTicketGrantingTicket
+  	   
+  5.sendTicketGrantingTicket 成功
+  		sendTicketGrantingTicketAction
+  			生成TGTC(cookie)
+  		1.存在service
+  				generateServiceTicket
+  		2.不存在service
+  				不用跳转
+  				
+ 6.generateServiceTicket
+ 根据ticketGrantingTicket生成ServiceTicket,ServiceTicketId保存request,最终跳转回客服端

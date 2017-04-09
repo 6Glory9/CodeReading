@@ -1,0 +1,122 @@
+﻿##查看权限
+ls  -alh               ##查看所有的权限
+ls  -alh --full-time   ##查看权限和时间
+ls  -alh --full-time -S
+
+##七属性字段
+drwxrwxr-x. 2 payengine payengine 4.0K 2016-03-28 14:11:39.469966859 +0800 dubbo
+1.权限
+2.i-node连接数（文案的权限和属性记录在i-node中，而目录记录在文档名）
+3.拥有者名称
+4.组的名称
+5.文案大小
+6.最近修改时间
+7.文案名称
+
+
+##修改权限
+chgrp -R newGroup dir   ##修改新的组名
+chown -R www-data dir   ##修改拥有者
+chown -R www-data:www-data dir ##修改拥有者和组
+
+##两种修改权限方式
+1.r=4 w=2 x=1
+chmod -R 777  dir
+
+2.[u,g,o,a][=,+,-][r,w,x]
+chmod u=rwx,go=rx .bashrc
+chmod -R u+rwx,go=rx .bashrc
+
+##权限对应目录和文档说明
+1.文档
+r=只能读,不能修改
+w=只有w权限，是无法修改的。必须同时拥有rw权限才能修改
+x=执行权限
+
+2.目录
+r=查看目录下文件权限,如目录没x权限时,ls只能看权限信息都是问号。
+w=对于目录下文件的操作权限
+	1.文件直接都操作权限
+	2.目录,目录下没有文件，目录直接可以删除。
+				 目录下存在文件，此目录还拥有rwx权限，才能递归删除目录。
+				 								 1.无r权限，则test无法删除
+				 								 2.无w,x权限,则test/a.txt无法删除
+x=进入目录的权限
+
+
+##cd
+cd ~   					##家目录
+cd     					##家目录
+cd ~accountant  ##指定accountant家目录
+cd -            ##切换工作目录
+
+##pwd
+pwd             ##当前目录
+pwd -P          ##当前目录，如快捷方式指定实体位置
+
+##mkdir
+mkdir -p /var/log ##递归创建目录
+mkdir -m 777 dir  ##创建目录指定
+
+##cp
+cp -a source target     ##[-irp] 覆盖操作访问
+cp -r source target     ##递归操作
+cp -p source target     ##属性复制
+cp -s source target_s   ##符号复制(快捷方式)
+cp -l source target_l   ##实体复制
+
+##rm
+rm -rf *
+
+##mv
+mv -f source target1 target2
+
+##dirname basename
+basename  /etc/sysconfig/network   ##network
+dirname   /etc/sysconfig/network   ##/etc/sysconfig
+
+
+##查询操作文档操作
+1.cat  由第一行开始显示档案内容
+2.tac  从最后一行开始显示，可以看出 tac 是 cat 癿倒着写
+3.less  分页查询
+		1)空格,pageDown,q退出
+	  2)pageUp
+	  3)/ 往下查询关键字  n重复操作，N重复反向操作
+	  4)? 往上查询关键字  n重复操作，N重复反向操作
+4.head
+		head /etc/man.config       ##默认表示前20行
+		head -n 10 /etc/man.config ##默认前10行
+		head -n -100 /etc/man.config ##最后100行以外的
+		
+5.tail
+	  tail  /etc/man.config       ##默认最后20行
+	  tail -n 10 /etc/man.config  ##默认最后10行
+	  tail -n +10 /etc/man.config  ##默认最后10行
+	  tail -f 100 /etc/man.config  ##最后100行持续监听
+	  
+
+##默认权限umask
+umask
+0002
+u=rw,g=rw,o=r    ##把x权限去掉
+
+umask -S         ##目录的默认权限
+u=rwx,g=rwx,o=rx
+
+建立档案时：(-rw-rw-rw-) - (-----w--w-) ==> -rw-r--r--
+建立目弽时：(drwxrwxrwx) - (d----w--w-) ==> drwxr-xr-x
+
+##查找文件
+1.查询执行文件
+which -a ls
+
+2.文件名查询
+whereis fileName
+locate  fileName
+
+##这个查询慢
+find [PATH] [option] [action]
+find / -name passwd
+find / -size +1000k 
+find / -perm +7000 -exec ls -l {} \;

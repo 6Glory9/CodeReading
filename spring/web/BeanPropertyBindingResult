@@ -1,0 +1,37 @@
+AbstractBindingResult
+	1.objectName:对象名字
+	2.messageCodesResolver:码解析器
+	3.errors:错误对象集合
+	4.suppressedFields
+
+用:1.reject(String errorCode, Object[] errorArgs, String defaultMessage)
+		1.resolveMessageCodes(String errorCode, String objectName)==>codes(解析某个对象错误码)
+		2.errors add ErrorObject(objectName,codes,errorArgs,defaultMessage)
+
+   2.rejectValue(String field, String errorCode, Object[] errorArgs, String defaultMessage)
+   		1.如果是对象直接调用1的方法
+   		2.获取fixedField和getActualFieldValue(子类实现)
+   		3.errors add FieldError
+   3.getFieldValue(String field)
+   		1.select FieldError from errors
+   		2.获取注入FieldError的Value
+   		3.formatFieldValue(value)子类实现
+
+AbstractPropertyBindingResult
+	1.conversionService:类型转换器
+	2.getPropertyAccessor():属性访问方式(子类实现)
+
+用:1.formatFieldValue(String field, Object value)
+	 	1.getCustomEditor(fixedField)
+	 		1.findCustomEditor==>PropertyEditor
+	 		2.targetTypeEditor==>约定
+	 	2.conversionService
+
+
+BeanPropertyBindingResult
+	1.target:目标对象
+	2.autoGrowNestedPaths,autoGrowCollectionLimit
+	3.beanWrapper:工人
+
+用:1.getPropertyAccessor()
+		createBeanWrapper

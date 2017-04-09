@@ -1,0 +1,122 @@
+﻿JobLauncher
+模板方法：运行工作(Job,JobParamters)
+1.根据工作参数和工作名称，查询工作执行，用于检查重复启动。
+2.检查工作参数
+3.创建新的工作执行
+4.同步或者异步运行工作执行
+
+1)job可以创建多个jobInstance
+2)一个jobInstance可能执行多次(JobExecution)
+3)JobExecution包含多个stepExecution(步执行)
+
+JobExecution
+	1.jobInstance:工作实例
+	2.stepExecutions:多个步执行
+
+  	3.createTime:创建时间
+  	4.lastUpdated:更新时间
+  	5.startTime:开始时间
+  	6.endTime:结束时间
+  
+  	6.status:状态(执行最终的状态，可能允许重新执行)
+  	7.exitStatus:退出状态（当前执行的状态）
+  	8.executionContext:执行上下文
+  	9.failureExceptions：错误异常集合
+
+stepExecution
+	1.jobExecution:工作执行
+	2.stepName:步的名称
+	
+	3.readCount:读次数
+	4.writeCount:写次数
+	5.commitCount:提交次数
+	6.rollbackCount:回滚次数
+	
+	7.readSkipCount:读跳过次数
+	8.processSkipCount:处理跳过次数
+	9.writeSkipCount:写跳过次数
+	10.filterCount:过滤次数
+
+	11.terminateOnly:终结标示
+	
+	
+	12.createTime:创建时间
+  	13.lastUpdated:更新时间
+  	14.startTime:开始时间
+  	15.endTime:结束时间
+  
+  	16.status:状态
+  	17.exitStatus:退出状态
+  	18.executionContext:执行上下文
+  	19.failureExceptions:错误异常集合
+  
+
+
+AbstractJob
+	listener（JobExecutionListener）：工作执行Listener(before,after)
+	stepHandler：步处理器
+	
+	工作执行模板方式
+		1.工作参数验证
+		2.如果执行状态为停止
+		3.工作执行
+
+SimpleJob
+	直接步处理器直接处理
+	1.查看工作实例这个名字步执行
+	2.检查状态及执行次数
+	3.没有执行完成，使用上次执行上下文继续执行
+
+AbstractStep		
+	步执行模板
+	StepExecutionListener.before
+	open
+	doExecution
+	StepExecutionListener.after
+	close
+
+TaskletStep
+	update(open,close)
+	
+	执行模板
+		1.从完成策略得到重复上下文
+		2.RepeatListener.open()
+		3.初始内部操作状态
+			1.RepeatListener.before()
+			2.doExecute()
+			3.RepeatListener.after()
+			4.异常处理器
+			5.判断是否结束(三种方式（完成策略判断，标示，异常）)
+		4.异步等待结果，之前返回状态异步状态不是真的状态
+		5.RepeatListener.close()
+			
+StepContextRepeatCallback
+	ChunkContext:warrap(stepExecution)
+	
+	Chunk模板
+		StepInterruptionPolicy.before
+		事务处理(ChunkTransactionCallback)
+		ChunkListener.after
+		StepInterruptionPolicy.after
+
+ChunkTransactionCallback
+	chunkListener.before()
+	任务器处理(Tasklet)
+	更新stepExcution数据
+		
+ChunkOrientedTasklet（导向任务器）
+	任务处理模板
+		1.ChunkProvider重复读取数据
+		
+		
+			
+			
+	
+	
+	
+  
+  
+
+
+
+	

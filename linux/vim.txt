@@ -1,0 +1,42 @@
+﻿vim
+1.三种模式
+指令模式，编辑模式，指令列命令模式
+
+指令模式----->编辑模式[i,o,a,r],ESC
+指令模式----->指令列命令模式[:,/,?],ESC
+
+2.一般指令模式常用命令
+ctrl+f,page+down ##向下翻页
+Ctrl+ b,page+up  ##向上翻页
+0，home ##当行第一个字符
+$, end  ##当行最后一个字符
+G      ##移到最后一行
+gg,1g[ng] ##移到第一行
+n+enter ##往下移动n行
+
+##查找关键字
+/key ##向下寻找key  n重复正向动作
+?key ##向上寻找key  N重复反向动作
+
+##替换
+:n1,n2s/searchKey/repalaceKey/g
+
+:100,200s/vbird/VBIRD/g
+:1,$s/word1/word2/g  ##全文
+:1,$s/word1/word2/gc ##替换需要用户确认
+
+dd  ##删除当前行
+ndd ##删除第n行
+x  ##删除当前字符，X ##删除当前字符前面一个字符
+yy ##复制当前行
+u  ##还原
+
+
+
+常用配置设置
+:set nu
+:set nonu	就是設定與取消行號啊！
+
+:set hlsearch
+:set nohlsearch	hlsearch 就是 high light search(高亮度搜尋)。 這
+個就是設定是否將搜尋的字串反白的設定值。預設值是 hlsearch

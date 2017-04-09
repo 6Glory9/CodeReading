@@ -1,0 +1,67 @@
+httpclient
+
+用
+1.execute(HttpUriRequest request)==>HttpResponse
+2.HttpResponse execute(HttpUriRequest request, HttpContext context)
+3.HttpResponse execute(HttpHost target, HttpRequest request)
+4.HttpResponse execute(HttpHost target, HttpRequest request,HttpContext context)  重点
+5.<T> T execute(HttpHost target,HttpRequest request,ResponseHandler<? extends T> responseHandler,HttpContext context) 重点
+
+CloseableHttpClient
+用
+1.CloseableHttpResponse doExecute(HttpHost target, HttpRequest request,HttpContext context) 重点
+2.determineTarget(final HttpUriRequest request) (equest.getURI()==>HttpHost，绝对地址)
+3.T execute(final HttpHost target, final HttpRequest request, final ResponseHandler<? extends T> responseHandler, final HttpContext context)
+	1.执行处理请求
+	2.处理结果返回对象
+		异常:消耗资源断开连结,抛出异常
+	3.消耗资源断开连结
+
+
+InternalHttpClient
+创
+1.execChain:
+2.connManager:连接管理器
+3.routePlanner:路由生成器==>HttpRoute
+4.cookieSpecRegistry:
+5.authSchemeRegistry:
+6.cookieStore:cookie容器
+7.credentialsProvider:凭证服务者
+8.defaultConfig:request的参数配置
+9.closeables:
+
+用
+1.doExecute
+	1.获取http执行适配(1.获取中断状态和设置 2.设置取消功能)
+	2.创建包装HttpRequestWrapper(HttpRequestWrapper,HttpEntityEnclosingRequestWrapper)
+	3.创建httpclientContext(new;from out)
+	4.RequestConfig(1.request.config  2.request.params==>config)==>httpclientContext.set
+	5.没配置工具，默认配置httpclientContext设置
+	6.HttpRoute(routePlanner==>HttpRoute)
+	7.ClientExecChain.execute(HttpRoute route,HttpRequestWrapper request,HttpClientContext clientContext,HttpExecutionAware execAware)
+
+
+ClientExecChain
+
+MainClientExec
+创
+1.authenticator:认证器       
+2.routeDirector    
+3.requestExecutor:请求执行器   
+4.connManager:连接管理器       
+5.reuseStrategy:    
+6.keepAliveStrategy:保持连接策略
+7.proxyHttpProcessor:代理处理器
+8.targetAuthStrategy:目标认证策略
+9.proxyAuthStrategy:代理认证策略
+10.userTokenHandler:userToken处理器
+
+用
+execute
+	1.初始化targetAuthState(目标认证状态),proxyAuthState,设置到context
+	2.增加RequestEntityProxy，生成一个proxy Entity 
+	3.从context获取userToken,第一次是空的
+	4.通过connManager获取ConnectionRequest(1.连接操作 2.取消操作)==>设置到HttpExecutionAware的取消操作
+	5.根据ConnectionRequestTimeout==>ConnectionRequest==>HttpClientConnectionManager==>HttpConnectionFactory==>
+	6.HttpClientConnection(保存上下文)&&设置到HttpExecutionAware的取消操作
+	7.

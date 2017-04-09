@@ -1,0 +1,26 @@
+ObjenesisCglibAopProxy
+
+1.IF CglibProxyClass add Interface
+2.IF interface is null add Interface
+3.add SpringProxy and Advised Interfaces
+4.Array Callback[DynamicAdvisedInterceptor,targetInterceptor(使用targetSource,ExposeProxy)]
+5.IF  targetSource && isFrozen(init method Intercept)
+6.init ProxyCallbackFilter(分发器)
+7.createProxyClassAndInstance ??
+
+
+ProxyCallbackFilter==>Callbacks==>AOP_PROXY==>DynamicAdvisedInterceptor
+1.IF exposeProxy
+2.getTarget
+3.look up Interceptors
+	1.IF methodCache look up
+	2.advisorChainFactory==>[MethodInterceptor,InterceptorAndDynamicMethodMatcher,Interceptor],但处理只有两类
+	3.cache methodCache
+4.IF Interceptors is null.invoke
+5.chain invoke
+	1.IF last Interceptor invoke method
+	2.IF InterceptorAndDynamicMethodMatcher match invoke(go on process),else pass==>next invoke
+	3.MethodInterceptor invoke method(go on process)
+6.processReturnType
+7.releaseTarget
+8.IF setCurrentProxy(oldProxy)

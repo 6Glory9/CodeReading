@@ -1,0 +1,144 @@
+PropertyResourceConfigurer
+	用:postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
+		1.mergeProperties()--Properties(数据源)
+		2.Properties可以转换--子类可以重写
+		3.processProperties替换--子类操作
+
+
+PropertyOverrideConfigurer
+	实现processProperties(ConfigurableListableBeanFactory beanFactory, Properties props)
+	eg:beanName.key=value
+		PropertyValue pv = new PropertyValue(property, value);
+		pv.setOptional(this.ignoreInvalidKeys);
+		bd.getPropertyValues().addPropertyValue(pv);
+
+
+
+PlaceholderConfigurerSupport
+	工具:doProcessProperties(ConfigurableListableBeanFactory beanFactoryToProcess,StringValueResolver valueResolver)
+		1.创建BeanDefinitionVisitor访问器,通过替换工具StringValueResolver
+			visitParentName(beanDefinition);
+			visitBeanClassName(beanDefinition);
+			visitFactoryBeanName(beanDefinition);
+			visitFactoryMethodName(beanDefinition);
+			visitScope(beanDefinition);
+			visitPropertyValues(beanDefinition.getPropertyValues());
+			ConstructorArgumentValues cas = beanDefinition.getConstructorArgumentValues();
+			visitIndexedArgumentValues(cas.getIndexedArgumentValues());
+			visitGenericArgumentValues(cas.getGenericArgumentValues());
+
+		2.遍历所有BeanDefinition进行替换工作
+		3.遍历所有Aliases进行替换工作
+		4.BeanFactory增加addEmbeddedValueResolver
+
+PropertySourcesPlaceholderConfigurer
+	重写:postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory)
+		1.if propertySources dataSource
+		2.propertySources(environment,Local),localOverride标示first和last
+		3.create PropertySourcesPropertyResolver(this.propertySources)
+		4.create StringValueResolver(PropertySourcesPropertyResolver 处理)
+		5.doProcessProperties 调用父类
+
+
+PropertyPlaceholderConfigurer
+	实现:processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props)
+		1.create PlaceholderResolvingStringValueResolver
+				1.PropertyPlaceholderHelper(规则)
+				2.PlaceholderResolver(解析参数模式先后顺序)默认SYSTEM_PROPERTIES_MODE_FALLBACK
+					1.if SYSTEM_PROPERTIES_MODE_OVERRIDE  resolveSystemProperty(placeholder) 子类重写
+					2.if local resolvePlaceholder(placeholder, props) 子类重写
+					3.if SYSTEM_PROPERTIES_MODE_FALLBACK  resolveSystemProperty(placeholder) 子类重写
+		2.doProcessProperties
+
+PreferencesPlaceholderConfigurer
+	重写:1.resolvePlaceholder(placeholder, props)
+
+
+StringValueResolver
+ps:StringValueResolver是beanFactory所需要的组件(String-->String)
+常用:PlaceholderResolvingStringValueResolver占位符解析器
+
+
+PlaceholderResolvingStringValueResolver(PropertyPlaceholderHelper,PlaceholderResolver)
+ps:1.PropertyPlaceholderHelper可以帮助得到最终占位符
+   2.PlaceholderResolver只是根据key得到相应value,一般可以用户重写掉
+
+
+PlaceholderResolver
+ps:1.PropertyPlaceholderConfigurerResolver就是常用重写方式,回调让子类覆盖
+   2.自己实现PlaceholderResolver,灵活运用数据源(PropertyResolver)
+
+
+
+eg:${key.${key2:default}.${key3}}${key4}
+PropertyPlaceholderHelper
+	用:parseStringValue(String strVal, PlaceholderResolver placeholderResolver, Set<String> visitedPlaceholders)
+		1.查找最外层点位符(这个逻辑点赞)
+		2.检查placeholder是否访问
+		3.递归查找嵌套placeholder，返回最终placeholder
+		4.解析placeholder
+		5.if placeholder null&&valueSeparator(actualPlaceholder:defaultValue)
+		6.if value 查找并列placeholder，得到最后的结果
+		7.ignoreUnresolvablePlaceholders ignore|Exception
+
+
+PropertyResolver(属性解析器)
+	1.根据str获取相应值
+	2.根据Str获取相应类型
+	2.根据str替换获取相应的值
+
+ConfigurablePropertyResolver
+	
+AbstractPropertyResolver系列
+	1.conversionService:类型转换工具
+	2.nonStrictHelper,strictHelper:占位符解析器
+	3.ignoreUnresolvableNestedPlaceholders:嵌套占位符忽略标示
+	4.valueSeparator:分隔符解析器
+	5.requiredProperties:必须属性Mapping
+
+PropertySourcesPropertyResolver
+	用:1.containsProperty(String key) 遍历所有propertySources
+	   2.getProperty(String key, Class<T> targetValueType, boolean resolveNestedPlaceholders)
+	   		1.first look-up value
+	   		2.if resolveNestedPlaceholders && value instanceof String 获取占位符的值(最终还是调此方法,只能嵌套一次)
+	   		3.conversionService.convert(value, targetValueType)
+
+
+ConfigurableEnvironment系列
+
+AbstractEnvironment
+	1.activeProfiles:激活Profiles
+	2.defaultProfiles:默认profiles(default)
+	3.propertySources:数据源
+	4.propertyResolver:属性获取工具(PropertySourcesPropertyResolver)
+	用:1.customizePropertySources(MutablePropertySources propertySources) 扩展数据源的入口
+	   2.doGetActiveProfiles()
+	   		1.if activeProfiles
+	   		2.利用propertyResolver获取spring.profiles.default，然后缓存。默认值spring.profiles.default相同方式
+	   3.acceptsProfiles(String... profiles)
+	   		1.非！(直接查找激活profiles|激活找到再默认profiles)
+	   		2.！的逻辑有点问题，最好不用
+	   4.获取系统变量和系统环境变量
+	   5.merge(ConfigurableEnvironment parent)(add propertySources,activeProfiles,defaultProfiles)
+
+StandardEnvironment
+	重写:customizePropertySources(MutablePropertySources propertySources)
+			1.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME,SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME
+
+
+StandardServletEnvironment
+	重写:1.customizePropertySources(MutablePropertySources propertySources)
+			1.通过StubPropertySource&&name占位
+			2.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME,SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME
+
+		 2.initPropertySources(ServletContext servletContext, ServletConfig servletConfig)
+		     通过通过StubPropertySource&&name匹配相应的来占位，初始化时无法取(ServletContext,ServletConfig)
+
+
+PropertySource属性源---->PropertyResolver
+PropertySources属性源复合
+
+Resource------>ResourceLoader----->ResourcePatternResolver
+EncodedResource
+
+

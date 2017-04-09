@@ -1,0 +1,12 @@
+﻿ReflectionUtils
+	1.findField(Class<?> clazz, String name, Class<?> type)
+		first获取field
+	2.setField  设值
+	3.getfield  取值
+	4.findMethod(Class<?> clazz, String name, Class<?>... paramTypes)
+		取方法
+	5.invokeMethod(Method method, Object target, Object... args) 调用方法
+	6.isPublicStaticFinal
+	7.isEqualsMethod
+	8.doWithMethods(Class<?> clazz, MethodCallback mc, MethodFilter mf)
+	9.doWithFields(Class<?> clazz, FieldCallback fc, FieldFilter ff)

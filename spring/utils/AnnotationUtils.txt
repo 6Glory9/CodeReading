@@ -1,0 +1,20 @@
+﻿1.getAnnotation(Annotation ann, Class<A> annotationType) 在Annotation中查找annotationType类型的Annotation
+	synthesizeAnnotation合成新的Annotation
+	SynthesizedAnnotation 
+		isSynthesizable 根据这个ann的class查找所有方法及返回值是不是含有aliasFor
+		DefaultAnnotationAttributeExtractor 这个可以取aliasFor 这个值（构造方法构造获取aliasMap）
+		SynthesizedAnnotationInvocationHandler 也支持aliasFor 获取
+		proxy(1.SynthesizedAnnotation,annotationType 2.annotationType) 如果不存在classLoader无法加载SynthesizedAnnotation就是2种情况
+		这个也为什么前面做的判断除了SynthesizedAnnotation
+
+
+2.getDeclaredRepeatableAnnotations(AnnotatedElement annotatedElement,
+		Class<A> annotationType, Class<? extends Annotation> containerAnnotationType)
+		把containerAnnotationType的value注解和匹配的annotationType加载出现
+3.findAnnotation(AnnotatedElement annotatedElement, Class<A> annotationType)
+   只会查找本类，但可以会查找 Annotation in Annotation == meta Annotation  ==== first one
+   
+4.findAnnotation(Method method, Class<A> annotationType)
+	 先从缓存查找，再去method,然后interface,如果还不行父类继续
+   
+ 

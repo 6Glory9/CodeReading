@@ -1,0 +1,33 @@
+﻿TransactionInterceptor
+	getTransaction
+		1.isExistingTransaction
+			
+		
+		2.newTransaction
+			suspend(null); //清空当前线程变量,同步SynchronizationSuspend 返回当前场情信息（事务SuspendedResourcesHolder）
+			 doSuspend（Transaction）;//清空当前事务的ConnectionHolder和线程中
+			newTransactionStatus
+				doBegin();//transaction，ConnectionHolder设置处理，
+				newTransaction bind ConnectionHolder
+			
+			
+		3.NoTransaction
+	
+	rollback
+		processRollback
+		triggerBeforeCompletion
+		
+		1.rollbackToHeldSavepoint
+		2.NewTransaction  con.rollback();
+		3.oldTransaction  默认是globalRollbackOnParticipationFailure=true  事务设置setRollbackOnly
+		
+		triggerAfterCompletion
+		
+		cleanupAfterCompletion
+			1.设置完成标示
+			2.isNewSynchronization 清空TransactionSynchronizationManager
+			3.isNewTransaction   释放资源
+			4.getSuspendedResources resume
+			 
+			
+		

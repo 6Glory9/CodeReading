@@ -1,0 +1,52 @@
+﻿AutowiredAnnotationBeanPostProcessor
+	
+BeanPostProcessor
+	1.postProcessBeforeInitialization(bean,beanName)
+	2.postProcessAfterInitialization(bean,beanName)
+在初始化阶段   invokeInitMethods
+
+InstantiationAwareBeanPostProcessor
+	1.postProcessBeforeInstantiation(Class<?> beanClass, String beanName)
+		动态代理,后续直接执行postProcessAfterInitialization
+	2.postProcessAfterInstantiation(Object bean, String beanName)
+		返回值直接影响是否continueWithPropertyPopulation 
+	3.postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName)
+		
+在实例化阶段
+
+MergedBeanDefinitionPostProcessor
+
+SmartInstantiationAwareBeanPostProcessor  determineCandidateConstructors
+
+	postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName)
+		修改RootBeanDefinition
+		
+		
+		
+			
+		1.determineCandidateConstructors
+			缓存构造方法标有注解
+		
+		2.postProcessMergedBeanDefinition
+			缓存InjectionMetadata（AutowiredFieldElement，AutowiredMethodElement） list
+			checkConfigMembers 去掉
+		
+		3.postProcessPropertyValues
+			InjectedElement.inject
+			DependencyDescriptor
+			1.Field
+			2.methodParameter
+			
+			对于@value @Qualifier 支持QualifierAnnotationAutowireCandidateResolver
+			Array
+			Collection && Interface
+			Map && InterFace
+			other
+			
+			determinePrimaryCandidate  primary||name match  如果Qualifier前面会匹配
+			
+			
+			
+
+
+

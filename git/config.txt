@@ -1,0 +1,23 @@
+﻿已提交（committed） 把已暂存提交到远程
+已修改（modified）	把工作文件进行修改
+已暂存（staged）    把修改文件进行add,就存在暂存
+
+git config 的工具 有三个地方保存
+1./etc/gitconfig 文件  用git config时用 --system 选项
+2.~/.gitconfig         用 git config 时用 --global 选项
+3.git 目录中的配置文件（也就是工作目录中的 .git/config 文件）
+
+用户信息
+	$ git config --global user.name "John Doe"
+  $ git config --global user.email johndoe@example.com
+
+文本编辑器
+	$ git config --global core.editor emacs  (Vi 或者 Vim,Emacs)
+	
+差异分析工具
+	$ git config --global merge.tool vimdiff
+	
+查看配置信息
+	git config --list
+	git config user.name
+	

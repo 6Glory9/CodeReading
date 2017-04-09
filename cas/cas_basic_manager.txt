@@ -1,0 +1,17 @@
+﻿1.AuthenticationManager:认证管理
+	Credential：凭证（账号，密码，hosts）
+	Principal: 身份
+	
+	AuthenticationHandler:认证处理器
+	PrincipalResolver:身份解析器
+	Authentication:认证信息
+	AuthenticationMetaDataPopulator:认证信息的补充
+
+
+2.ExpirationPolicy
+  TGT：废弃策略
+  
+3.ServicesManager
+  根据申请service查找RegisteredService找相应的操作,他们ID做相应的匹配
+  
+4.AuthenticationSatisfiedByPolicy 不太清楚是什么东西

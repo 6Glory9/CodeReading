@@ -1,0 +1,3 @@
+﻿ngix
+	1.对于高效处理大规模并发连接。linux支持epoll，solaris支持event ports和freeBSD
+	2.对于linux还可以调用sendFile系统。高效把硬盘数据发送网络中，而不是先缓存到内存中

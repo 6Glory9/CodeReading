@@ -1,0 +1,189 @@
+AnnotationDrivenBeanDefinitionParser(<tx:annotation-driven/>)
+	1.registerTransactionalEventListenerFactory(TransactionalEventListenerFactory)
+	2.默认模式
+		1.registerAutoProxyCreatorIfNecessary(注册自动代理创建处理器,默认是InfrastructureAdvisorAutoProxyCreator【internalAutoProxyCreator】)
+			proxyTargetClass,exposeProxy配置
+		2.自定义internalTransactionAdvisor不存在，系统自己创建TransactionAdvisor
+			BeanFactoryTransactionAttributeSourceAdvisor(AnnotationTransactionAttributeSource,TransactionInterceptor)
+			ps:advisorDef.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
+	3.aspectj模式
+		创建一个AnnotationTransactionAspect，工厂方法是aspectOf，增加一个属性transactionManagerBeanName
+
+
+
+
+
+BeanFactoryTransactionAttributeSourceAdvisor
+    1.adviceBeanName:增加的入口(TransactionInterceptor)
+    2.TransactionAttributeSourcePointcut:(classFilter:true,method matches依赖transactionAttributeSource)
+    	TransactionAttributeSource.getTransactionAttribute(Method method, Class<?> targetClass);
+	3.transactionAttributeSource：method matches 数据源
+
+
+TransactionAttributeSource
+
+
+NameMatchTransactionAttributeSource
+	创建:setProperties(Properties transactionAttributes)(一串字符串通过TransactionAttributeEditor转化成TransactionAttribute)
+	用:getTransactionAttribute
+		1.缓存查找
+		2.pattern match,bestNameMatch(逻辑写蛮好)
+
+
+MethodMapTransactionAttributeSource
+	创建:1.methodNameMap<Method,methodNamePattern[class.ad*vi]> 
+	     2.transactionAttributeMap<Method,TransactionAttribute>
+	     3.methodMap(methodNamePattern[class.ad*vi],TransactionAttribute)
+	 用:getTransactionAttribute->transactionAttributeMap mapping
+
+MatchAlwaysTransactionAttributeSource
+	用:getTransactionAttribute->transactionAttributeMap DefaultTransactionAttribute
+
+
+
+AbstractFallbackTransactionAttributeSource
+	1.attributeCache:缓存
+	用:getTransactionAttribute(Method method, Class<?> targetClass)
+	  1.attributeCache获取如果存在直接返回
+	  2.computeTransactionAttribute计算
+	  	  1.public method标示，子类实现
+	  	  2.查找specificMethod的TransactionAttribute或class的TransactionAttribute。(first look up)
+	  	  3.查找method的TransactionAttribute或class的TransactionAttribute
+
+AnnotationTransactionAttributeSource
+	1.publicMethodsOnly:只允许public标示
+	2.annotationParsers:TransactionAnnotationParser解析器
+		SpringTransactionAnnotationParser(default),JtaTransactionAnnotationParser,Ejb3TransactionAnnotationParser
+
+	重写:1.allowPublicMethodsOnly
+		 2.findTransactionAttribute
+		 	annotationParsers直接解析
+
+
+TransactionDefinition,TransactionAttribute
+
+DelegatingTransactionDefinition
+	1.targetDefinition
+	重新TransactionDefinition所有方法
+DelegatingTransactionAttribute
+	1.TransactionAttribute
+	重新TransactionAttribute所有方法
+
+
+
+DefaultTransactionDefinition
+	实现TransactionDefinition所有方法
+DefaultTransactionAttribute
+	实现TransactionAttribute所有方法
+RuleBasedTransactionAttribute
+    重写:rollbackOn(Throwable ex)
+
+
+
+ TransactionTemplate(DefaultTransactionDefinition)
+ 	1.PlatformTransactionManager:事务管理器
+ 	2.父类所谓数据源
+ 	用:execute(TransactionCallback<T> action) 
+ 		1.通过事务管理器(时transactionManager.getTransaction(TransactionDefinition))获取事务状态(TransactionStatus)
+ 		2.业务操作(内部可以修改TransactionStatus)
+ 		3.异常时transactionManager.rollback(status)
+ 		4.this.transactionManager.commit(status)
+ 		5.返回业务操作的值
+
+
+
+ PlatformTransactionManager
+
+ AbstractPlatformTransactionManager系列
+ 	1.transactionSynchronization:同步事务抉择
+ 	2.defaultTimeout:默认超时时间
+ 	3.nestedTransactionAllowed:内嵌事务标示
+ 	4.validateExistingTransaction:验证事务存在标示
+ 	5.globalRollbackOnParticipationFailure:部分status异常是否设置全局回滚标示
+ 	6.failEarlyOnGlobalRollbackOnly:全局回滚(time-out)早暴露异常标示
+ 	7.rollbackOnCommitFailure:提交错误需要回滚标示(false)
+
+ 	用:
+ 	1.getTransaction(TransactionDefinition definition);
+ 		1.获取上下文事务transaction 子类实现
+ 		2.if可以获取一个默认TransactionDefinition
+ 		3.判断transaction存在   子类实现
+ 			1.PROPAGATION_NEVER exception
+ 			2.PROPAGATION_NOT_SUPPORTED
+ 				1.suspend(transaction)
+ 					1.如果存在同步TransactionSynchronization
+ 						1.同步事务全部挂起操作
+ 						2.doSuspend挂起本地事务操作 子类操作
+ 						3.清理TransactionSynchronizationManager事务同步管理器
+ 						4.返回SuspendedResourcesHolder
+ 					2.不存在同步
+ 						1.doSuspend挂起本地事务操作 子类操作
+ 						2.SuspendedResourcesHolder
+ 				2.返回newTransactionStatus
+ 				DefaultTransactionStatus
+ 				1.transaction:事务
+ 				2.newTransaction:新本地事务标示
+ 				3.newSynchronization:新同步事务标示
+ 				4.readOnly:只读标示
+ 				5.suspendedResources:挂起资源
+ 				6.rollbackOnly:回滚标示
+ 				7.completed:完成标示
+ 				8.savepoint:保存点
+ 			3.PROPAGATION_REQUIRES_NEW(新建立事务操作)
+ 				1.suspend(transaction)
+ 				2.newTransactionStatus
+ 				3.doBegin开始事务 子类操作
+ 				4.同步事务管理器保存新的同步事务
+ 			4.PROPAGATION_NESTED
+ 				1.必须允许nestedTransactionAllowed,不然不能使用这个传播行为
+ 				2.判断允许保存点 子类操作
+ 					1.新的status，保存点
+ 					2.新建立事务操作
+ 			5.validateExistingTransaction标示允许(检查隔离级别和读)
+ 			6.prepareTransactionStatus(存在事务)
+ 		4.不存在事务操作
+ 			1.检查超时时间与传播行为
+ 			2.不需要事务传播行为操作,直接返回prepareTransactionStatus
+ 			3.需要事务传播行为操作
+ 				1.挂起null事务
+ 				2.newTransactionStatus
+ 				3.doBegin开始事务 子类操作
+ 				4.同步事务管理器保存新的同步事务
+
+
+ 	2.commit(TransactionStatus status);
+ 		1.status已经完成,exception
+ 		2.defStatus.isLocalRollbackOnly()，回滚操作
+ 			processRollback(DefaultTransactionStatus status)
+ 				1.triggerBeforeCompletion，同步事务BeforeCompletion操作
+ 				2.保留点回滚(1.存在保留点)
+ 				3.doRollback(status)(2.NewTransaction新的事务) 子类操作
+ 				4.doSetRollbackOnly(3.存在事务且回滚标示) 子类操作
+ 				5.triggerAfterCompletion,同步事务BeforeCompletion操作
+ 				6.cleanupAfterCompletion
+ 					1.设置DefaultTransactionStatus完成标示
+ 					2.if NewSynchronization 事务同步管理clear
+ 					3.if NewTransaction   doCleanupAfterCompletion(恢复现在.connection.setAutoFlat(true))  子类操作
+ 					4.if SuspendedResources
+ 						resume呼醒操作
+ 						1.if suspendedResources  
+ 							resume 子类操作
+ 						2.if suspendedSynchronizations 
+
+ 		3.if shouldCommitOnGlobalRollbackOnly
+ 			processRollback
+ 		4.commit
+ 			1.prepareForCommit
+ 			2.triggerBeforeCommit
+ 			3.triggerBeforeCompletion
+ 			4.if releaseHeldSavepoint
+ 			5.if doCommit  子类操作
+ 			6.globalRollbackOnly exception处理
+ 			7.doRollbackOnCommitException
+ 			8.triggerAfterCommit(status)
+ 			9.triggerAfterCompletion
+ 		   10.cleanupAfterCompletion
+
+
+    3.rollback(TransactionStatus status)
+    	processRollback(defStatus)

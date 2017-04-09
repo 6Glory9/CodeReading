@@ -1,0 +1,46 @@
+﻿AnnotatedElementUtils
+	searchWithGetSemantics(AnnotatedElement element,
+			Class<? extends Annotation> annotationType, String annotationName,
+			Processor<T> processor, Set<AnnotatedElement> visited, int metaDepth)
+	1.所有DeclaredAnnotations
+			searchWithGetSemanticsInAnnotations
+			1)用户annotation && (type||annotationName ||metaDepth>0)
+					processor->AnnotationAttributes
+						AnnotationAttributes 
+							class<->className
+							Map<String,Object> <-> synthesizeAnnotation
+							DefaultValueHolder
+			2)searchWithGetSemantics(annotation.getType,metaDepth+1)
+					processor->postProcess 
+							postProcess 把寄生的类的alias值取过来
+	2.如果没有找着，再去parent class Annotation
+	
+	
+	getMergedAnnotationAttributes
+		
+	
+	postProcessAnnotationAttributes
+	 1.替换@AliasFor
+	 2.处理DefaultValueHolder
+	 
+	synthesizeAnnotation
+		AnnotationAttributeExtractor->AbstractAliasAwareAnnotationAttributeExtractor->(MapAnnotationAttributeExtractor,DefaultAnnotationAttributeExtractor
+		
+		
+		MapAnnotationAttributeExtractor
+			enrichAndValidateAttributes()
+				1.取值顺序(attributeValue,aliasValue,defaultValue)
+				2.值的转化(Map->Annotation,array<map>->array<Annotation>)
+			attributeAliasMap  Map<attributeName,List<alias>>
+			source  Map<String,Object>
+			
+			getAttributeValue(Method attributeMethod)
+				1.source的值已经取最新的,get attributeMethod 肯定会取到值哈
+				2.异常验证
+				3.如果取的默认值,如果存在alias,取它的默认值
+			
+		SynthesizedAnnotationInvocationHandler  动态代理
+			存在缓存处理，通过MapAnnotationAttributeExtractor取相应的值。如果是annotation再取值
+			
+		
+				

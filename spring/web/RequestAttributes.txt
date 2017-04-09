@@ -1,0 +1,37 @@
+﻿RequestAttributes
+
+AbstractRequestAttributes
+	requestActive:request标示
+	requestDestructionCallbacks:requestCompleted执行注册的事件
+	
+	1.requestCompleted
+	requestActive，执行requestDestructionCallbacks
+	updateAccessedSessionAttributes
+
+ServletRequestAttributes
+	immutableValueTypes：不变的类型
+	request，response,session
+	sessionAttributesToUpdate:不变的类型需要更新的值
+	
+ServletWebRequest
+	获取Web的信息，获取原始类型，可以切换
+	
+	getNativeRequest(Class<T> requiredType) 获取指引的包装类
+
+DispatcherServletWebRequest
+  重写Local
+  
+StandardServletAsyncWebRequest
+	异常request
+	
+
+
+HttpServletRequestWrapper(javax.servlet.http.HttpServletRequestWrapper)
+
+ShiroHttpServletRequest
+servletContext：
+session：
+httpSessions:httpSession标示
+getRemoteUser，isUserInRole，getUserPrincipal
+		
+	

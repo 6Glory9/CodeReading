@@ -1,0 +1,103 @@
+﻿ProxyConfig(代理配置数据源)
+	proxyTargetClass:代理方式(true-cglib,false=interface)
+	optimize:优化
+	opaque:是否Advised标示,false转换Advised
+	exposeProxy:是否暴露proxy于当前线程(AopContext)
+	frozen:冻结配置标示
+	
+	optimize优化|proxyTargetClass true|没有用户接口
+			PS:及时这么设置target是接口或者是proxy还是jdk
+
+AdvisedSupport(Advisor配置及操作)
+	preFiltered：false表示需要Class filter 验证
+	advisorChainFactory：切面链创建工厂（method->(class filter,method match)advisor->list MethodInterceptor）
+	methodCache:方法对应的切面缓存(methodkey,MethodInterceptorList)
+	interfaces：接口
+	advisors：切面List
+	advisorArray：切面Array
+	targetSource：目标源
+	
+ProxyCreatorSupport(创建代理)
+	aopProxyFactory:创建代理工厂
+	listeners:advisor生命周期监听器(first create,change)
+	active:标示代理是否被创建
+
+	AopProxy createAopProxy(AdvisedSupport config)
+		1.调用此方法之前,listener.activated(this);
+		2.根据配置创建相应的代理(AopProxy)
+		optimize优化|proxyTargetClass true|没有用户接口
+			PS:及时这么设置target是接口或者是proxy还是jdk
+
+ProxyFactoryBean
+	interceptorNames：
+	targetName：目标名字
+	autodetectInterfaces:自动发现接口标示(interceptorNames.length==0&&proxyTargetClass=false)
+	singleton:单列标示
+	advisorAdapterRegistry:
+	freezeProxy：冻结配置标示
+	beanFactory
+	advisorChainInitialized:链路初始化标示
+	singletonInstance
+
+	getObject()
+	1.initializeAdvisorChain:把interceptorNames所有的类转换成Advisors(拦截器->切面)
+	2.自动接口->setInterfaces
+
+AspectJProxyFactory
+	addAspect(Object aspectInstance),增加addAdvisors入口。
+	
+	
+
+
+JdkDynamicAopProxy
+	advised:代理所有东西
+	equalsDefined：接口是否定义equals方法标示
+	hashCodeDefined:接口是否定义hashCode方法标示
+
+	创建：1.用户自定义接口+(SpringProxy,Advised)
+	      2.equalsDefined和hashCodeDefined标示
+	      3.根据所有的接口生成对象
+
+
+	
+	invoke方法
+		1.根据equalsDefined为false，又是equal方法;直接调用本地方法（处理advised）
+		2.配置本身方法调用，是否暴露proxy上下文
+		3.根据类和方法查找所有的匹配的ListMethodInterceptor,Interceptor]
+		     1.AdvisorChainFactory根据targetClass,method匹配出所有的List[MethodInterceptor,Interceptor]
+			 2.class Filter(isPreFiltered,过滤掉class filter)
+			 3.method Filter
+		4.上步为空，直接调用本地方法(变量的量)
+	  5.ReflectiveMethodInvocation 链路使用
+	  6.释放proxy
+	  	
+
+CglibAopProxy
+	advised:代理所有东西
+	advisedDispatcher:切面分发器
+	validatedClasses：验证的类缓存
+	fixedInterceptorMap：(method,i)方法对应的坐标
+	fixedInterceptorOffset:坐标开始位置
+	
+	getProxy()
+	1.如果父类是cglib代理对象就增加接口。
+	2.完成所有的接口-用户自定义接口+(SpringProxy,Advised)
+	3.Callback回调MAP
+	  1.aopInterceptor
+	  2.targetInterceptor
+	  3.SerializableNoOp
+	  4.targetDispatcher
+	  5.advisedDispatcher（处理advised）
+	  6.EqualsInterceptor
+	  7.HashCodeInterceptor
+	  8.静态fixedInterceptorOffset
+	ProxyCallbackFilter
+		1.NO_OVERRIDE,DISPATCH_ADVISED,INVOKE_EQUALS,INVOKE_HASHCODE
+		2.根据类和方法查找所有的匹配的ListMethodInterceptor,Interceptor]
+
+
+
+ObjenesisCglibAopProxy
+	可以创建无构造方法
+	
+	

@@ -1,0 +1,23 @@
+﻿AbstractSingletonProxyFactoryBean
+	target:原对象
+    proxyInterfaces:代理接口
+    preInterceptors:靠前拦截器
+    postInterceptors:靠后拦截器
+    advisorAdapterRegistry:转换器
+    proxy:代理对象
+    proxyClassLoader:classLoader
+
+    接口:afterPropertiesSet
+    	1.检查target,proxyClassLoader
+    	2.addAdvisor(preInterceptors,mainInterceptor,postInterceptors),advisorAdapterRegistry进行转换
+    		createMainInterceptor子类实现
+    	3.配置是否使用Cglib还是jdkProxy
+    	4.后处理ProxyBeanFactory子类实现
+    	5.ProxyFactoryBean.getProxy
+
+  CacheProxyFactoryBean
+  		实现:createMainInterceptor,增加一个advisor
+
+  TransactionProxyFactoryBean
+  		重写:postProcessProxyFactory增加TransactionalProxy接口标示
+  		实现:createMainInterceptor,增加一个advisor

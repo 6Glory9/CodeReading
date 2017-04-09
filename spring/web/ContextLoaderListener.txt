@@ -1,0 +1,16 @@
+﻿ContextLoaderListener
+	defaultStrategies
+	org.springframework.web.context.WebApplicationContext=
+	org.springframework.web.context.support.XmlWebApplicationContext
+	
+	contextInitialized(ServletContextEvent event)
+			1.保证当前servletContext不存在WebApplicationContext
+			2.createWebApplicationContext 
+					取值顺序:1.contextClass 2.defaultStrategies 
+					保证ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)
+			3.parentApplicationContext
+					locatorFactorySelector parentContextKey ->parentContext
+			4.configureAndRefreshWebApplicationContext
+					setServletContext,setConfigLocation,initPropertySources(),initializer.initialize(web)
+			5.
+					

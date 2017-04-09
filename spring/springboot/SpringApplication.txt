@@ -1,0 +1,64 @@
+﻿SpringApplication
+		1.sources:数据源头
+		2.mainApplicationClass:main.class（通过new RuntimeException().getStackTrace()）
+		3.webEnvironment:web标示(Servlet&&ConfigurableWebApplicationContext)
+		4.initializers:spring ApplicationContextInitializer
+		5.listeners:spring ApplicationListener,监听相应的事件[EventPublishingRunListener分发与context相同，但前期也可以用]。
+		6.additionalProfiles:运用添加策略
+		7.headless:Headless模式标示,headless工具包就会被使用。接下来使用getDefaultToolkit()方法来创建一个headless toolkit的实例
+		8.defaultProperties:默认的属性
+		9.bannerMode:banner打印模式
+	   10.applicationContextClass,resourceLoader,beanNameGenerator:用户可以指定
+		
+		用:1.getSpringFactoriesInstances(Class<T> type,Class<?>[] parameterTypes, Object... args)
+			eg:META-INF/spring.factories文件中org.springframework.beans.BeanInfoFactory=org.springframework.beans.ExtendedBeanInfoFactory,xxxxxx,aaaa
+				1.获取通过文件获取属性配置,再通过type获取相应class集合
+				2.class集合把所有值实例化
+				3.排序
+
+
+		   2.StopWatch
+		   		1.stopWatch.start("task1");stopWatch.stop();
+		   		2.所有task汇总
+
+    	   3.StartupInfoLogger
+    	   		1.根据logger打印StopWatch
+    
+
+SpringApplication.run(Main.class);
+	1.setHeadlessFlat(重写headless标示)		     
+	2.getSpringApplicationRunListeners(springboot启动生命周期RunListeners,SpringApplicationRunListener从spring.factories获取)
+	3.listeners.start()生命周期
+	4.封闭调用参数ApplicationArguments
+	5.createAndRefreshContext()
+		1.create environment(根据环境标示创建环境变量)
+		2.configureEnvironment(1.增加环境变量(defaultProperties,命令标示(CommandLinePropertySource)) 2.激活ActiveProfiles并添加运用策略)
+		3.listeners.environmentPrepared()生命周期
+		4.Environment转换(SERVLET_ENVIRONMENT_SOURCE_NAMES过滤作用)
+		5.根据标示打印printBanner(OFF,CONSOLE,LOG)
+		5.createApplicationContext(1.指定2.根据Environment flat(AnnotationConfigEmbeddedWebApplicationContext|ConfigurableWebApplicationContext))
+		6.postProcessApplicationContext(setter(1.beanNameGenerator 2.resourceLoader))
+		7.initializers(ApplicationContextInitializer会把Generic做判断,最终initialize)application生命周期initialize
+		8.listeners.contextPrepared(context)生命周期
+		9.打印标示决定(1.logStartupInfo 2.logStartupProfileInfo)
+	   10.注册参数ApplicationArguments
+	   11.load(context,sources)(用BeanDefinitionLoader加载bean到context)
+	   12.listeners.contextLoaded(context)生命周期
+	   13.refresh(context)
+	   14.标示context.registerShutdownHook();
+	6.afterRefresh
+		1.afterRefresh
+		2.callRunners(自动运行,ApplicationRunner,CommandLineRunner)		
+	7.listeners.finished(exception null)生命周期
+	8.打印标示决定stopWatch启动时间
+	9.exception handler
+		1.SpringBootExceptionHandler.registerLoggedException 注册异常用来打印
+		2.handleExitCode
+			1.application获取ExitCodeExceptionMapper，getKey(Exception)获取exitCode
+			2.publishEvent(ExitCodeEvent)
+			3.SpringBootExceptionHandler注册退出码
+		3.listeners.finished(exception)
+		4.context.close
+
+
+BeanDefinitionLoader

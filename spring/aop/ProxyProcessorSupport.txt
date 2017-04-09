@@ -1,0 +1,88 @@
+﻿ProxyProcessorSupport(AopInfrastructureBean),代理处理器
+	1.AopInfrastructureBean这个是AopInfrastructureBean标示
+	2.evaluateProxyInterfaces
+		 1.获取被代理对象所有接口
+		 2.设置代理标示proxyTargetClass=true
+
+AbstractAutoProxyCreator系列
+	1.advisedBeans：advisedBeans->Map,true标示代理的,false表示advisor
+	2.applyCommonInterceptorsFirst:公共拦截器首先标示
+	3.freezeProxy:冻结配置标示
+	4.interceptorNames:拦截器名称集合
+	5.proxyTypes:代理对象的类型(重写predictBeanType)
+	6.TargetSourceCreator:自定义TargetSource创建器
+	7.targetSourcedBeans：targetSource的名字集合
+	8.earlyProxyReferences:代理早期引用对象
+	9.AdvisorAdapterRegistry:advice->Advisor,Advisor->MethodInterceptor
+	
+	两个入口:
+		1.postProcessBeforeInstantiation(自己定义TargetSourceCreater)
+			PS:shouldSkip,要遍历所有beanName,如果是FactoryBean小心依赖注入
+			一般都不会这个入口进入
+			
+		2.postProcessAfterInitialization 初始化完成
+			wrapIfNecessary
+				1.targetSourcedBeans(已经代理过),adviseBeans(false:非proxy;true:proxy)对象直接返回
+				2.排查advisedBeans标示false对象(isInfrastructureClass,shouldSkip)
+				3.判断是否针对此对象存在相应advice,Advisors(getAdvicesAndAdvisorsForBean),子类实现
+				4.createProxy
+					1.在代理对象添加一个属性(ORIGINAL_TARGET_CLASS_ATTRIBUTE,originalTarget)
+					2.设置proxyTargetClass标示true(1.BeanDefine存在preserveTargetClass属性值为true  2.无存在合适的接口)	,直接设置所有接口
+					3.把所有拦截器，advice与advisor做相应的转换及添加advisors
+					4.自定义代理工厂,留给用户
+					5.设置freezeProxy，PreFiltered标示
+					6.ProxyFactory.getProxy
+									
+			
+AbstractAdvisorAutoProxyCreator
+	1.BeanFactoryAdvisorRetrievalHelper:Advisor查询工具
+	    重写:getAdvicesAndAdvisorsForBean
+				1.BeanFactoryAdvisorRetrievalHelper查看所有Advisor并且缓存起,查看类型注意一下FactoryBean
+				    使用isEligibleBean进行过滤,子类实现
+				2.匹配Advisors(匹配相应的类的一个方法就可以成为候选)PS:调用方法再次会匹配advisors(PreFiltered设置才会存在意义)
+					IntroductionAdvisor
+				    PointcutAdvisor(1.IntroductionAwareMethodMatcher 2.MethodMatcher)
+				3.额外的增加Advisors留给子类
+				
+DefaultAdvisorAutoProxyCreator
+	   重写:isEligibleAdvisorBean,通过前涰过滤
+
+InfrastructureAdvisorAutoProxyCreator
+	   重写:isEligibleAdvisorBean,通过BeanDefinition的Role判断
+
+AspectJAwareAdvisorAutoProxyCreator
+	   重写:1.shouldSkip 多一个判断advice逻辑
+		    2.extendAdvisors  foundAspectJAdvice时会增加ExposeInvocationInterceptor
+		    3.sortAdvisors				
+
+AnnotationAwareAspectJAutoProxyCreator
+	   1.aspectJAdvisorsBuilder:aspect创建工具
+	   重写: 1.findCandidateAdvisors
+		       增加一个逻辑aspectJAdvisorsBuilder.buildAspectJAdvisors()
+		     2.重写isInfrastructureClass
+
+
+AbstractAdvisingBeanPostProcessor系列
+	   1.advisor:切面
+	   2.beforeExistingAdvisors:如果被处理bean是Advised,标示这个增强增加前后。
+	   3.eligibleBeans:合格bean的Mapping
+
+	   用:接口
+	   postProcessAfterInitialization(Object bean, String beanName)
+	   		1.AopInfrastructureBean,直接返回
+	   		2.Advised,增加advisor过后直接返回
+	   		3.isEligible判断是否合格(如没缓存，查看再缓存)	
+	   		4.ProxyFactory.getProxy
+
+StatAnnotationBeanPostProcessor
+		setBeanFactory
+		配置BeforeExistingAdvisors标示和advisor
+
+AbstractBeanFactoryAwareAdvisingPostProcessor								
+		重写:prepareProxyFactory
+
+MethodValidationPostProcessor
+		afterPropertiesSet包装advisor
+
+AsyncAnnotationBeanPostProcessor
+PersistenceExceptionTranslationPostProcessor		

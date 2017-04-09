@@ -1,0 +1,52 @@
+Type(ParameterizedType,GenericArrayType,TypeVariable,WildcardType,Class)
+
+1.ParameterizedType: Collection<String>,Collection<E>,Collection<? extends Number>,Collection<?>
+2.GenericArrayType:E[],String[]
+3.TypeVariable:E
+4.WildcardType:?, ? extends Number, ? super Integer
+5.class:String,Object
+
+
+ParameterizedType
+	常用方法:Type[] getActualTypeArguments();去掉最外层的<>
+
+public static <E> E methodIV(
+	ArrayList<ArrayList<Integer>> al1, ArrayList<E> al2,  
+	ArrayList<String> al3,  
+	ArrayList<? extends Number> al4,  
+	ArrayList<E[]> al5){}
+
+ActualTypeArguments,RawType
+ArrayList<ArrayList<Integer>> al1==>ArrayList<Integer>==>ParameterizedType=>ArrayList
+ArrayList<E> al2 ==>E==>TypeVariable=>ArrayList
+ArrayList<String> al3 ==>String ==>class=>ArrayList
+ArrayList<? extends Number> ==> ? extends Number ==>WildcardType=>ArrayList
+ArrayList<E[]> al5  ==> E[] ==> GenericArrayType=>ArrayList
+
+
+GenericArrayType
+	常用方法:Type getGenericComponentType();去掉最右边[]
+
+public static <E> E methodV(
+String[] p1,
+E[] p2,
+ArrayList<E>[] p3,
+E[][] p4){}
+
+GenericComponentType
+String[] p1==>String==>class
+E[] ==>E ==>TypeVariable
+ArrayList<E>[] ==> ArrayList<E> ==>ParameterizedType
+E[][] ==> E[] ==> GenericArrayType
+
+TypeVariable
+	常用方法:Type[] getBounds();D getGenericDeclaration()[class,Method,Constructor];
+
+public static <E extends Map<String, Date>& Cloneable&Serializable> E methodVI(E e){…}
+Map<String, Date>==>ParameterizedType
+Cloneable,Serializable==>class
+getGenericDeclaration==>method
+
+WildcardType 说明也无用
+
+

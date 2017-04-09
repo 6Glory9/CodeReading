@@ -1,0 +1,97 @@
+﻿spring-amqp
+	1.Message
+	2.Exchange:交换器
+			exchangeType:Direct,Topic,Fanout,Headers
+			durable:持久性标示
+			autoDelete:自动删除标示
+	3.Queue
+			durable:持久性标示
+			autoDelete:自动删除标示
+			exclusive:独立唯一标示
+	4.Binding
+			new Binding(someQueue, someDirectExchange, "foo.bar");
+			new Binding(someQueue, someTopicExchange, "foo.*");
+			new Binding(someQueue, someFanoutExchange);
+			Binding b = BindingBuilder.bind(someQueue).to(someTopicExchange).with("foo.*");
+	5.connection
+			1.SingleConnectionFactory 
+			2.CachingConnectionFactory
+			3.SSLConnectionFactory
+			4.RoutingConnectionFactory
+			
+一、工作队列
+工作队列（又称：任务队列——Task Queues）是为了避免等待一些占用大量资源、时间的操作。
+当我们把任务（Task）当作消息发送到队列中，一个运行在后台的工作者（worker）进程就会取出任务然后处理。
+当你运行多个工作者（workers），任务就会在它们之间共享,只能一个工作者在操作。
+
+每个任务只分发给一个工作者（worker）
+
+1.消息确认
+当消息被RabbitMQ发送给消费者（consumers）之后，马上就会在内存中移除。这种情况，
+你只要把一个工作者（worker）停止，正在处理的消息就会丢失。同时，所有发送到这个工作者的还没有处理的消息都会丢失。
+如果消费者（consumer）挂掉了，没有发送响应，RabbitMQ就会认为消息没有被完全处理，然后重新发送给其他消费者（consumer）。
+这样，及时工作者（workers）偶尔的挂掉，也不会丢失消息。
+
+2.忘记确认
+忘了basic_ack，消息在你的程序退出之后就会重新发送，如果它不能够释放没响应的消息，RabbitMQ就会占用越来越多的内存。
+
+3.消息持久化
+如果你没有特意告诉RabbitMQ，那么在它退出或者崩溃的时候，将会丢失所有队列和消息。为了确保信息不会丢失，
+有两个事情是需要注意的：我们必须把“队列”和“消息”设为持久化。
+
+二、发布／订阅
+任务分发一个消息给多个消费者（consumers）
+
+1.交换机（Exchanges）
+发布者（producer）只需要把消息发送给一个交换机（exchange）。交换机非常简单，它一边从发布者方接收消息，
+一边把消息推送到队列。交换机必须知道如何处理它接收到的消息，是应该推送到指定的队列还是是多个队列，或者是直接忽略消息。
+这些规则是通过交换机类型（exchange type）来定义的。
+
+直连交换机（direct）, 主题交换机（topic）, （头交换机）headers和 扇型交换机（fanout）。
+
+
+2.匿名的交换器
+exchange参数就是交换机的名称。空字符串代表默认或者匿名交换机：消息将会根据指定的routing_key分发到指定的队列。
+
+3.临时队列
+们可以手动创建一个随机的队列名，或者让服务器为我们选择一个随机的队列名（推荐）。
+我们只需要在调用queue_declare方法的时候，不提供queue参数就可以了：
+
+4.绑定（Bindings）
+交换机如何发送消息给我们的队列。交换器和队列之间的联系我们称之为绑定（binding）。
+channel.queue_bind(exchange='logs',
+                   queue=result.method.queue)  没有路由routing_key
+
+
+三、路由(Routing)
+只订阅消息的一个字集。例如，我们只需要把严重的错误日志信息写入日志文件（存储到磁盘），
+但同时仍然把所有的日志信息输出到控制台中
+
+1.直连交换机（Direct exchange）
+我们的日志系统广播所有的消息给所有的消费者（consumers）。我们打算扩展它，使其基于日志的严重程度进行消息过滤。例如我们也
+许只是希望将比较严重的错误（error）日志写入磁盘，以免在警告（warning）或者信息（info）日志上浪费磁盘空间。
+
+channel.basic_publish(exchange='direct_logs',
+                      routing_key=severity,
+                      body=message)
+
+channel.queue_bind(exchange=exchange_name,
+                   queue=queue_name,
+                   routing_key='black')
+
+2.主题交换机（topic exchange）
+	 通配符的
+	 
+3.远程过程调用（RPC）
+	一个客户端发送请求信息，服务器端将其应用到一个回复信息中。为了接收到回复信息，
+	客户端需要在发送请求的时候同时发送一个回调队列（callback queue）的地址
+	
+	channel.basic_publish(exchange='',
+                      routing_key='rpc_queue',
+                      properties=pika.BasicProperties(
+                            reply_to = callback_queue,
+                            ),
+                      body=request)
+	
+
+           

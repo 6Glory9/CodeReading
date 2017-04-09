@@ -1,0 +1,24 @@
+﻿DispatcherServlet->servlet
+	defaultStrategies->classpath:DispatcherServlet.properties
+	
+	init
+		1.通过BeanWrapper把servletConfig转变DispatcherServlet来
+		2.initServletBean
+				1.从web取父类parentContext
+				2.从web取子类applicationContext
+				setServletContext,setServletConfig,setNamespace
+				addApplicationListener,initPropertySources,
+		3.refreshEventReceived
+				initStrategies()
+		4.publishContext
+				getServletContext().setAttribute(attrName, wac);
+
+request(webApplicationContext,localeResolver,themeResolver,ThemeSource)
+
+doDispatch
+	1.checkMultipart
+	2.request->HandlerMapping->Handler->HandlerAdapter
+			1.URL->handler,DefaultHandler,string->handler
+			2.生成HandlerExecutionChain
+			3.add (PreFlightHandler|CorsInterceptor)
+	3.HandlerAdapter.handle(Handler)

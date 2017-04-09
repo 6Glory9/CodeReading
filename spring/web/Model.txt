@@ -1,0 +1,24 @@
+﻿ModelAndViewContainer
+	defaultModel:默认的数据源
+	redirectModel:重定向的数据源
+	sessionStatus:@SessionAttributes的状态(isComplete(session对应的值remove))
+	requestHandled:请求的响应处理标示
+	redirectModelScenario:重定向标示
+	ignoreDefaultModelOnRedirect:重定向时忽略默认的数据源标示
+	false(不忽略)。当redirectModel为空，redirectModelScenario为true时。还是可以使用defaultModel
+	
+	
+	1.defaultMode+controller(Model)
+		BindingResult.name->BindingResult
+	2.setView(name,view)
+	3.RedirectAttributes时，把相应值暴露到FlashMap
+	4.如果view为空,viewNameTranslator解析
+	
+	
+	ModelAndView(model,view,clear mark)
+	
+	view.render(model)
+	
+
+		
+	

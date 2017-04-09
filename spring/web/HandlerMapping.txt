@@ -1,0 +1,87 @@
+﻿HandlerMapping
+
+AbstractHandlerMapping
+		1.setsetServletContext()
+		2.setApplicationContext()
+		3.initApplicationContext()加载Interceptors
+		  
+		  
+ 用:getHandler(HttpServletRequest request) 模板方法
+		1.根据request找到相应处理handler,如不存在返回默认处理器getHandlerInternal
+		2.匹配HandlerInterceptor，组装返回HandlerExecutionChain
+		3.根据request是否跨域请求，增加(跨域预请求处理器,跨域请求拦截)
+			PS（https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)
+			1.PreFlightHandler(跨域预请求处理器),回写几个头字段。
+			2.CorsInterceptor（跨域预请求处理器）,处理返回是否正确。
+	
+AbstractHandlerMethodMapping
+		afterPropertiesSet(三个模板方法)
+				isHandler(beanType)
+				getMappingForMethod(method, userType)
+				getMappingPathPatterns(T mapping)
+				detectHandlerMethods(handlerType)
+				
+用:getHandlerInternal(HttpServletRequest request)
+		lookupHandlerMethod(String lookupPath, HttpServletRequest request)(两个模板方法)
+ 		getMatchingMapping(T mapping, HttpServletRequest request)
+ 		getMappingComparator(HttpServletRequest request)
+ 		T->Comparator<T>，Collections.sort(matches, comparator); 找出匹配最精确
+		 				
+
+RequestMappingInfoHandlerMapping
+		实现：getMappingPathPatterns
+			  getMatchingMapping
+			  getMappingComparator
+					
+		覆盖:handleMatch
+				1.BEST_MATCHING_PATTERN_ATTRIBUTE,URI_TEMPLATE_VARIABLES_ATTRIBUTE
+		    	2.MATRIX_VARIABLES_ATTRIBUTE,PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE
+		    	eg:
+		    	/owners/{ownerId}/pets/{petId}
+				@MatrixVariable(pathVar = "petId") Map<String, String> petMatrixVars
+				http://localhost:8080/owners/44/pets/55;q=22,33;s=23
+				
+				BEST_MATCHING_PATTERN_ATTRIBUTE:http://localhost:8080/owners/44/pets/ 55;q=22,33;s=23
+				URI_TEMPLATE_VARIABLES_ATTRIBUTE:{[ownerId=44],[petId=55]}
+				MATRIX_VARIABLES_ATTRIBUTE:{[q=22,33],[s=23]}
+		    
+		     handleNoMatch
+		    	抛相应的异常
+
+RequestMappingHandlerMapping
+				setEmbeddedValueResolver()
+				覆盖：afterPropertiesSet()，initCorsConfiguration()
+				实现：isHandler(Class<?> beanType)
+				      getMappingForMethod(Method method, Class<?> handlerType)
+		
+		
+		
+AbstractUrlHandlerMapping
+	创:registerHandler(String urlPath, Object handler)(子类使用注册)
+	 		setRootHandler
+	 		setDefaultHandler
+
+   用:getHandlerInternal
+   	 1.mappedHandler
+	 2./ ->rootHandler
+	 3.null ->defaultHandler
+	 4.validateHandler(requestMethod,Params,Headers)
+	 5.通过Interceptor暴露(BEST_MATCHING_PATTERN_ATTRIBUTE,URI_TEMPLATE_VARIABLES_ATTRIBUTE)
+	 
+	
+SimpleUrlHandlerMapping
+   覆盖:initApplicationContext()，使用registerHandlers
+	  
+	
+AbstractDetectingUrlHandlerMapping
+   覆盖:initApplicationContext(),detectHandlers()	
+  	   determineUrlsForHandler（模板方法,由子类实现）
+	 
+DefaultAnnotationHandlerMapping
+   覆盖:determineUrlsForHandler
+	     1.RequestMapping解析
+		 2.url==>handler
+		 3.validateHandler
+
+BeanNameUrlHandlerMapping
+	覆盖:determineUrlsForHandler

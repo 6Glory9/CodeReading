@@ -1,0 +1,77 @@
+FlowExecutor
+	1.definitionLocator:获取FlowDefinition工具
+	2.FlowExecutionFactory:FlowExecution创建工厂
+	3.FlowExecutionRepository:Repository
+
+	用:launchExecution(String flowId, MutableAttributeMap input, ExternalContext context)
+		1.线程变量保存外部变量
+		2.根据flowId获取Flow
+		2.FlowExecutionRepository()-->FlowExecution(Flow),没有flowExecutionKey
+				1.flow:流程
+				2.status:流程状态
+				3.flowSessions:
+				4.listeners:流程监听器，Flow读取
+				5.keyFactory:Executionkey生成器
+				6.key:executionkey主键
+				7.conversationScope:回话
+				8.attributes:属性，FlowExecutionRepository获取
+				9.outcome:结果
+		3.flowExecution.start(input, context)执行流程
+		4.if 流程没有结束根据flowExecutionKey获取FlowExecutionLock
+		5.事务保存FlowExecution，返回一个暂停结果
+		6.createEndResult，返回一个结束结果
+		7.ExternalContextHolder.setExternalContext(null)
+
+
+FlowExecutionRepository
+	
+AbstractFlowExecutionRepository
+	1.conversationManager: 会话管理器
+	2.alwaysGenerateNewNextKey:总是生成新的key标示
+
+	用:1.getKey(FlowExecution execution)
+			1.if executionkey通过conversationManager与ConversationParameters(flowId,flowCaption,flowDescription)->Conversation
+					返回CompositeFlowExecutionKey(ConversationId,snapshotId),nextSnapshotId子类实现
+			2.if alwaysGenerateNewNextKey标示 snapshotId发现变化
+
+	   2.parseFlowExecutionKey(String encodedKey) 
+	   	    1.根据encodedKey解析executionId(conversationManager.parseConversationId)，snapshotId组成CompositeFlowExecutionKey
+
+	   3.getLock(FlowExecutionKey key)
+	   		1.conversationManager根据executionId获取conversation
+	   		2.返回一个代理ConversationBackedFlowExecutionLock
+
+	   4.removeFlowExecution(FlowExecution flowExecution)
+	   		1.conversationManager根据executionId获取conversation
+	   		2.conversation直接end操作
+
+AbstractSnapshottingFlowExecutionRepository
+	1.FlowExecutionSnapshotFactory：快照工厂
+
+DefaultFlowExecutionRepository
+	
+
+
+ConversationManager
+SessionBindingConversationManager
+	1.conversationLockFactory：会话锁工厂
+	用:1.getConversationContainer()->session(sessionKey,ConversationContainer)->ConversationContainer 保存session的sessionKey
+
+	2.beginConversation(ConversationParameters conversationParameters)
+		1.getConversationContainer createConversation(conversationParameters,ConversationContainer,Lock,Id)
+		2.ConversationContainer.conversations.add(ContainedConversation)
+
+    3.getConversation(ConversationId id)
+    	1.遍历ConversationContainer的conversations
+    4.parseConversationId(String encodedId)
+
+
+ Conversation(Session(key,ConversationConversationContainer))
+ 	1.ConversationContainer
+ 	2.ConversationLock
+ 	3.attributes---(SNAPSHOT_GROUP_ATTRIBUTE,FlowExecutionSnapshotGroup),Snapshot(FlowExecutionSnapshot)
+ 	4.attributes---(scope,flowExecution.getConversationScope())
+
+
+ FlowExecutionKey
+ CompositeFlowExecutionKey(executionId,snapshotId)   ContainedConversation(executionId=id)

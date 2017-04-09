@@ -1,0 +1,24 @@
+JdkDynamicAopProxy
+1.find Interfaces
+2.flag hashCode and equals
+3.Proxy.newProxyInstance(InvocationHandler==>JdkDynamicAopProxy)
+
+
+
+
+JdkDynamicAopProxy.invoke
+1.invoke proxy equals&&hashCode&&Advised
+2.IF exposeProxy
+3.getTarget
+4.look up Interceptors
+	1.IF methodCache look up
+	2.advisorChainFactory==>[MethodInterceptor,InterceptorAndDynamicMethodMatcher,Interceptor],但处理只有两类
+	3.cache methodCache
+5.IF Interceptors is null.invoke
+6.chain invoke
+	1.IF last Interceptor invoke method
+	2.IF InterceptorAndDynamicMethodMatcher match invoke(go on process),else pass==>next invoke
+	3.MethodInterceptor invoke method(go on process)
+7.processReturnType
+8.releaseTarget
+9.IF setCurrentProxy(oldProxy)

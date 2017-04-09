@@ -1,0 +1,95 @@
+﻿TransactionInterceptor
+	
+	invokeWithinTransaction
+	1.TransactionAttribute
+	2.PlatformTransactionManager(qualifier)
+	3.TransactionAttribute--->DelegatingTransactionAttribute(qualifier)
+	
+	
+	PlatformTransactionManager.getTransaction(TransactionAttribute) -->TransactionStatus
+	1.doGetTransaction()-->DataSourceTransactionObject
+		ConnectionHolder,isNestedTransactionAllowed,newConnectionHolder(false)
+		从resources获取ConnectionHolder
+		
+		ConnectionHolder
+		currentConnection 当前连接
+		ConnectionHandle  连接处理器
+		transactionActive 当前事务是否激活
+		savepointsSupported 是否支持存储点保存
+		savepointCounter
+		synchronizedWithTransaction  同步具有事务
+		rollbackOnly  回滚标示
+		deadline 死亡时间
+		isVoid 
+		referenceCount   (request referenceCount++,released referenceCount--)
+		
+	2.isExistingTransaction
+	
+	AbstractPlatformTransactionManager
+				transactionSynchronization = 0 默认是否同步标示	
+				1.PROPAGATION_NOT_SUPPORTED(只要跟标示匹配就好)
+					getTransactionSynchronization() == SYNCHRONIZATION_ALWAYS
+					
+				2.PROPAGATION_REQUIRES_NEW （只要标示不是永同步，就需要同步）
+					getTransactionSynchronization() != SYNCHRONIZATION_NEVER
+		
+				getConnectionHolder().isTransactionActive()   事务在存活
+		
+		1.当前事务存在，如果当前事务传播行为为PROPAGATION_NEVER
+			IllegalTransactionStateException
+		2.PROPAGATION_NOT_SUPPORTED 不需要事务
+			suspend（DataSourceTransactionObject） 挂起事务
+			1.远程当前事务同步激活
+				1.清除所有TransactionSynchronizationManager属性，所有TransactionSynchronization.Suspended
+				2.SuspendedResourcesHolder（List<TransactionSynchronization>）
+			2.挂起
+				清除当前DataSourceTransactionObject 连接器ConnectionHolder和TransactionSynchronizationManager.resources
+				SuspendedResourcesHolder(SourceConnectionHolder)
+				prepareTransactionStatus（newTransactionStatus，prepareSynchronization)
+		3.PROPAGATION_REQUIRES_NEW
+			newTransactionStatus，doBegin，prepareSynchronization
+		4.PROPAGATION_NESTED
+				prepareTransactionStatus，status.createAndHoldSavepoint(); jdbc 3.0
+				newTransactionStatus，doBegin，prepareSynchronization
+		5.other
+				prepareTransactionStatus
+				
+	
+	completeTransactionAfterThrowing
+		txInfo.transactionAttribute.rollbackOn(ex)
+		1.triggerBeforeCompletion --> all synchronization.beforeCompletion();
+		2.status.hasSavepoint()  处理
+		3.doRollback(status); connection.rollback
+		4.doSetRollbackOnly(status);
+		triggerAfterCompletion()
+		cleanupAfterCompletion
+			resume 还原之前connectionHolder
+			
+			
+			
+	TransactionSynchronizationManager 事务同步器
+				1.resources  Map<dataSourceKey,ConnectionHolder>
+				2.synchronizations  同步事务（JTA，相应的监听处理器调用相应方法）
+				3.currentTransactionName  事务名称
+				4.currentTransactionReadOnly  只读属性
+				5.currentTransactionIsolationLevel 事务隔离级别
+				6.actualTransactionActive  当前事务的状态
+			
+			1.getResource（dataSource）
+			2.bindResource
+			3.unbindResource
+			4.registerSynchronization
+			
+	TransactionInfo  -- Thread
+		1.TransactionStatus
+		2.TransactionInfo oldTransactionInfo
+	
+	TransactionStatus  -- DefaultTransactionStatus
+		1.transaction  事务
+		2.newTransaction 新的事物
+		3.newSynchronization 是否需要事务同步管理管理
+		4.readOnly
+		5.suspendedResources 挂起资源 SuspendedResourcesHolder
+			
+			
+		
