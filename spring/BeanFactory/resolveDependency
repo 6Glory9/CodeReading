@@ -1,0 +1,37 @@
+1.Optional descriptor
+2.ObjectFactory descriptor
+3.Provider descriptor
+4.Lazy descriptor
+5.common descriptor
+doResolveDependency(type)
+1.【@value】 from  descriptor field|method
+	1.IF string get final value(1.${}占位,2.#{}spEL)
+	2.类型转换
+2.【Array】
+	1.findAutowireCandidates(componentType)
+	2.isRequired
+	3.类型转换	
+3.【Collection && Interface】
+	1.findAutowireCandidates(CollectionType)
+	2.isRequired
+	3.类型转换
+4.【Map && Interface && key is String】
+	1.findAutowireCandidates(valueType)
+	2.isRequired
+	3.类型转换
+5.【Object】
+	1.findAutowireCandidates(descriptorType)
+	2.isRequired
+	3.IF size>1 determineAutowireCandidate(1.@Primary 2.priorityCandidate 3.resolvableDependencies)
+	3.类型转换
+
+
+findAutowireCandidates
+	1.look up from resolvableDependencies
+	2.遍历所有beanName
+		1.不是本人引用
+		2.isAutowireCandidate
+		3.类型匹配(1.FactoryMethod 2.proxy FactoryMethod 3.create bean,getType 4.hasBeanClass 5.fallbackMatchAllowed)
+		4.checkQualifiers
+
+

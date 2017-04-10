@@ -1,0 +1,22 @@
+BeanDefinitionValueResolver 获取最终值
+1.【RuntimeBeanReference】
+	${s}==>parent|local factory
+2.【RuntimeBeanNameReference】
+    ${beanName}==>string
+3.【BeanDefinitionHolder】
+	1.GenericBeanDefinition==>RootBeanDefinition
+	2.look up dependsOnBean
+	3.createBean
+4.【BeanDefinition】==>【BeanDefinitionHolder】
+5.【ManagedArray】
+	递归调用BeanDefinitionValueResolver
+6.【ManagedList】
+	递归调用BeanDefinitionValueResolver
+7.【ManagedSet】
+	递归调用BeanDefinitionValueResolver
+8.【ManagedMap】
+	递归调用BeanDefinitionValueResolver
+9.【ManagedProperties】
+	key==>${},value==>${}
+10.【TypedStringValue】==>${}
+11.${}

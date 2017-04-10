@@ -1,0 +1,9 @@
+ProxyFactoryBean
+1.initializeAdvisorChain
+	1.interceptorNames[Advisor,Advice,DefaultPointcutAdvisor]拦截器最后一个globleInterceptor异常
+	2.【global_interceptor】(interceptorName*),遍历beanNames,只要以interceptorName开头(advisorAdapterRegistry==>Advisors)
+	3.【interceptor】(advisorAdapterRegistry==Advisors)
+2.IF 非 isProxyTargetClass,自动加载interfaces
+
+3.【ObjenesisCglibAopProxy】isOptimize,isProxyTargetClass,hasNoUserSuppliedProxyInterfaces,[class非接口,非Proxy](Advisors)
+4.【JdkDynamicAopProxy】(interfaces)
