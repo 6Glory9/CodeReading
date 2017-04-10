@@ -2,7 +2,23 @@ com.alibaba.dubbo.rpc.cluster.support.FailfastClusterInvoker
 1.Directory==>url==>invoker 共享，connections根据URL判断
 
 
-init
+providers
+InjvmProtocol local export
+DubboProtocol dubbo export
+1.通过spring event延时export
+2.通过ProxyFactory.getInvoker(ref)==>Invoke==>add DubboProtocol Mapping
+3.DubboProtocol#requestHandler,通过serviceKey(port, serviceName, serviceVersion, serviceGroup)
+找到ExportInvoke==>Invoke
+
+
+consumers
+1.生成一个Invoke
+2.通过ProxyFactory.getProxy(Invoker<T> invoker)==>Proxy
+3.最终setter
+
+
+
+zookeeper原理
 client  1.register  /dubbo/service/consumers 增加一条数据
         2.subscribe /dubbo/service/providers,configurators,routers，这三个目录都会订单一个ChildListener
           一旦有数据变化就会调用ChildListener的notify
