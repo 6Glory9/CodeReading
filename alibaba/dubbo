@@ -1,0 +1,13 @@
+com.alibaba.dubbo.rpc.cluster.support.FailfastClusterInvoker
+1.Directory==>url==>invoker 共享，connections根据URL判断
+
+
+init
+client  1.register  /dubbo/service/consumers 增加一条数据
+        2.subscribe /dubbo/service/providers,configurators,routers，这三个目录都会订单一个ChildListener
+          一旦有数据变化就会调用ChildListener的notify
+        3.增加ChildListener会获取其子数据，手动notify一把，初始化client
+
+service 1.local export
+        2.register  /dubbo/service/providers
+        3.subscribe /dubbo/service/configurators  OverrideListener

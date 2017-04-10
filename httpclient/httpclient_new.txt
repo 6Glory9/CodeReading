@@ -1,0 +1,132 @@
+一.HttpRequestExecutor
+create:waitForContinue,等待3000时间继续
+do:
+execute(HttpRequest,HttpClientConnection,HttpContext)
+1.通过HttpClientConnection发送header信息
+2.IF HttpVersion>1.0,通过HttpClientConnection接受header或entity
+3.通过HttpClientConnection发送entity,标示httpContext发送成功
+4.根据response和状态反复通过HttpClientConnection接受header和entity
+5.异常通过HttpClientConnection关闭连接
+
+preProcess(HttpRequest,HttpProcessor,HttpContext)
+1.request保存到httpContext
+2.HttpProcessor处理request
+
+postProcess(HttpResponse,HttpProcessor,HttpContext)
+1.response保存到httpContext
+2.HttpProcessor处理response
+
+
+二.HttpProcessor
+1.BasicHttpProcessor
+create:初始化两个List<HttpRequestInterceptor>,List<HttpResponseInterceptor>
+do:foreacht处理request,response
+
+2.ImmutableHttpProcessor(线程安全,创建时添加拦截器后面就不能修改)
+create:初始化两个HttpRequestInterceptor[],HttpResponseInterceptor[]
+do:foreacht处理request,response
+
+
+三、HttpClientConnectionManager
+BasicHttpClientConnectionManager
+create:
+HttpClientConnectionOperator->
+HttpConnectionFactory->根据
+ManagedHttpClientConnection->HttpClientConnection
+route,state,updated,expiry,leased,socketConfig,connConfig,shutdown
+
+do:
+1.requestConnection(HttpRoute,status)
+  return ConnectionRequest(1.cancle,2.get HttpClientConnection)
+  getConnection
+  1.检查是否关闭，检查是否租用==》关闭管理的connection
+  2.根据HttpRoute,ConnectionConfig,用HttpConnectionFactory==>HttpClientConnection
+
+2.releaseConnection
+	1.IF 关闭标示，直接关闭
+	2.IF connetion无法打开，清空
+	3.IF 更新expiry,leased租赁标示false
+	
+3.connect(HttpClientConnection,HttpRoute,connectTimeout,HttpContext)
+	HttpClientConnectionOperator去连接connection proxy|target
+	
+4.upgrade(HttpClientConnection,HttpRoute,HttpContext)
+	HttpClientConnectionOperator upgrade操作
+
+5.closeIdleConnections
+		leased=false&&update time<System.currentTimeMillis() - time==>connetion.close
+6.closeExpiredConnections
+	  leased=false&&checkExpiry ==>connetion.close	
+
+
+PoolingHttpClientConnectionManager
+create:ConfigData,CPool,HttpClientConnectionOperator
+
+1.requestConnection(HttpRoute,status)
+	 1.CPool.lease==>Future
+	 2.cancel==>Future.cancel(true),Future<Entry>
+	 HttpClientConnection<==>CPoolEntry
+2....跟BasicHttpClientConnectionManager差不多，就是相应转换
+   HttpClientConnection<==>CPoolEntry
+   
+InternalHttpClient-->RedirectExec-->RetryExec-->ProtocolExec-->MainClientExec-->HttpRequestExecutor 
+httpProcessor.process(request, context)
+
+httpProcessor.process(response, context)
+
+
+httpclient
+do:
+1.CloseableHttpResponse doExecute(
+            final HttpHost target,
+            final HttpRequest request,
+            final HttpContext context)
+
+InternalHttpClient
+1)routePlanner.determineRoute(host, request, context)==>HttpRoute==>(routePlanner)
+2)execChain.execute(route, wrapper, localcontext, execAware)
+
+RedirectExec
+1)requestExecutor.execute(currentRoute, currentRequest, context, execAware);
+2)允许跳转&&redirectStrategy.isRedirected==>(redirectStrategy)
+3)this.redirectStrategy.getRedirect==>HttpRequest==>(redirectStrategy)
+4)add headers && add entity
+5)routePlanner.determineRoute==>second route==>(routePlanner)
+6)消耗请求（EntityUtils.consume(response.getEntity());response.close();)
+
+RetryExec
+1)requestExecutor.execute(route, request, context, execAware)
+2)异常处理
+retryHandler.retryRequest(ex, execCount, context)==>(retryHandler)
+request.setHeaders(origheaders); 重复执行
+
+ProtocolExec
+1)reset URI==>HttpHost
+2)IF route==>HttpHost
+3)IF Get user info from the URI
+4)httpProcessor.process(request, context)==>做了许多事
+5)requestExecutor.execute(route, request,context, execAware);
+6)httpProcessor.process(response, context)==>做了许多事
+
+MainClientExec
+1)connManager.requestConnection(route, userToken)==>ConnectionRequest(HttpClientConnectionManager)
+2)ecAware.setCancellable(connRequest),设置取消处理器
+3)ConnectionRequest.get(timeout)==>HttpClientConnection
+4)IF check HttpClientConnection
+5)warrap ConnectionHolder
+6)establishRoute==>factRoute(routeDirector)==>connManager.connect(HttpClientConnectionManager)==(bind,ConnectTimeout)
+7)add Auth header ==>(authenticator)
+8)requestExecutor.execute(request, managedConn, context)
+9)保持操作==>(reuseStrategy,keepAliveStrategy)
+10)needAuthentication处理
+11)返回response,后处理器ResponseProxyHandler
+
+HttpRequestExecutor
+CPoolProxy
+LoggingManagedHttpClientConnection,ManagedHttpClientConnection,HttpClientConnection
+
+
+connectionRequestTimeout==>从连接池获取connection时间
+connectTimeout==>建立连接的时间
+sockConfig.SoTimeout==>connect用会用
+requestConfig.soTimeout==>读超时

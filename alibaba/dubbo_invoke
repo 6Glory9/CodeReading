@@ -1,0 +1,58 @@
+服务者--接受
+channelHandler(netty)
+com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter.InternalDecoder
+com.alibaba.dubbo.remoting.transport.netty.NettyHandler
+
+channelHandler(dubbo,RECEIVED)
+MultiMessageHandler,HeartbeatHandler,AllChannelHandler
+AllChannelHandler==>executor.execute(new ChannelEventRunnable)
+
+ChannelEventRunnable(dispatcher)==>channelHandler.action
+DecodeHandler,
+HeaderExchangeHandler(根据请求路由路线) request路线
+响应时调用内部路由器DubboProtocol#requestHandler.reply,最终channel.send(response)
+
+DubboProtocol#requestHandler==>HandlerMapping==>invoke
+serviceKey(port, serviceName, serviceVersion, serviceGroup)==>serviceKey==>DubboExporter==>Invoker==>filters==>method.invoke
+MDCFilter,EchoFilter,ClassLoaderFilter.GenericFilter,ContextFilter,TraceFilter,
+TimeoutFilter,MonitorFilter,ExceptionFilter,JavassistProxyFactory,method.invoke
+
+服务者--响应
+直接通过渠道channel响应到客服端
+com.alibaba.dubbo.remoting.transport.netty.NettyChannel#send
+NettyHandler#handleDownstream==>NettyHandler#writeRequested==>Next##handleDownstream==>ecode==>null[send]==>
+NettyHandler[HeartbeatHandler,WrappedChannelHandler,HeaderExchangeHandler]
+
+
+消费者--发送
+InvokerInvocationHandler(InvocationHandler),
+MockClusterInvoker,FailfastClusterInvoker,InvokerWrapper,ListenerInvokerWrapper,ProtocolFilterWrapper==>filters==>invoker
+
+FailfastClusterInvoker
+Invocation==>RegistryDirectory#doList==>List<Invoker<T>>
+List<Invoker<T>>==>localRouters==>List<Invoker<T>>
+LoadBalance==>Invoker
+
+
+ConsumerCacheFilter,ConsumerContextFilter,FutureFilter,MonitorFilter
+
+DubboInvoker
+(Result) currentClient.request(inv, timeout).get()==>DefaultFuture(dataSource)
+ReferenceCountExchangeClient,HeaderExchangeClient,HeaderExchangeChannel
+
+netty-send
+com.alibaba.dubbo.remoting.transport.netty.NettyChannel#send
+NettyHandler#handleDownstream==>NettyHandler#writeRequested==>Next##handleDownstream==>ecode==>null[send]==>
+NettyHandler[HeartbeatHandler,WrappedChannelHandler,HeaderExchangeHandler]
+
+消费者--接受-dubboClientHandler
+com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter.InternalDecoder
+com.alibaba.dubbo.remoting.transport.netty.NettyHandler
+MultiMessageHandler,HeartbeatHandler,AllChannelHandler
+
+AllChannelHandler==>executor.execute(new ChannelEventRunnable)
+
+ChannelEventRunnable(dispatcher)==>channelHandler.action
+DecodeHandler,
+HeaderExchangeHandler(根据请求路由路线) response路线
+DefaultFuture.received(channel, response);
