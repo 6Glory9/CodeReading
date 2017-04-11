@@ -1,0 +1,12 @@
+ByteBuf
+1.readIndex:
+2.writeIndex:
+3.discard:0~readIndex,读过部分，丢弃
+
+clear():readIndex=writeIndex=0
+duplicate():复制ByteBuf,readIndex=writeIndex=0
+copy():复制ByteBuf,readIndex=writeIndex=self
+slice():byte[readReady,readIndex=writeIndex],old(readIndex,writeIndex不变)
+
+HeadByteBuf:堆分配，JVM回收快,但channel读取内部需要多复制到内核，性能低
+DirectByteBuf:堆外分配,回收慢，但channel复制内核，性能高

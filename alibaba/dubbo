@@ -13,7 +13,7 @@ DubboProtocol dubbo export
 
 consumers
 1.生成一个Invoke
-2.通过ProxyFactory.getProxy(Invoker<T> invoker)==>Proxy
+2.通过ProxyFactory.getProxy(Invoker<T> invoker)==>Proxy==>最终由invoke选择调用哪个服务器
 3.最终setter
 
 

@@ -1,0 +1,52 @@
+一、unix网络编程5种类型
+1.BIO,应用线程调用CPU获取文件描述，如果CPU一直没有数据，就会一直等待。如果有数据会把数据复制到应用线程空间，返回文件描述。
+2.非阻塞IO,应用线程调用CPU获取文件描述，如果CPU一直没有数据，就会返回NO-DATA-FLAT,应用线程一直轮询方式查看。
+3.I/O复用【select/poll】,多个fd传select线程，select去轮询方式查看可读条件，有可读条件fd,最终由应用线程去调用复制数据操作。fd有数据上限.
+4.信号驱动，应用线程建立信号量处理函数，数据就绪返回信号量。通知可以复制数据操作。信号量是没有上限
+5.异步IO,告知CPU某个操作，这个操作完成再通知。而信号驱动是数据复制可以开始通知的。
+
+二、java网络编程(epoll)
+1).epoll解决fd上限问题
+2).CPU和用户同一块数据
+
+1.BIO
+2.伪异步,多个一个线程池
+3.多路复用器Selector(epoll,byteBuffer,channel,Selector)==>Netty
+    1.多个channel注册到Selector
+    2.Selector可以同步轮询多个就绪channel的(读,写,接受事件)，返回SelectorKey集合(事件集合),通过SelectorKey获取对应就绪channel
+    3.通过就绪channel做相应的操作，最终去掉SelectorKey值(事件)
+4.AIO(信号驱动),通过传给信息号触发事件就会触发相应的操作
+
+
+三、粘包，拆包
+TCP把多个包打包成一个数据包发送==>粘包
+TCP把一个包分析成多个数据包发送==>拆包
+
+问题：造成这个有三种可能，TCP无法理解业务数据。
+1.user buffer > socket send buffer(SO_SNDBUF)
+2.MMS<ip4|ip6分节
+3.MMT>op4|ip6分组
+解决：常见四种解决方案
+1.消息固定长，无够补空格。
+2.包尾增加特殊字符分隔。
+3.消息分消息头，消息体。消息头定义消息的长度。用int32表示
+4.用户自定义
+
+netty==>ByteToMessageDecoder通过这个基类进行抽象
+
+四、解编码(序列化)
+java序列化两个目的1.网络传输 2.对象持久化（1.不能跨系统 2.大小大 3.消费时间长）
+1.protobuf  google用.proto文件描述
+2.thrift    facebook
+3.marshalling jboss 修正jdk序列化许多问题
+4.messagePack
+
+netty==>MessageToByteEncoder,MessageToMessageCodec通过这个基类进行抽象
+
+
+五、协议
+
+
+
+
+
