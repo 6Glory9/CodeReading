@@ -1,0 +1,25 @@
+一、DubboResponseTimeoutScanTimer(守护线路,per 30ms)==>com.alibaba.dubbo.remoting.exchange.support.DefaultFuture.RemotingInvocationTimeoutScan
+1.每30ms遍历FUTURES，验证是否timeout.
+2.IF timeout,mock timeout Result
+3.FUTURES.remove(request)
+4.真的返回只会打印超时信息，不会做处理。因为FUTURES.remove(request)==null
+
+二、DubboMonitorSendTimer-thread(per 60s,3个线程)==>MonitorFilter
+1.Invoke after,DubboMonitor add info
+2.每60S向dubbo MonitorService 发送收集信息
+
+三、DubboRegistryFailedRetryTimer-thread(per 5s,1个线程)
+1.向zk做相应的操作(failedRegistered,failedUnregistered,failedSubscribed,failedUnsubscribed)
+2.清空failedNotified
+
+
+四、DubboClientReconnectTimer-thread(per 2s)
+检查channel渠道的状态是否正常，如果不正常重新连接
+
+五、dubbo-remoting-server-heartbeat-thread(HeartbeatHandler)
+1.检查渠道lastReadTime,lastWriteTime如果超过60s心跳时间,请求服务端
+2.如果消费者超过1800s，重新连接服务端
+六、dubbo-remoting-client-heartbeat-thread(HeartbeatHandler)
+
+七、DubboSaveRegistryCache-thread(1个线程池)
+提供者的注册地址变动，通知到消息者。消费者做重新连接操作。重新连接的地址会异步写进本地文件中。

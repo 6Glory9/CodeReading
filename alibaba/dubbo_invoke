@@ -1,58 +1,68 @@
-服务者--接受
-channelHandler(netty)
-com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter.InternalDecoder
-com.alibaba.dubbo.remoting.transport.netty.NettyHandler
+一、服务者--接受
+1.NettyCodecAdapter.InternalDecoder==>netty解码操作
+2.NettyHandler(自定义的ChannelHandler)
+3.自定义的ChannelHandler最后channelHandler(DubboProtocol#requestHandler.reply)==>(Invocation==>DubboExporter==>Invoker)
+4.InvokerWrapper(Provider filters)==>提供者过滤链
+5.AbstractProxyInvoker.invoke(JavassistProxyFactory)==>Wrapper高级货
+6.dubbo service invoke method==>最终调用结点
+7.channel.send(response)==>响应
 
-channelHandler(dubbo,RECEIVED)
-MultiMessageHandler,HeartbeatHandler,AllChannelHandler
-AllChannelHandler==>executor.execute(new ChannelEventRunnable)
+1)Provider filters
+1.MDCFilter,MDC设置GID
+2.EchoFilter,$echo标示操作直接返回结果
+3.ClassLoaderFilter,设置接口的classLoader
+4.GenericFilter,泛型方法寻找。
+5.ContextFilter,设置RpcContext
+6.TraceFilter,支持telnet，同步Trace
+7.TimeoutFilter,打印自定义超时时间警告
+8.MonitorFilter,收集信息
+9.ExceptionFilter,异常结果包装处理
 
-ChannelEventRunnable(dispatcher)==>channelHandler.action
-DecodeHandler,
-HeaderExchangeHandler(根据请求路由路线) request路线
-响应时调用内部路由器DubboProtocol#requestHandler.reply,最终channel.send(response)
-
-DubboProtocol#requestHandler==>HandlerMapping==>invoke
-serviceKey(port, serviceName, serviceVersion, serviceGroup)==>serviceKey==>DubboExporter==>Invoker==>filters==>method.invoke
-MDCFilter,EchoFilter,ClassLoaderFilter.GenericFilter,ContextFilter,TraceFilter,
-TimeoutFilter,MonitorFilter,ExceptionFilter,JavassistProxyFactory,method.invoke
-
-服务者--响应
+二、服务者--响应
 直接通过渠道channel响应到客服端
-com.alibaba.dubbo.remoting.transport.netty.NettyChannel#send
-NettyHandler#handleDownstream==>NettyHandler#writeRequested==>Next##handleDownstream==>ecode==>null[send]==>
-NettyHandler[HeartbeatHandler,WrappedChannelHandler,HeaderExchangeHandler]
+1.com.alibaba.dubbo.remoting.transport.netty.NettyChannel#send
+2.NettyHandler#handleDownstream==>NettyHandler#writeRequested==>Next##handleDownstream==>ecode==>null[send]==>
+3.NettyHandler.send(异步发送完成,自定义的ChannelHandler)
 
 
-消费者--发送
-InvokerInvocationHandler(InvocationHandler),
-MockClusterInvoker,FailfastClusterInvoker,InvokerWrapper,ListenerInvokerWrapper,ProtocolFilterWrapper==>filters==>invoker
+三、消费者--发送
+1.InvokerInvocationHandler(InvocationHandler,proxy)==>AOP,jdk动态代理InvocationHandler处理器,具体的处理由Invoker处理
+2.MockClusterInvoker==>根据注册URL判断是否走mock路线，mock路线也是相应集群。
+3.FailfastClusterInvoker==>根据Invocation找到所有Invoke(directory,zk,router),LoaderBalance选择最终Invoker,实质选择client[connections]，默认就是一个共享client
+4.InvokerWrapper(consume filters)==>消费过滤链
+5.ListenerInvokerWrapper==>监听所有Invoker[没有怎么搞懂用法]
+6.DubboInvoker==>转换client.request,最终通过ResponseFuture.get来等待最终结果(有可能是DubboResponseTimeoutScanTimer mock timeout result)
+7.ReferenceCountExchangeClient==>共享client被引用的次数，大概多少服务使用通过调用client
+8.HeaderExchangeClient==>触发heatbeatTimer,定时发送心跳(dubbo_schuler文件)
+9.HeaderExchangeChannel==>builder request protocol(Request)
+10.NettyClient(Channel)==>check channel status,转换到NettyChannel中去请求
+11.NettyChannel==>IF sent 送往设置,会同步等待结果.(URL sent标示)
+12.NioClientSocketChannel==>最终通过Netty框架写入。
+13.NettyHandler#handleDownstream==>NettyHandler#writeRequested==>Next##handleDownstream==>ecode==>null[send]
+14.NettyHandler.send(异步发送完成,自定义的ChannelHandler)
 
-FailfastClusterInvoker
-Invocation==>RegistryDirectory#doList==>List<Invoker<T>>
-List<Invoker<T>>==>localRouters==>List<Invoker<T>>
-LoadBalance==>Invoker
+
+1)FailfastClusterInvoker
+1.Invocation==>RegistryDirectory#doList==>List<Invoker<T>>
+2.List<Invoker<T>>==>localRouters==>List<Invoker<T>>
+3.LoadBalance==>Invoker
 
 
-ConsumerCacheFilter,ConsumerContextFilter,FutureFilter,MonitorFilter
+2)consume filters
+1.ConsumerCacheFilter==>客服端缓存
+2.ConsumerContextFilter==>设置RpcContext
+3.FutureFilter==>1.InvokeCallback  2.returnCallback(支持异步)
+4.MonitorFilter==>通过Monitor收集信息,最终通过定时任务同步服务端(dubbo_schuler文件)
 
-DubboInvoker
-(Result) currentClient.request(inv, timeout).get()==>DefaultFuture(dataSource)
-ReferenceCountExchangeClient,HeaderExchangeClient,HeaderExchangeChannel
+3)自定义的ChannelHandler
+1.ChannelHandlerExecutorServiceWapper,没有做任何操作,只是并发处理器转给client,server
+2.MultiMessageHandler,received操作的时候支持多条处理。
+3.HeartbeatHandler,在received时做isHeartbeatRequest,isHeartbeatResponse处理==>return;其它操作相应设置readTime,writeTime标示
+4.AllChannelHandler,做connected,disconnected,received,caught时做相应异步操作。
+5.DecodeHandler,在received时做Request,Response decode.
+6.HeaderExchangeHandler,connected,disconnected,sent做相应设置readTime,writeTime标示;
+	received时:1.Request(1.event handler 2.request Handler(1.reply  2.channel.write)), 2.Reponse(handleResponse(channel, (Response) message))
 
-netty-send
-com.alibaba.dubbo.remoting.transport.netty.NettyChannel#send
-NettyHandler#handleDownstream==>NettyHandler#writeRequested==>Next##handleDownstream==>ecode==>null[send]==>
-NettyHandler[HeartbeatHandler,WrappedChannelHandler,HeaderExchangeHandler]
-
-消费者--接受-dubboClientHandler
-com.alibaba.dubbo.remoting.transport.netty.NettyCodecAdapter.InternalDecoder
-com.alibaba.dubbo.remoting.transport.netty.NettyHandler
-MultiMessageHandler,HeartbeatHandler,AllChannelHandler
-
-AllChannelHandler==>executor.execute(new ChannelEventRunnable)
-
-ChannelEventRunnable(dispatcher)==>channelHandler.action
-DecodeHandler,
-HeaderExchangeHandler(根据请求路由路线) response路线
-DefaultFuture.received(channel, response);
+四、消费者--接受-dubboClientHandler
+1.NettyCodecAdapter.InternalDecoder==>netty解码操作
+2.NettyHandler(自定义的ChannelHandler)
