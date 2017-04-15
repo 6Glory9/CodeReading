@@ -3,20 +3,21 @@
 2.NettyHandler(自定义的ChannelHandler)
 3.自定义的ChannelHandler最后channelHandler(DubboProtocol#requestHandler.reply)==>(Invocation==>DubboExporter==>Invoker)
 4.InvokerWrapper(Provider filters)==>提供者过滤链
-5.AbstractProxyInvoker.invoke(JavassistProxyFactory)==>Wrapper高级货
+5.AbstractProxyInvoker.invoke(JavassistProxyFactory)==>Wrapper高级货,【dtrace】
 6.dubbo service invoke method==>最终调用结点
 7.channel.send(response)==>响应
 
 1)Provider filters
-1.MDCFilter,MDC设置GID
-2.EchoFilter,$echo标示操作直接返回结果
-3.ClassLoaderFilter,设置接口的classLoader
-4.GenericFilter,泛型方法寻找。
-5.ContextFilter,设置RpcContext
-6.TraceFilter,支持telnet，同步Trace
-7.TimeoutFilter,打印自定义超时时间警告
-8.MonitorFilter,收集信息
-9.ExceptionFilter,异常结果包装处理
+1.MDCFilter==>MDC设置GID
+2.EchoFilter==>$echo标示操作直接返回结果
+3.ClassLoaderFilter==>设置接口的classLoader
+4.GenericFilter==>泛型方法寻找。
+5.ContextFilter==>设置RpcContext
+6.TraceFilter==>支持telnet，同步Trace
+7.TimeoutFilter==>打印自定义超时时间警告
+8.MonitorFilter==>收集信息
+9.ExceptionFilter==>异常结果包装处理
+10.ProviderLogFilter==>打印日志
 
 二、服务者--响应
 直接通过渠道channel响应到客服端
@@ -28,7 +29,7 @@
 三、消费者--发送
 1.InvokerInvocationHandler(InvocationHandler,proxy)==>AOP,jdk动态代理InvocationHandler处理器,具体的处理由Invoker处理
 2.MockClusterInvoker==>根据注册URL判断是否走mock路线，mock路线也是相应集群。
-3.FailfastClusterInvoker==>根据Invocation找到所有Invoke(directory,zk,router),LoaderBalance选择最终Invoker,实质选择client[connections]，默认就是一个共享client
+3.FailfastClusterInvoker==>根据Invocation找到所有Invoke(directory,zk,router),LoaderBalance选择最终Invoker,实质选择client[connections]默认就是一个共享client,【dtrace】
 4.InvokerWrapper(consume filters)==>消费过滤链
 5.ListenerInvokerWrapper==>监听所有Invoker[没有怎么搞懂用法]
 6.DubboInvoker==>转换client.request,最终通过ResponseFuture.get来等待最终结果(有可能是DubboResponseTimeoutScanTimer mock timeout result)
@@ -53,6 +54,7 @@
 2.ConsumerContextFilter==>设置RpcContext
 3.FutureFilter==>1.InvokeCallback  2.returnCallback(支持异步)
 4.MonitorFilter==>通过Monitor收集信息,最终通过定时任务同步服务端(dubbo_schuler文件)
+5.RequestLogFilter==>打印日志
 
 3)自定义的ChannelHandler
 1.ChannelHandlerExecutorServiceWapper,没有做任何操作,只是并发处理器转给client,server
