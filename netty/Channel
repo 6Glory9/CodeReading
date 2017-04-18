@@ -1,0 +1,31 @@
+Channel
+
+NioEventLoop.processSelectedKey(SelectionKey.isValid(close),connect,write,read)
+1)AbstractUnsafe.close(close)
+1.IF 渠道已经关闭,直接返回应得
+2.设置outboundBuffer为null,阻止用户写数据
+3.取消EventLoop的监听事件
+4.关闭渠道操作
+5.fireChannelInactiveAndDeregister两个事件
+
+2)AbstractNioUnsafe.finishConnect(connect)
+1.doFinishConnect
+2.fireChannelActive
+
+3)AbstractNioUnsafe.forceFlush(write)
+1.IF inFlush0||outboundBuffer is null==>return
+2.IF channel status is error ==>return
+3.doWrite(outboundBuffer),后续编码操作
+
+
+4)NioByteUnsafe.read(read)
+1.read to byteBuf(RecvByteBufAllocator.Handle工具类)
+2.pipeline.fireChannelRead(byteBuf) 读一次触发一次
+3.pipeline.fireChannelReadComplete()
+4.IF not read ,closeOnRead
+
+
+DefaultChannelPipeline
+Channel.write==>DefaultChannelPipeline==>TailContext==>AbstractUnsafe.write==>add outboundBuffer
+1.filterOutboundMessage
+2.add outboundBuffer

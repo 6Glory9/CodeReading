@@ -1,0 +1,24 @@
+AbstractOwnableSynchronizer(head,tail,status,thread)
+1).lock==>acquire(1)
+1.IF 尝试去获取锁tryAcquire(1)，获取成功就结束，获取失败就创建waiter
+     1.判断中心状态，如果中心状态(个数)是0，说明当前锁没人取
+     2.判断中心状态，如果中心状态(个数)非0,再次判断中心的线程是否相同。
+2.add waiter
+	 1.如果这里没人获取锁时，head=tail=null,建立一个waiter(Node=head=tail)
+	 2.不然在tail添加一个node
+3.acquireQueued
+	 1.如果现在变成head node,再次获取锁
+	 2.根据前任的状态做相应操作(1.SIGNAL==>holder current(ws=0,等待下次苏醒)  2.cancelled==>skip current prex 3.node replace prex,set status SIGNAL,下次循环holder current)
+	 3.node interrupted(1.IF node is tail(node cancelled,prex_node is null) 2. IF prex node is not head(prex 等待),prex_next==>node.next,就挂起)
+
+2)unlock==>release(1)
+	 1.释放锁的标示
+	 2.IF node ws!=0,设置ws为0,呼醒继续者(1.寻找线程挂起的后继者(1.next-node 2.从最后开始寻找prex-node  ws：1SIGNAL) 2.苏醒后续线程)
+
+
+
+
+compareAndSetHead(Node update) AOS update head node
+compareAndSetTail(Node expect, Node update) AOS update tail node
+compareAndSetWaitStatus(Node node,int expect,int update) AOS update node waiterStatus
+compareAndSetNext(Node node,Node expect,Node update) AOS update next node
