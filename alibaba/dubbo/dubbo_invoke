@@ -45,6 +45,7 @@
 
 1)FailfastClusterInvoker
 1.Invocation==>RegistryDirectory#doList==>List<Invoker<T>>
+2.checkInvokers==>IF NULL,direct return(Failfast)
 2.List<Invoker<T>>==>localRouters==>List<Invoker<T>>
 3.LoadBalance==>Invoker
 

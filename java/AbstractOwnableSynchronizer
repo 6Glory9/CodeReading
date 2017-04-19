@@ -18,7 +18,7 @@ AbstractOwnableSynchronizer(head,tail,status,thread)
 
 
 
-compareAndSetHead(Node update) AOS update head node
-compareAndSetTail(Node expect, Node update) AOS update tail node
+compareAndSetHead(Node update) AOS update Queue head node
+compareAndSetTail(Node expect, Node update) AOS update Queue tail node
 compareAndSetWaitStatus(Node node,int expect,int update) AOS update node waiterStatus
-compareAndSetNext(Node node,Node expect,Node update) AOS update next node
+compareAndSetNext(Node node,Node expect,Node update) AOS update node nextNode
