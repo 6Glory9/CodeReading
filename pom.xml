@@ -12,7 +12,7 @@
 
     <properties>
         <netty.version>4.1.8.Final</netty.version>
-        <!-- 覆盖父POM-->
+        <!--覆盖父类的spring-version-->
         <spring.version>5.0.0.M3</spring.version>
     </properties>
 
