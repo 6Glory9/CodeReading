@@ -36,8 +36,8 @@ netty==>ByteToMessageDecoder通过这个基类进行抽象
 
 四、解编码(序列化)
 java序列化两个目的1.网络传输 2.对象持久化（1.不能跨系统 2.大小大 3.消费时间长）
-1.protobuf  google用.proto文件描述
-2.thrift    facebook
+1.protobuf    google用.proto文件描述
+2.thrift      facebook
 3.marshalling jboss 修正jdk序列化许多问题
 4.messagePack
 
@@ -45,6 +45,8 @@ netty==>MessageToByteEncoder,MessageToMessageCodec通过这个基类进行抽象
 
 
 五、协议
+http
+webSocket
 
 
 

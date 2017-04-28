@@ -1,0 +1,6 @@
+1.Elasticsearch安装
+./bin/elasticsearch
+./bin/elasticsearch -d ##后台运行
+
+
+Elasticsearch 是面向文档型数据库，数据结构是JSON

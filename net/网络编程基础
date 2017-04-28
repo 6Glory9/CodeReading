@@ -1,0 +1,22 @@
+lan==>local area network 局域网
+wan==>wide  area network 广域网
+
+
+TCP/IP是OSI参考模型简化版
+1.应用层(FTP,TELNET,HTTP,SNMP/NDS)
+2.传输层(TCP,UDP)==>1.分报组装报文 2.流量控制 3.丢包重发
+3.网络互联层(IP)==>1.分包 2.发送到目标地址 3.规定数据格式 4.数据包寻找路由流程
+4.主机-网络层(以太网:IEEE802.3 令牌环网:IEEE802.4)==>只是为网络互联层提供访问网络接口
+
+PS:TCP/IP不是只有这两个协议，而这个两协议最核心。通过IP能找到目标的网卡，通过TCP|UDP能找到目标的进程(端口),JAVA SOCKET封装数据传输层细节
+
+常见端口
+21:FTP
+23:TELNET
+25:SMTP
+80:HTTP
+110:POP3
+143:IMAP4
+443:HTTPS
+992:TELNETS
+993:IMAPS

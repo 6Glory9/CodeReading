@@ -1,12 +1,32 @@
+ByteBuffer--常规用法
+ByteBuffer buffer=ByteBuffer.allocate(88);
+buffer.put("xx".getBytes());
+buffer.flip();
+buffer.get(new byte[100]);
+
+
 ByteBuf
-1.readIndex:
-2.writeIndex:
-3.discard:0~readIndex,读过部分，丢弃
+1.readIndex:readIndex~writeIndex==>可读的
+2.writeIndex:writeIndex~capacity==>可写的
+3.discard:0~readIndex,读过的部分,discardReadBytes,牺牲性能,释放空间
+4.writeBytes(byte[] src, int srcIndex, int length)
+	1.capacity>4MB==>capacity+4MB
+	2.capacity==4MB==>capacity==4MB
+	3.capacity<4MB==>64 dubbo increate>old capacity
+5.FIND_NUL(0x00),FIND_CR(CR=>'\r',LF=>'\n') linear_whitespace==>' '|'\t'
+6.ByteBuf.nioBuffer()==>ByteBuffer==>转换成jdk的ByteBuffer
 
 clear():readIndex=writeIndex=0
-duplicate():复制ByteBuf,readIndex=writeIndex=0
-copy():复制ByteBuf,readIndex=writeIndex=self
-slice():byte[readReady,readIndex=writeIndex],old(readIndex,writeIndex不变)
+duplicate():共享ByteBuf,readIndex=writeIndex=0
+copy():复制ByteBuf,readIndex=writeIndex=old
+slice():共享ByteBuf,readIndex=writeIndex=old
 
-HeadByteBuf:堆分配，JVM回收快,但channel读取内部需要多复制到内核，性能低
-DirectByteBuf:堆外分配,回收慢，但channel复制内核，性能高
+ByteBuf分类
+1.HeadByteBuf:堆分配，JVM回收快,但channel读取内部需要多复制到内核,性能低
+2.DirectByteBuf:堆外分配,回收慢，但channel复制内核,性能高
+3.PoolByteBuf:可以循环利用ByteBuf,提升内存的使用率，降低频繁GC
+
+ByteBuf工具类
+1.ByteBufUtil
+2.ByteBufHolder
+3.ByteBufAllocator
