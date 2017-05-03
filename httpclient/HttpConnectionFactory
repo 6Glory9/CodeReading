@@ -1,0 +1,6 @@
+HttpConnectionFactory
+create==>根据route获取httpConnection
+
+
+ManagedHttpClientConnectionFactory
+create==>create LoggingManagedHttpClientConnection(httpConnection容器)

@@ -1,0 +1,47 @@
+AbstractConnPool
+1)lease
+1.check isShutDown
+2.create PoolEntryFuture(lock,callback)
+3.PoolEntryFuture.get方法重写==>callback后处理
+4.getPoolEntryBlocking详细
+5.onLease留给子类去处理
+
+
+getPoolEntryBlocking==>核心获取连接
+1.通过timeout获取deadline
+2.通过route获取RouteSpecificPool
+3.IF通过RouteSpecificPool获取entry成功(available.remove && leased.add)
+4.check Expired(1.isExpired 2.validateAfterInactivity && check connect.status(子类实现))
+5.IF entry 状态关闭的==>available.remove && pool.free(不重用)
+6.IF entry 状态OK==>available.remove && leased.add==>onReuse==>return
+7.IF entry 为空就要重新创建
+8.RouteSpecificPool(available+leased==maxPerRoute==>leased==maxPerRoute)==>删除可用的,感觉这里有点问题。
+9.IF 没有超过maxPerRoute && 达到maxTotal==>otherpool.remove && pool.add==>return
+10.IF 超过maxPerRoute==>pool.addPending && add pending && wait(time)
+11.等待释放，再次循环一次获取连接
+
+
+2)release
+1.leased.remove && available.add(看参数)
+2.RouteSpecificPool的leased.remove && available.add(看参数)==>onRelease(子类实现)
+3.IF不重用entry.close()
+4.先查看pool的Pending,不存在再查看全部的pending
+5.触发wakeup
+
+3)closeIdle
+1.计算deadline
+2.遍历所有PoolEntry,检查Updated==>entry.close()
+3.删除没使用的RouteSpecificPool
+
+4)closeExpired
+1.遍历所有PoolEntry,检查Expired==>entry.close()
+2.删除没使用的RouteSpecificPool
+
+
+BasicConnPool
+1)createEntry==>BasicPoolEntry
+2)validate
+
+CPool
+1)createEntry==>CPoolEntry
+2)validate

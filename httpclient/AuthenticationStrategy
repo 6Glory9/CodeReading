@@ -1,0 +1,28 @@
+AuthenticationStrategy
+1)isAuthenticationRequested==>根据response判断是需要认证
+2)getChallenges==>获取嫌疑人
+3)select==>选择认证
+4)authSucceeded==>认证成功
+5)authFailed==>认证失败
+
+AuthenticationStrategyImpl
+1)isAuthenticationRequested==>response status判断
+2)getChallenges==>response headerName==>map<Locale.ROOT,header>
+3)select
+1.获取优选认证方案authPrefs
+2.匹配认证方案
+3.获取AuthSchemeProvider认证方案提供者
+4.创建AuthScheme
+5.根据AuthScope==>CredentialsProvider==>Credentials
+6.创建一个AuthOption(authScheme, credentials)
+
+4)authSucceeded==>cache authScheme==>cache context
+5)authFailed==>context remove authScheme
+
+
+TargetAuthenticationStrategy
+getPreferredAuthSchemes==>获取优先方案不同
+
+ProxyAuthenticationStrategy
+getPreferredAuthSchemes==>获取优先方案不同
+

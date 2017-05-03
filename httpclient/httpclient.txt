@@ -1,22 +1,3 @@
-一.HttpRequestExecutor==>针对request,response处理
-create:waitForContinue,等待3000时间继续
-do:
-1.execute(HttpRequest,HttpClientConnection,HttpContext)
-1.1通过HttpClientConnection发送header信息
-1.2IF HttpVersion>1.0,通过HttpClientConnection接受header或entity
-1.3通过HttpClientConnection发送entity,标示httpContext发送成功
-1.4根据response和状态反复通过HttpClientConnection接受header和entity
-1.5异常通过HttpClientConnection关闭连接
-
-2.preProcess(HttpRequest,HttpProcessor,HttpContext)
-2.1request保存到httpContext
-2.2HttpProcessor处理request
-
-3.postProcess(HttpResponse,HttpProcessor,HttpContext)
-3.1response保存到httpContext
-3.2HttpProcessor处理response
-
-
 二.HttpProcessor
 1.BasicHttpProcessor
 create:初始化两个List<HttpRequestInterceptor>,List<HttpResponseInterceptor>

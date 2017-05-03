@@ -1,0 +1,24 @@
+HttpClientConnectionOperator
+1)connect==>根据不同协议create socket,socket.connect
+2)upgrade==>通过httpClientConnection获取socket,再创建SSLSocket
+
+
+
+DefaultHttpClientConnectionOperator
+1)connect
+1.通过httpContext获取SocketFactoryRegistry
+2.通过SchemeName获取ConnectionSocketFactory
+3.dnsResolver==>InetAddress,schemePortResolver==>port
+4.通过ConnectionSocketFactory创建socket(多态,可以直接创建SSLSocket)
+5.socket配置(SoTimeout,TcpNoDelay,ReceiveBufferSize,BufferSize)
+6.socket bind httpclientConnection
+7.通过ConnectionSocketFactory连接socket.connect
+8.socket bind httpclientConnection
+
+
+2)upgrade
+1.通过httpContext获取SocketFactoryRegistry
+2.通过SchemeName获取ConnectionSocketFactory
+3.schemePortResolver==>port
+4.强转LayeredConnectionSocketFactory再次包装socket成SSLSocket(httpclientConnection获取socket)
+5.socket bind httpclientConnection

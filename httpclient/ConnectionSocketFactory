@@ -18,7 +18,7 @@ SSLConnectionSocketFactory
 4.IF socket is not SSLSocket==>createLayeredSocket
 
 3)createLayeredSocket
-1.socketfactory==>SSLSocket
+1.SocketFactory==>SSLSocket
 2.SSLSocket set supportedProtocols
 3.SSLSocket set supportedCipherSuites
 4.startHandshake

@@ -1,0 +1,82 @@
+HttpClientConnectionManager
+1.requestConnection==>获取连接的请求
+2.releaseConnection==>释放连接
+3.connect==>socket.connect
+4.upgrade==>socket.connect(supports https)
+5.routeComplete==>
+6.closeIdleConnections==>关闭空闲的连接
+7.closeExpiredConnections==>关闭过期的连接
+8.shutdown==>关闭管理器
+
+
+
+BasicHttpClientConnectionManager
+1)requestConnection
+1.create ConnectionRequest匿名类
+2.主要实现get方法,由BasicHttpClientConnectionManager.getConnection实现
+3.check isShutdown && leased && checkExpiry
+4.通过HttpConnectionFactory创建HttpClientConnection(this.conn)
+
+2)releaseConnection
+1.check same connection && isShutdown
+2.update status,leased,expiry
+
+3)connect
+1.check connection
+2.通过HttpClientConnectionOperator connect目标地址
+
+4)upgrade
+1.check connection
+2.通过HttpClientConnectionOperator upgrade目标地址
+
+5)routeComplete==>没实现
+
+6)closeIdleConnections
+1.check isShutdown
+2.IF 没有租借时，当前时间-最大空闲时间>=最后更新时间
+3.conn.close(this.conn==null)
+
+
+7)closeExpiredConnections
+1.check isShutdown && leased
+2.currentTimeMillis>expiry
+3.conn.close(this.conn==null)
+
+8)shutdown
+1.原子更新状态
+2.conn.shutdown(this.conn==null)
+
+
+
+PoolingHttpClientConnectionManager
+1)requestConnection
+1.通过CPool获取Future<CPoolEntry>
+2.create ConnectionRequest匿名类,功能由Future<CPoolEntry>来完成
+3.Future<CPoolEntry>.get(time)==>CPoolEntry
+4.CPoolProxy(CPoolEntry)==>HttpClientConnection
+
+
+2)releaseConnection
+1.HttpClientConnection==>CPoolEntry==>real HttpClientConnection
+2.IF open,update state && Expiry
+3.通过CPool释放CPoolEntry
+
+3)connect
+1.HttpClientConnection==>CPoolEntry==>real HttpClientConnection
+2.通过HttpClientConnectionOperator connect目标地址
+
+4)upgrade
+1.HttpClientConnection==>CPoolEntry==>real HttpClientConnection
+2.通过HttpClientConnectionOperator upgrade目标地址
+
+5)routeComplete
+1.HttpClientConnection==>CPoolEntry
+2.CPoolEntry markRouteComplete
+
+6)closeIdleConnections==>CPool.closeIdle
+
+7)closeExpiredConnections==>CPool.closeExpired
+
+8)shutdown
+1.原子更新状态
+2.CPool.shutdown
