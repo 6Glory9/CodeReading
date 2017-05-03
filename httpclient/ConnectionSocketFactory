@@ -24,3 +24,7 @@ SSLConnectionSocketFactory
 4.startHandshake
 5.verifyHostname
 
+
+
+SSLContext==>SocketFactory==>SSLSocket
+
