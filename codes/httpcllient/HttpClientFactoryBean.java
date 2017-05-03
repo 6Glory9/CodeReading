@@ -14,7 +14,7 @@ public class HttpClientFactoryBean implements FactoryBean<HttpClient> {
 	private static final int DEFAULT_MAX_PER_ROUTE = 64;
 	//跟目标服务建立连接超时时间
 	private static final int DEFAULT_CONNECTION_TIMEOUT = 5000;
-	//读取超时有两个,一个连接的时候，一个发送读取
+	//读取超时有两个地方可以设置(1.connect 2.read),connect可以通过socketConfig设置，如果不设置默认用RequestConfig
 	private static final int DEFAULT_SOCKET_TIMEOUT = 3000;
 	//从连接池中获取连接的超时时间
 	private static final int DEFAULT_REQUEST_CONNECTION_TIMEOUT = 1000;
