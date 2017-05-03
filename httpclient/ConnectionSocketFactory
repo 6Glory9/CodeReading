@@ -1,0 +1,26 @@
+ConnectionSocketFactory
+1)createSocket(HttpContext context)==>create socket
+2)connectSocket==>socket.connect()
+
+PlainConnectionSocketFactory==>简单实现
+1)createSocket(HttpContext context)==>create socket
+2)connectSocket==>sock.connect(remoteAddress, connectTimeout)
+
+
+LayeredConnectionSocketFactory==>支持https
+SSLConnectionSocketFactory
+1)createSocket(HttpContext context)==>create default socket
+
+2)connectSocket
+1.IF socket is null==>create default socket
+2.socket.connect(remoteAddress, connectTimeout)[ps:SoTimeout,connect的时间是相同]
+3.IF socket is SSLSocket==>startHandshake&&verifyHostname
+4.IF socket is not SSLSocket==>createLayeredSocket
+
+3)createLayeredSocket
+1.socketfactory==>SSLSocket
+2.SSLSocket set supportedProtocols
+3.SSLSocket set supportedCipherSuites
+4.startHandshake
+5.verifyHostname
+

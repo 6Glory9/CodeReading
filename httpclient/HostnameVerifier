@@ -1,0 +1,2 @@
+HostnameVerifier==>targetHostName与SSLSession信息做匹配
+https时才会验证
