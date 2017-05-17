@@ -1,0 +1,61 @@
+ClientExecChain===>http 模版方法
+
+1)ProtocolExec
+1.寻找targetHost
+2.寻找CredentialsProvider
+3.httpProcessor.process(request)===>filter===>(add cookie,认证)
+4.ClientExecChain.do
+5.httpProcessor.process(request)===filter
+
+
+2)RedirectExec
+1.httpProcessor.process(request)==>response
+2.check redirect(max,redirectsEnabled)
+3.redirectStrategy.isRedirected==>judge Redirect
+4.redirectStrategy.getRedirect==>new request
+5.IF AuthState reset
+6.routePlanner.determineRoute==>new Route
+7.消费实体，关闭请求
+
+3)RetryExec
+1.httpProcessor.process(request)==>exception
+2.retryHandler.retryRequest==>check(retryCount,异常符合,requestIsAborted,handleAsIdempotent,没有发送是否发送)
+
+
+4)ServiceUnavailableRetryExec
+1.httpProcessor.process(request)==>正常返回
+2.ServiceUnavailableRetryStrategy.retryRequest==>check(maxRetries,503)
+3.重试
+
+5)BackoffStrategyExec==>补偿机制
+1.httpProcessor.process(request)==>exception
+2.connectionBackoffStrategy.shouldBackoff(Exception,Reponse)
+3.IF backoffManager.backOff==>setMaxPerRoute(*2)
+4.IF backoffManager.probe==>setMaxPerRoute(2)
+
+
+6)MinimalClientExec
+1.rewriteRequestURI
+2.connManager.requestConnection==>创建获取connection请求
+3.connRequest.get(time)==>获取HttpClientConnection
+4.connManager.connect(HttpClientConnection)|make Complete==>socket.connect
+5.创建ConnectionHolder
+6.httpProcessor.process(request)===>filter===>(add cookie,认证)
+7.HttpRequestExecutor.request==>真实请求
+8.httpProcessor.process(request)===filter
+9.reuseStrategy.keepAlive==>判断是否keepAlive
+10.releaseTrigger(markReusable,ValidTime)
+11.return proxy respnose
+
+
+7)MainClientExec
+1.set targetAuthState,proxyAuthState
+2.connManager.requestConnection==>创建获取connection请求
+3.connRequest.get(time)==>获取HttpClientConnection
+4.创建ConnectionHolder
+5.establishRoute==>获取最终router,socket.connect
+6.authenticator.generateAuthResponse==>抢先认证header,必须在上下先设置
+7.HttpRequestExecutor.request==>真实请求
+8.reuseStrategy.keepAlive==>判断是否keepAlive
+9.needAuthentication==>继续请求到2
+10.return proxy respnose

@@ -4,3 +4,169 @@
 
 
 Elasticsearch 是面向文档型数据库，数据结构是JSON
+集群(cluster)==>节点集合,一个标示
+节点(node)==>集群的节点
+索引(index)==>数据库
+类型(type)==>数据库文档的分类==>逻辑上的分类/分区
+文档(document)==>数据库的表,以文档以JSON存储
+
+分片(shards)==>将索引划分成多份的能力,这些份就叫做分片(物理分区)
+复制(replicas)==>1.高可用性 2.搜索量/吞吐量
+
+ps:1个索引默认有5分区和复制
+
+
+2.常用的操作
+GET _cat/health  ##查询集健康
+
+PS:绿色代表一切正常（集群功能齐全），黄色意味着所有的数据都是可用的，但是某些复制没有被分配（集群功能齐全），红色则代表因为某些原因，某些数据不可用。注意，即使是集群状态是红色的，集群仍然是部分可用的（它仍然会利用可用的分片来响应搜索请求），但是可能你需要尽快修复它，因为你有丢失的数据。
+
+GET _cat/nodes  ##查询节点
+
+
+GET _cat/indices  ##查询索引
+DELETE accountant ##删除索引
+PUT accountant    ##创建索引
+
+PUT /accountant/ext/1  ##替换文档
+{
+  "name":"glory"
+}
+
+POST /accountant/ext  ##替换文档
+{
+	"name":"glory",
+	"sex":"man"
+}
+
+GET /accountant/ext/1 ##获取文档
+
+post /accountant/ext/1    ##增加或更新文档
+{
+	"doc":{"name":"xx","sex":"man"}
+	"script" : "ctx._source.age += 5"
+}
+
+##批量处理
+POST /accountant/ext/_bulk
+{"index":{"_id":"1"}}
+{"name": "John Doe" }
+{"index":{"_id":"2"}}
+{"name": "Jane Doe" }
+
+
+对于这个响应，我们看到了以下的部分：
+- took —— Elasticsearch执行这个搜索的耗时，以毫秒为单位
+- timed_out —— 指明这个搜索是否超时
+- _shards —— 指出多少个分片被搜索了，同时也指出了成功/失败的被搜索的shards的数量
+- hits —— 搜索结果
+- hits.total —— 能够匹配我们查询标准的文档的总数目
+- hits.hits —— 真正的搜索结果数据（默认只显示前10个文档）
+- _score和max_score —— 现在先忽略这些字段
+
+
+##索引查询
+POST /accountant/_search
+
+POST /accountant/_search 
+{
+  "query": { "match": { "name": "John Doe" } }
+  "query": { "match": { "name": "John jiang" } }	##包含John,jiang
+  "query": { "match": { "age": 27 } }	            ##=27 
+  "from": 10,                                       ##默认是0
+  "size": 10，                                      ##默认是10
+  "_source": ["account_number", "balance"]          ##指定字段
+  "sort": { "balance": { "order": "desc" } }        ##排序
+}
+
+POST /accountant/_search ==>and
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"match": {
+          "name": "Doe"
+        }},
+        {
+          "match": {
+            "name": "John"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+POST /accountant/_search ==>and
+{
+  "query": {
+    "bool": {
+      "should": [
+        {"match": {
+          "name": "Doe"
+        }},
+        {
+          "match": {
+            "name": "John"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+"{
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "term": {
+                        "firstname": "Virginia"
+                    }
+                }
+            ],
+            "should": [
+                
+            ],
+            "must_not": [
+                
+            ],
+            "filter": {
+                "range": {
+                    "es_timestamp": {
+                        "gte": "now-5h",
+                        "lt": "now"
+                    }
+                }
+            }
+        }
+    }
+}"
+
+
+
+ "aggs": {
+        "group_by_age": {
+          "range": {
+            "field": "age",
+            "ranges": [
+              {
+                "from": 20,
+                "to": 30
+              },
+              {
+                "from": 30,
+                "to": 40
+              },
+              {
+                "from": 40,
+                "to": 50
+              }
+            ]
+          },
+        
+
+
