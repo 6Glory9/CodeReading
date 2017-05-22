@@ -1,0 +1,17 @@
+postman(rop)
+1.获取ServiceMethodHandler的timeout
+2.threadPoolExecutor.submit(ServiceRunnable)
+3.future.get(serviceMethodTimeout)==>response
+4.响应
+5.异常处理
+
+
+ServiceRunnable
+1.router check
+2.jms send queue
+
+
+jms recevid message
+1.router check==>根据权重选择;随即选择
+2.selected channel
+3.SmsChannelClientService.send==>smsSendReportExtService

@@ -1,0 +1,24 @@
+logback
+1)三个模块Core、Classic和Access
+core==>基础(Appender和Layout)
+classic==>实现SLF4J API==>可以在logback与其他记录系统如log4j和java.util.logging (JUL)之间轻松互相切换==>Logger
+Access==>与Servlet容器集成==>http访问
+
+
+2)Logger、LoggerContext
+Logger关联LoggerContext,，LoggerContext负责制造logger,也负责以树结构排列各logger
+
+1.有效级别（Level）即级别继承,最近父亲Level级别
+2.级别排序为：TRACE < DEBUG < INFO < WARN < ERROR,OFF时只有TRACE可用
+3.同一名字调用LoggerFactory.getLogger方法所得到的永远都是同一个logger对象
+
+
+3)Appender(输出源)、layout
+1.Logger可以关联多个Appender
+2.Logger具有additivity属性
+3.Appender关联一个layout
+
+
+
+
+

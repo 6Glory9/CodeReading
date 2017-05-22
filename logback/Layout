@@ -1,0 +1,10 @@
+Layout
+LayoutBase
+XMLLayout==>打印成xml模板
+TTLLLayout==>txt格式
+HTMLLayoutBase==>HTMLLayoutBase格式
+HTMLLayout==>构造html
+
+PatternLayoutBase==>pattern==>convert
+PatternLayout==>构建默认convert，postCompileProcessor
+

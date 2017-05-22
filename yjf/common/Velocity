@@ -1,0 +1,73 @@
+Velocity
+1)两种模式
+1.单例模式==>org.apache.velocity.app.Velocity
+2.非单例模式==>org.apache.velocity.app.VelocityEngine
+
+
+2)常用方法
+1.evaluate(Context context, Writer out, String logTag, String instring)==>[context参数容器,out输出信息,logTagLogger,instring输入信息]
+2.evaluate(Context context, Writer writer, String logTag, InputStream instream)
+3.invokeVelocimacro(String vmName, String namespace, String params[], Context context,Writer writer)==>调用宏
+4.mergeTemplate(String templateName, Context context, Writer writer)==>渲染模板,模板文件成为输入信息
+5.boolean templateExists(String name)==>模板是否存在
+
+3)配置加载方式
+1.默认有一个路径
+2.
+Properties p = new Properties();
+p.setProperty("file.resource.loader.path", "/opt/templates");
+Velocity.init(p);
+3.Velocity.init(propsFilename);
+
+4)事件处理器
+org.apache.velocity.app.event.EventHandler
+1.NullSetEventHandler
+2.ReferenceInsertionEventHandler
+3.MethodExceptionEventHandler
+
+5)事件分发器
+EventCartridge eventCartridge = new EventCartridge();
+eventCartridge.addEventHandler(invalidReferenceEventHandler); 
+eventCartridge.attachToContext(VelocityContext);===>注册事件分发器
+
+
+6)常见配置
+/org/apache/velocity/runtime/defaults/velocity.properties==>默认配置
+1.Runtime Log
+runtime.log==>日志地址
+runtime.log.logsystem.class==>logsystem
+runtime.log.invalid.references==>当一个引用无效时,打开日志输出
+
+2.字符集编码
+input.encoding=ISO-8859-1
+output.encoding=ISO-8859-1
+
+3.指令的配置
+directive.include.output.errormsg.start
+directive.include.output.errormsg.end
+directive.foreach.counter.name = velocityCount
+directive.foreach.counter.initial.value = 1
+directive.foreach.maxloops = -1
+
+4.资源管理
+resource.manager.logwhenfound = true ==>第一次加载资源时打印日志
+
+resource.loader = file
+
+file.resource.loader.description = Velocity File Resource Loader
+file.resource.loader.class = org.apache.velocity.runtime.resource.loader.FileResourceLoader ==>加载器
+file.resource.loader.path = .                                                               ==>加载器加载地址
+file.resource.loader.cache = false                                                          ==>是否缓存
+file.resource.loader.modificationCheckInterval = 2                                          ==>当把缓存打开,每隔2s检查一次
+
+string.resource.loader.description = Velocity String Resource Loader
+string.resource.loader.class = org.apache.velocity.runtime.resource.loader.StringResourceLoader
+
+
+5.Velocimacro宏管理
+velocimacro.library = VM_global_library.vm ==>宏地址
+velocimacro.permissions.allow.inline = true
+velocimacro.permissions.allow.inline.to.replace.global = false
+velocimacro.permissions.allow.inline.local.scope = false
+velocimacro.context.localscope = false
+velocimacro.max.depth = 20

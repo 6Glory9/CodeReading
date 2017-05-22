@@ -1,0 +1,9 @@
+Encoder
+EncoderBase
+EchoEncoder==>打印文件头和文件尾
+ObjectStreamEncoder==>缓存批量写入
+LayoutWrappingEncoder==>layOut来处理
+PatternLayoutEncoderBase==>分解pattern
+
+PatternLayoutEncoder==>构造PatternLayout
+

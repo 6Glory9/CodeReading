@@ -1,0 +1,11 @@
+RollingPolicy
+RollingPolicyBase
+FixedWindowRollingPolicy==>rollover
+1.重新命名
+2.compress当前文件
+
+TimeBasedRollingPolicy==>rollover
+1.重新命名
+2.compress当前文件
+3.归档文件==>delete(TimeBasedFileNamingAndTriggeringPolicy==>ArchiveRemover)
+
