@@ -1,22 +1,13 @@
 logback
 
-org.slf4j.LoggerFactory
-	Logger getLogger(String name)
-		1.没有初始化
-		2.正在初始化 返回TEMP_FACTORY
-		3.初始化成功
-		4.初始化异常
-		5.初始化fALLBACK
+1)配置文件路径
+1.classpath:logback-test.xml
+2.classpath:logback.xml
+3.BasicConfigurator自动对自己进行配置
 
 
-
-
-LoggerContext
-	1.statusManager:状态管理器(Status,StatusLisenter)
-
-
-
-
-JoranConfigurator
-	1.LoggerContext.objectMap增加ConfigurationWatchList用于观察配置是否修改(CONFIGURATION_WATCH_LIST,CONFIGURATION_WATCH_LIST_RESET)
-	2.
+2)打印Logback的状态
+1.手动打印方式
+LoggerContext lc = (LoggerContext)LoggerFactory.getILoggerFactory(); // print logback's internal status StatusPrinter.print(lc);
+2.配置方式
+<configuration debug="true">==>能找到配置文件，读取这个值
