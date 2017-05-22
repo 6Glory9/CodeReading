@@ -1,0 +1,15 @@
+openapi
+HttpApiServiceExecuter
+1.IF convert StandardMultipartHttpServletRequest
+2.request==>requestParamMap==>doc
+3.Get APIService(version,serviceName)
+4.Init APIContext(gid)
+5.log params
+6.flow control
+7.param verify(BasicValidate,httpValidate,接口方式Validate(异步,跳转),Authenticate(check sign))
+8.HttpServletRequest==>ApiRequest(JSON==>object|JSON_ARRAY==>array|SecurityField)
+9.order check && VerifyIdempotence && doAuthorize
+10.service==>1.!Query(save order) 2.business execute
+11.response==>redirect(1.nornal 2.shiroRedirect),json
+12.Exception==>TimeoutException,ApiServiceException(businessCode)
+
