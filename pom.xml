@@ -41,6 +41,17 @@
             <version>1.2.4.RELEASE</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.yiji.boot</groupId>
+            <artifactId>yiji-boot-starter-web</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
