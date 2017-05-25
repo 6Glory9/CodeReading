@@ -1,0 +1,74 @@
+ssh==>网络协议
+原理:1）远程主机收到用户的登录请求，把自己的公钥发给用户。（2）用户使用这个公钥，将登录密码加密后，发送回来。（3）远程主机用自己的私钥，解密登录密码，如果密码正确，就同意用户登录。===>中间人攻击，伪造公钥
+
+1)密码登陆(公钥加密登陆)
+1.第一次登录对方主机,Are you sure you want to continue connecting (yes/no)?==>会让你自己判断服务可靠性
+2.Warning: Permanently added 'host,12.18.429.21' (RSA) to the list of known hosts.==>$HOME/.ssh/known_hosts
+3.Password: (enter password)
+4.下次再连接这台主机，系统就会认出它的公钥已经保存在本地了，从而跳过警告部分，直接提示输入密码。
+
+
+2)公钥登陆
+原理:就是用户将自己的公钥储存在远程主机上。登录的时候，远程主机会向用户发送一段随机字符串，用户用自己的私钥加密后，再发回来。远程主机用事先储存的公钥进行解密。
+
+ssh-keygen
+cd $HOME/.ssh/
+ssh-copy-id user@host
+
+IF NOT /etc/ssh/sshd_config =====>check
+RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+service ssh restart
+
+##追加公钥
+ssh user@host 'mkdir -p .ssh && cat >> .ssh/authorized_keys' < ~/.ssh/id_rsa.pub
+
+
+3)多个公钥问题
+用户配置文件 (~/.ssh/config)
+系统配置文件 (/etc/ssh/ssh_config)
+
+##常用的配置(cat /etc/ssh/ssh_config)
+Host 别名 ==>'*' 代表 0～n 个非空白字符。'?' 代表一个非空白字符。'!' 表示例外通配。
+HostName 主机名
+Port 端口
+User 用户名
+IdentityFile 密钥文件的路径
+IdentitiesOnly 只接受SSH key 登录
+PreferredAuthentications 强制使用Public Key验证
+
+
+Host github.com git.coding.net
+HostName %h
+Port 22
+User git
+IdentityFile  ~/.ssh/id_rsa_blog
+IdentitiesOnly yes
+
+
+4)ssh协议远程操作
+单引号中间的部分，表示在远程主机上执行的操作
+ssh user@host 'mkdir -p .ssh && cat >> .ssh/authorized_keys' < ~/.ssh/id_rsa.pub  ==>追加pub
+cd && tar czv src | ssh user@host 'tar xz' ==>copy files to remote
+ssh user@host 'tar cz src' | tar xzv ==>copy files from remote
+ssh user@host 'ps ax | grep [h]ttpd' ==>look up remote 执行任务
+
+5)绑定端口
+ssh -D 8080 user@host ==>让8080端口的数据，都通过SSH传向远程主机
+
+
+6)本地端口转发(SSH隧道)
+##外网host1,内网host2,host3,host1可以访问host3,无能访问host2.host3
+##本机host1
+ssh -L 2121:host2:21 host3==>host1的2121端口数据通过host3转发到host2(相对host3来说)的21端口
+ssh -L 5900:localhost:5900 host3==>host1的5900数据通过hosts转发到host3的5900
+
+
+7)远程端口转发
+
+##本机host3
+ssh -R 2121:host2:21 host1==>让host1监听它自己的2121端口，然后将所有数据经由host3，转发到host2的21端口
+
+
+
