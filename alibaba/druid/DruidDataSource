@@ -1,0 +1,27 @@
+DruidDataSource
+1.recycleErrorCount:回收错误个数
+2.connectCount:连接数
+3.closeCount:关闭数
+4.connectErrorCount:连接错误数
+5.recycleCount:回收个数
+6.removeAbandonedCount:移出抛弃个数
+
+
+inited==>初始化标示(Lock double check)
+initStackTrace==>初始化Stack信息
+id==>dataSource ID(addAndGet)
+connectionIdSeed ==>connectionId(addAndGet)
+statementIdSeed ==>statementId(addAndGet)
+resultSetIdSeed ==>resultSetId(addAndGet)
+transactionIdSeed ==>transactionId(addAndGet)
+maxActive==>最大激活connection个数
+minIdle==>最小空闲connection个数
+initialSize==>初始化connection个数
+
+
+createCount==>创建个数(addAndGet)
+createErrorCount==>创建失败个数(addAndGet)
+poolingCount==>创建放到池时个数
+poolingPeak==>池子个数(外部查询)
+activeCount==>正使用个数
+notEmptyWaitThreadCount==>线程等待个数
