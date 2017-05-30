@@ -1,0 +1,18 @@
+Logger
+1.name
+2.level==>日志等级
+3.effectiveLevelInt==>if level is null,这个值来自父亲
+4.parent==>parentLogger
+5.childrenList==>childrenListLogger
+6.AppenderAttachableImpl<ILoggingEvent>==>appenderList
+7.additive==>是否叠加
+8.loggerContext
+
+
+log
+1.loggerContext.getTurboFilter==>filter
+2.构造ch.qos.logback.classic.spi.LoggingEvent
+3.IF additive forEach Logger.appendLoopOnAppenders==>AppenderAttachableImpl.appendLoopOnAppenders
+4.forEach Appender.doAppend
+
+

@@ -1,0 +1,8 @@
+TurboFilter
+1)MatchingFilter
+MDCFilter==>判断MDC是否相应key
+MarkerFilter==>根据配置Marker
+
+2)DynamicThresholdFilter==>根据MDC设置key获取相应Level与实际Level比较
+3)DuplicateMessageFilter==>根据format从Cache获取相应hit count与配置count比较
+4)ReconfigureOnChangeFilter==>重置LoggerContext==>ReconfiguringThread

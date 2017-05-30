@@ -1,0 +1,57 @@
+Appender
+1)AppenderBase
+1.synchronized guard=true
+2.!started==>allow ALLOWED_REPEATS
+3.Filter
+4.append(eventObject)
+5.synchronized guard=false
+
+
+1.ListAppender==>List.add(eventObject)
+2.AbstractSocketAppender==>BlockingDeque.add(eventObject),一个线程再从BlockingDeque取值处理
+3.LevelRemappingAppender==>重新指向其它Logger
+4.CyclicBufferAppender==>CyclicBuffer.add(eventObject)循环使用
+5.SiftingAppenderBase==>根据eventObject选择Appender
+6.SMTPAppenderBase
+7.JMSAppenderBase
+
+
+2)UnsynchronizedAppenderBase
+1.guard.get() guard=true 线程变量
+2.!started==>allow ALLOWED_REPEATS
+3.Filter
+4.append(eventObject)
+5.guard.get() guard=false
+
+
+
+1.DBAppenderBase==>数据库写
+2.SQLWarnLogAppender==>qzhanbo自己写的打印慢查询语句
+3.AsyncAppenderBase
+检查容量&&检查Level
+准备直接数据|includeCallerData
+异步|同步放到队列
+AsyncAppender
+AsyncAppenderBase
+判断QueueThreshold&&符合丢弃条件
+准备数据
+add Queue  ==>Worker线程后台线程会处理
+AsyncAppender==>重写isDiscardable,preprocess
+
+4.OutputStreamAppender
+准备数据
+lock writeOut(event)==>encoder(LayoutWrappingEncoder(Layout))
+
+ConsoleAppender==>SystemOut,withJansi==>setOutputStream
+FileAppender==>ResilientFileOutputStream
+RollingFileAppender
+triggeringPolicy==>触发规则
+rollingPolicy==>新建文件
+
+
+
+
+
+
+
+

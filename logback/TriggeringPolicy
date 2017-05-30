@@ -1,0 +1,11 @@
+TriggeringPolicy
+TimeBasedRollingPolicy==>time Trigger and Roller
+SizeAndTimeBasedRollingPolicy==>time and size Trigger and Roller
+
+TriggeringPolicyBase
+SizeBasedTriggeringPolicy==>size Trigger
+
+TimeBasedFileNamingAndTriggeringPolicy==>time file name rename and Trigger
+TimeBasedFileNamingAndTriggeringPolicyBase==>elapsedPeriodsFileName,ArchiveRemover
+SizeAndTimeBasedFNATP==>time or size trigger
+DefaultTimeBasedFileNamingAndTriggeringPolicy==>time trigger

@@ -1,0 +1,5 @@
+scheduler
+1.zk注册node
+2.后台线程查询数据库,匹配cache,操作scheduler容器
+3.org.quartz.CronExpression#validateExpression
+4.webservice,http,dubbo
