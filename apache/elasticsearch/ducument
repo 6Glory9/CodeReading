@@ -1,0 +1,72 @@
+document
+document可以看着数据库一条记录，或java对象。它是指最顶层或者根对象, 这个根对象被序列化成 JSON 并存储到 Elasticsearch 中，指定了唯一 ID。
+
+
+文档元数据
+1._index(文档在哪存放)
+一个索引应该是因共同的特性被分组到一起的文档集合,其实就是命名空间而已，一个索引仅仅是逻辑上的命名空间，这个命名空间由一个或者多个分片组合在一起。
+2._type(文档表示的对象类别,表结构)
+文档共享一种相同的（或非常相似）的模式,索引中对数据进行逻辑分区。不同 types 的文档可能有不同的字段，但最好能够非常相似
+3._id(文档唯一标识)
+(index,type,id)在es联合唯一主键
+
+ID
+PUT /{index}/{type}/{id}==>自定义ID
+POST /website/blog/==>自动生成的 ID 是 URL-safe，基于 Base64 编码且长度为20个字符的 GUID 字符串。 这些 GUID 字符串由可修改的 FlakeID 模式生成
+
+
+文档CRUD
+
+##search
+GET /website/blog/123?pretty==>不存在返回404
+GET /website/blog/123?_source=title,text==>返回部分字段
+GET /website/blog/123/_source==>只返回数据,元数据排除
+HEAD /website/blog/123==>检查文档是否存在
+
+
+##update,分部更新
+PUT /website/blog/123==>操作存在文档,覆盖文档。PS:文档不允许修改，只能重建新文档，删除旧文档。再覆盖掉。
+##文档是不可变的：他们不能被修改，只能被替换。update API 简单使用与之前描述相同的 检索-修改-重建索引 的处理过程。 区别在于这个过程发生在分片内部，这样就避免了多次请求的网络开销。通过减少检索和重建索引步骤之间的时间，我们也减少了其他进程的变更带来冲突的可能性。
+POST /website/blog/1/_update
+{
+   "doc" : {
+      "tags" : [ "testing" ],
+      "views": 0
+   }
+}
+
+
+##create
+POST /website/blog/ ==>自动生成ID
+PUT /website/blog/123/_create  ===>两种是等价
+PUT /website/blog/123?op_type=create  ==>201 Created, 409 Conflict
+
+##delete
+DELETE /website/blog/123
+
+文档的锁,支持乐观锁
+所有文档的更新或删除API，都可以接受version参数
+PUT /website/blog/1?version=1==>指定内部版本号必须等于当前版本号
+PUT /website/blog/2?version=5&version_type=external==>指定内部版本号必须等于当前版本号必须大于当前版本号
+
+
+文档批量处理
+GET /_mget   ==>取回多个文档
+GET /website/blog/_mget
+
+##delete,create,update
+POST /_bulk
+{ "delete": { "_index": "website", "_type": "blog", "_id": "123" }} 
+{ "create": { "_index": "website", "_type": "blog", "_id": "123" }}
+{ "title":    "My first blog post" }
+{ "index":  { "_index": "website", "_type": "blog" }}
+{ "title":    "My second blog post" }
+{ "update": { "_index": "website", "_type": "blog", "_id": "123", "_retry_on_conflict" : 3} }
+{ "doc" : {"title" : "My updated blog post"} 
+
+
+
+
+
+
+

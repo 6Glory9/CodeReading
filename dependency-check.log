@@ -1,3 +1,17 @@
 ******************************************
 2017-04-11 21:37:05
 ******************************************
+******************************************
+2017-05-06 20:14:50
+******************************************
+发现冲突:
+[compile]F:\libs\maven\io\netty\netty\3.7.0.Final\netty-3.7.0.Final.jar
+[compile]F:\libs\maven\org\jboss\netty\netty\3.2.5.Final\netty-3.2.5.Final.jar
+冲突类:org/jboss/netty/bootstrap/Bootstrap.class
+******************************************
+2017-05-06 20:29:52
+******************************************
+发现冲突:
+[compile]F:\libs\maven\io\netty\netty\3.7.0.Final\netty-3.7.0.Final.jar
+[compile]F:\libs\maven\org\jboss\netty\netty\3.2.5.Final\netty-3.2.5.Final.jar
+冲突类:org/jboss/netty/bootstrap/Bootstrap.class

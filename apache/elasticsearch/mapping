@@ -1,0 +1,83 @@
+mapping
+GET /gb/_mapping/tweet ==>获取tweet的类型mapping
+
+
+倒排索引用于全文搜索
+为了创建倒排索引，我们首先将每个文档的content域拆分成单独的词（我们称它为词条 或 tokens）
+content==>tokens==>分词
+tokens===>content==>标准化，匹配
+分词+标准化==>分析
+1.将一块文本分成适合于倒排索引的独立的 词条 ，
+2.将这些词条统一化为标准格式以提高它们的“可搜索性”，或者 recall
+
+
+分析器
+1.字符过滤器==>一个字符过滤器可以用来去掉HTML，或者将 & 转化成 `and`。
+2.分词器==>一个简单的分词器遇到空格和标点的时候，可能会将文本拆分成词条。
+3.Token 过滤器==>这个过程可能会改变词条（例如，小写化 Quick ），删除词条（例如， 像 a`， `and`， `the 等无用词），或者增加词条（例如，像 jump 和 leap 这种同义词）。
+
+内置分析器
+1.标准分析器
+2.简单分析器
+3.空格分析器
+4.语言分析器
+
+test analyze
+GET /_analyze
+{
+  "analyzer": "standard",
+  "text": "Text to analyze"
+}
+
+mapping
+字符串: string
+整数 : byte, short, integer, long
+浮点数: float, double
+布尔型: boolean
+日期: date
+{ "tag": [ "search", "nosql" ]} ==> array
+
+"null_value":               null,
+"empty_array":              [],
+"array_with_null_value":    [ null ]==>null
+
+{
+    "tweet":            [elasticsearch, flexible, very],
+    "user.id":          [@johnsmith],
+    "user.gender":      [male],
+    "user.age":         [26],
+    "user.name.full":   [john, smith],
+    "user.name.first":  [john],
+    "user.name.last":   [smith]
+}
+
+https://www.elastic.co/guide/cn/elasticsearch/guide/current/mapping-intro.html
+
+
+custom mapping
+1.string 域映射的两个最重要属性是index和analyzer
+index(1.analyzed 全文 2.not_analyzed 精确 3.no 不被搜索)
+analyzer(用analyzer 属性指定在搜索和索引时使用的分析器)
+
+2.简单long,double,date等也接受 index 参数，但有意义的值只有 no 和 not_analyzed ， 因为它们永远不会被分析 
+
+3.update mapping,只能重建
+
+
+4.指定mapping建立索引
+PUT /gb/_mapping/tweet
+{
+  "properties" : {
+    "tag" : {
+      "type" :    "string",
+      "index":    "not_analyzed"
+    }
+  }
+}
+
+测试分析器
+GET /gb/_analyze
+{
+  "field": "tweet",
+  "text": "Black-cats" 
+}

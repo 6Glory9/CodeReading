@@ -1,0 +1,7 @@
+ES用途
+1.全文搜索==>match
+2.短语搜索==>match_phrase
+3.高亮搜索==>highlight
+4.分析==>aggs(group)
+5.分布查询
+

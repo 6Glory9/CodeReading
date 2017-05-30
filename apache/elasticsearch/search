@@ -1,0 +1,121 @@
+search
+
+##基础查询
+POST /accountant/_search 
+{
+  "query": { "match": { "name": "John Doe" } }
+  "query": { "match": { "name": "John jiang" } }	##分析John,jiang
+  "query": { "match": { "age": 27 } }	            ##=27 
+  "from": 10,                                       ##默认是0
+  "size": 10，                                      ##默认是10
+  "_source": ["account_number", "balance"]          ##指定字段
+  "sort": { "balance": { "order": "desc" } }        ##排序
+}
+{
+    "bool": {
+        "must": { "match":   { "email": "business opportunity" }},
+        "should": [
+            { "match":       { "starred": true }},
+            { "bool": {
+                "must":      { "match": { "folder": "inbox" }},
+                "must_not":  { "match": { "spam": true }}
+            }}
+        ],
+        "minimum_should_match": 1
+    }
+}
+
+##精确查询,tag只有一个字符。match是根据字段映射判断是否分析
+{ "match": { "age":    26           }}
+{ "match": { "date":   "2014-09-01" }}
+{ "match": { "public": true         }}
+{ "match": { "tag":    "full_text"  }}
+
+
+##多个字段查询multi_match
+{
+    "multi_match": {
+        "query":    "full text search",
+        "fields":   [ "title", "body" ]
+    }
+}
+
+##range查询
+{
+    "range": {
+        "age": {
+            "gte":  20,
+            "lt":   30
+        }
+    }
+}
+
+##term 精确查询,term强制不分析
+{ "term": { "age":    26           }}
+{ "term": { "date":   "2014-09-01" }}
+{ "term": { "public": true         }}
+{ "term": { "tag":    "full_text"  }}
+
+##terms 精确查询,匹配多个文本
+{ "terms": { "tag": [ "search", "full_text", "nosql" ] }}
+
+
+exists 查询和 missing 查询
+{
+    "exists":   {
+        "field":    "title"
+    }
+}
+
+
+##组合查询
+{
+    "bool": {
+        "must":     { "match": { "title": "how to make millions" }},    ##文档 必须 匹配
+        "must_not": { "match": { "tag":   "spam" }},                    ##文档 必须不 匹配 
+        "should": [                                                     ##满足这些语句中的任意语句，增加评分
+            { "match": { "tag": "starred" }}
+        ],
+        "filter": {                                                     ##必须 匹配，无评分 
+          "bool": { 
+              "must": [
+                  { "range": { "date": { "gte": "2014-01-01" }}},
+                  { "range": { "price": { "lte": 29.99 }}}
+              ],
+              "must_not": [
+                  { "term": { "category": "ebooks" }}
+              ]
+          }
+        }
+    }
+}
+
+##constant_score
+执行一个 filter 而没有其它查询
+{
+    "constant_score":   {
+        "filter": {
+            "term": { "category": "ebooks" } 
+        }
+    }
+}
+
+##验证查询
+GET /gb/tweet/_validate/query
+{
+   "query": {
+      "tweet" : {
+         "match" : "really powerful"
+      }
+   }
+}
+
+##验证查询显示错误信息
+GET /gb/tweet/_validate/query?explain 
+{
+   "query": {
+      "tweet" : {
+         "match" : "really powerful"
+      }
+   }
+}
