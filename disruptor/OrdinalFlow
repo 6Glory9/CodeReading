@@ -1,0 +1,13 @@
+ Disruptor<TradeTransaction> disruptor=new Disruptor<TradeTransaction>(new EventFactory<TradeTransaction>() {  
+            @Override  
+            public TradeTransaction newInstance() {  
+                return new TradeTransaction();  
+            }  
+}, bufferSize, executor, ProducerType.SINGLE, new BusySpinWaitStrategy());  
+          
+EventHandlerGroup<TradeTransaction> handlerGroup=disruptor.handleEventsWith(new TradeTransactionVasConsumer(),new TradeTransactionInDBHandler());  
+
+//有序列
+TradeTransactionJMSNotifyHandler jmsConsumer=new TradeTransactionJMSNotifyHandler();  
+//声明在C1,C2完事之后执行JMS消息发送操作 也就是流程走到C3  
+handlerGroup.then(jmsConsumer);  

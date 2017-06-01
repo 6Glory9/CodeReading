@@ -1,0 +1,22 @@
+EventFactory<TradeTransaction> eventFactory = new EventFactory<TradeTransaction>() {  
+            public TradeTransaction newInstance() {  
+                return new TradeTransaction();  
+            }  
+        };  
+  
+RingBuffer<TradeTransaction> ringBuffer = RingBuffer.createSingleProducer(eventFactory, BUFFER_SIZE);  
+  
+SequenceBarrier sequenceBarrier = ringBuffer.newBarrier();  
+  
+ExecutorService executor = Executors.newFixedThreadPool(THREAD_NUMBERS);  
+  
+WorkHandler<TradeTransaction>[] workHandlers = new WorkHandler[3];  
+for (int i = 0; i < 3; i++) {  
+    WorkHandler<TradeTransaction> workHandler = new TradeTransactionInDBHandler();  
+    workHandlers[i] = workHandler;  
+}  
+
+//集群消费者  
+WorkerPool<TradeTransaction> workerPool = new WorkerPool<TradeTransaction>(ringBuffer, sequenceBarrier, new IgnoreExceptionHandler(), workHandlers);  
+
+workerPool.start(executor);  

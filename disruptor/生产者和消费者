@@ -1,0 +1,36 @@
+
+//创建队列
+final RingBuffer<TradeTransaction> ringBuffer = RingBuffer.createSingleProducer(new EventFactory<TradeTransaction>(){  
+            @Override  
+            public TradeTransaction newInstance() {  
+                return new TradeTransaction();  
+            }  
+}, BUFFER_SIZE,new YieldingWaitStrategy());  
+          
+//创建线程池  
+ExecutorService executors = Executors.newFixedThreadPool(THREAD_NUMBERS);  
+          
+//创建SequenceBarrier 序号屏障器  
+SequenceBarrier sequenceBarrier = ringBuffer.newBarrier();  
+          
+//创建消息处理器  
+BatchEventProcessor<TradeTransaction> transProcessor = new BatchEventProcessor<TradeTransaction>(ringBuffer,sequenceBarrier,new TradeTransactionInDBHandler());  
+      
+//ringBuffer可以知晓消费者的状态  
+ringBuffer.addGatingSequences(transProcessor.getSequence());  
+          
+executors.submit(transProcessor);  
+          
+Future<?> future = executors.submit(new Callable<Void>(){  
+  
+            @Override  
+            public Void call() throws Exception {  
+                long seq;  
+                for(int i=0;i<1000;i++){  
+                    seq = ringBuffer.next();  
+                    ringBuffer.get(seq).setPrice(Math.random()*9999);  
+                    ringBuffer.publish(seq);//发布这个slot的数据使handler(consumer)可见  
+                }  
+                return null;  
+            }  
+ });  
