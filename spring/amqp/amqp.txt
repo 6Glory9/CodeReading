@@ -1,24 +1,25 @@
 ﻿spring-amqp
 	1.Message
-	2.Exchange:交换器
+	2.Exchange:交换器(a Message Producer sends to. Each Exchange within a virtual host of a broker will have a unique name as well as a few other properties)
 			exchangeType:Direct,Topic,Fanout,Headers
 			durable:持久性标示
 			autoDelete:自动删除标示
+
+			Direct:点对点
+			Topic:主题方式，表达式
+			Fanout:订阅
+
 	3.Queue
 			durable:持久性标示
 			autoDelete:自动删除标示
 			exclusive:独立唯一标示
-	4.Binding
+	4.Binding==>a producer sends to an Exchange and a consumer receives from a Queue
 			new Binding(someQueue, someDirectExchange, "foo.bar");
 			new Binding(someQueue, someTopicExchange, "foo.*");
 			new Binding(someQueue, someFanoutExchange);
 			Binding b = BindingBuilder.bind(someQueue).to(someTopicExchange).with("foo.*");
-	5.connection
-			1.SingleConnectionFactory 
-			2.CachingConnectionFactory
-			3.SSLConnectionFactory
-			4.RoutingConnectionFactory
-			
+
+
 一、工作队列
 工作队列（又称：任务队列——Task Queues）是为了避免等待一些占用大量资源、时间的操作。
 当我们把任务（Task）当作消息发送到队列中，一个运行在后台的工作者（worker）进程就会取出任务然后处理。
@@ -85,13 +86,5 @@ channel.queue_bind(exchange=exchange_name,
 3.远程过程调用（RPC）
 	一个客户端发送请求信息，服务器端将其应用到一个回复信息中。为了接收到回复信息，
 	客户端需要在发送请求的时候同时发送一个回调队列（callback queue）的地址
-	
-	channel.basic_publish(exchange='',
-                      routing_key='rpc_queue',
-                      properties=pika.BasicProperties(
-                            reply_to = callback_queue,
-                            ),
-                      body=request)
-	
 
            
