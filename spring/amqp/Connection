@@ -1,0 +1,27 @@
+Connection
+ConnectionFactory==>Connection
+
+CachingConnectionFactory
+createConnection()==>Connection
+CacheMode.CHANNEL模式
+1.ChannelCachingConnectionProxy
+2.getConnectionListener().onCreate(connection)
+3.checkoutPermits 控制最大缓存channel
+
+CacheMode.CONNECTION模式
+1.idleConnections poll ==>check
+2.IF not idleConnections ==>ChannelCachingConnectionProxy
+3.getConnectionListener().onCreate(connection)
+4.openConnections,openConnectionNonTransactionalChannels,openConnectionTransactionalChannels缓存connection
+5.checkoutPermits 控制最大缓存channel
+
+
+
+
+ChannelCachingConnectionProxy
+createChannel(boolean transactional)==>channel
+1.IF channelCheckoutTimeout==>checkoutPermits.tryAcquire(timeOut)
+2.
+
+
+
