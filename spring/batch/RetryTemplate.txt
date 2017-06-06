@@ -30,5 +30,7 @@ doExecute(RetryCallback<T, E> retryCallback,RecoveryCallback<T> recoveryCallback
 8.handleRetryExhausted
 			1.删除缓存RetryContext
 			2.重试失败恢复操作 return;
-			3.抛出异常			 			
+			3.抛出异常
+9.close==>IF status存在&& success 清理cache,retryPolicy.close
+10.doCloseInterceptors && 清理环境变量			 			
 	 
