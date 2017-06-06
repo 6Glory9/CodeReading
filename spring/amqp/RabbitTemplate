@@ -1,0 +1,85 @@
+RabbitTemplate
+1)send
+1.重试模板
+2.doExecute(ChannelCallback<T> action, ConnectionFactory connectionFactory)
+3.IF isChannelTransacted==>getTransactionalResourceHolder.getChannel||connectionFactory.createConnection().createChannel
+4.IF ConfirmsReturns ==>addListener
+5.doInRabbit==>doSend
+6.IF isChannelTransacted==>releaseResources(resourceHolder)||closeChannel,closeConnection
+
+
+2)doSend
+1.basic config && (mandatory==>RETURN_CORRELATION_KEY)
+2.beforePublishPostProcessors==>convert message
+3.setupConfirm==>addPendingConfirm(Listener,SeqNo,PendingConfirm) && conver userId
+4.convertedMessageProperties from messagePropertiesConverter
+5.channel.basicPublish
+6.IF isChannelTransactional ==> channel.commit
+
+
+3)sendAndReceive
+1.IF !evaluatedFastReplyTo==>queueDeclarePassive(AMQ_RABBITMQ_REPLY_TO)
+2.IF doSendAndReceiveWithTemporary
+3.IF doSendAndReceiveWithFixed
+
+doSendAndReceiveWithTemporary
+1.create PendingReply ==>messageTag==>replyHolder<messageTag,PendingReply>
+2.create consumer listener AMQ_RABBITMQ_REPLY_TO ==>response result add PendingReply
+3.add RETURN_CORRELATION_KEY messageTag==>look up consumer(only support new queue )
+4.doSend
+5.pendingReply.get(replyTimeout)==>get result
+6.replyHolder.remove && basicCancel.consumer
+
+
+doSendAndReceiveWithFixed
+1.create PendingReply ==>messageTag==>replyHolder<messageTag,PendingReply>
+2.response self address ==>response result add PendingReply
+3.look up consumer(only support returnHandler )
+4.doSend
+5.pendingReply.get(replyTimeout)==>get result
+6.replyHolder.remove && basicCancel.consumer
+
+
+4)receive
+1.重试模板
+2.doExecute(ChannelCallback<T> action, ConnectionFactory connectionFactory)
+3.IF isChannelTransacted==>getTransactionalResourceHolder.getChannel||connectionFactory.createConnection().createChannel
+4.IF ConfirmsReturns ==>addListener
+5.doInRabbit==>doReceive
+6.IF isChannelTransacted==>releaseResources(resourceHolder)||closeChannel,closeConnection
+
+doReceive
+1.create consumer==>obain(nextDelivery(timeoutMillis))
+2.basicCancel(consumer)
+3.Transacted deal
+4.channel.basicAck
+5.return message to client
+
+
+doReceiveAndReply
+1.IF channel.basicGet ==>receiveMessage
+2.IF doReceive ==>receiveMessage<没回复>
+3.convert && callback.handle(Message)
+4.RabbitTemplate.doSend==>Reply
+
+
+PublisherCallbackChannelImpl
+1)addPendingConfirm(Listener,SeqNo,PendingConfirm)<==>ConfirmListener(handleAck,handleNAck)
+1.listenerForSeq(SeqNo,Listener)
+2.pendingConfirms(Listener,<SeqNo,PendingConfirm>)
+
+2)ConfirmListener(handleAck,handleNAck)
+1.IF multiple DO
+2.listenerForSeq==>Listener && pendingConfirms==>pendingConfirm
+3.listener.handleConfirm==>confirmCallback
+4.pending map ==>fill result(ack,setNackCause)
+
+3)ConfirmsReturns==>addListener<==>handleReturn
+1.real channel addConfirmListener && addReturnListener
+2.listeners<Listener.uuid,Listener> && pendingConfirms(Listener,<SeqNo,PendingConfirm>)
+
+4)handleReturn
+1.getHeaders==>Listener.uuid==>Listener
+2.listener.handleReturn
+3.pending map ==>fill result(Exception,data)
+
