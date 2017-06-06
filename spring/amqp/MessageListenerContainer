@@ -1,0 +1,43 @@
+MessageListenerContainer
+1)start
+1.check queue length
+2.obtain rabbitAdmin
+3.IF mismatchedQueuesFatal && rabbitAdmin ==>(filter,declareExchanges,declareQueues,declareBindings)
+4.update status
+5.initializeConsumers
+6.assemble AsyncMessageProcessingConsumer(Consumer)==>taskExecutor
+7.application.publishEvent && check exception
+
+
+
+AsyncMessageProcessingConsumer
+1.IF SimpleResourceHolder.bind routingLookupKey
+2.check Consumer queue ==>publishEvent.AsyncConsumerStoppedEvent
+3.IF autoDeclare ==>IF mismatchedQueuesFatal && rabbitAdmin ==>(filter,declareExchanges,declareQueues,declareBindings)
+4.consumer.start() ==>ps
+5.IF transactionManager ==>registerConsumerChannel
+6.IF "isActive"==>receiveAndExecute == ps 
+7.IF maxConcurrentConsumers==>(consecutiveActiveTrigger=AddingAConsumer,consecutiveIdleTrigger=StoppingAConsumer)
+8.IF idleEventInterval ==>publishIdleContainerEvent
+9.exception  ==>publishConsumerFailedEvent|logConsumerException
+10.IF transactionManager ==>unRegisterConsumerChannel
+11.IF "!isActive"==>consumer.stop() && publishAsyncConsumerStoppedEvent
+12.IF "isActive" ==>restart(this.consumer)
+13.SimpleResourceHolder unbind routingLookupKey
+
+
+consumer.start()
+1.obtain channel
+2.IF Retries passiveDeclare queue
+3.IF !isAutoAck==>basicQos ==>heart hit
+4.channel.basicConsume==>channel register Consume(ChannelN.register Consume)==>message add BlockingQueue of Consume
+5.consumerTags.put(consumerTag, queue)
+
+
+receiveAndExecute
+1.事务模板
+2.doReceiveAndExecute
+3.obtain message from BlockingQueue ==>txSize==pageSize
+4.executeListener ==>ps
+5.exception==>1.break;.if transactionManager rollbackOnExceptionIfNecessary && consumer.clearDeliveryTags() 
+6.commitIfNecessary==>channel.basicAck&&isLocallyTransacted
