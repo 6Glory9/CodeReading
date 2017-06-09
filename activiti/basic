@@ -1,0 +1,71 @@
+1)工作流图
+1.bpmn文件==>xml文件
+2.png==>图
+
+2)硬编码初始化23张表
+1.ProcessEngineConfirguration数据库配置==>ProcessEngine
+2.ProcessEngineConfirguration(XML)==>ProcessEngine
+
+##一般的操作流程
+1)部署流程
+ProcessEngine==>ResponseService==>Deplyment
+1.clsspathResouce("bpmn","png")
+2.byte[]
+3.zip
+
+2)启动流程实例
+ProcessEngine==>RuntimeService==>ProcessIntance
+1.startByKey==>(bpm文件的ID值,用key启动ID最新的版本流程)
+
+3)查看个人任务assignee(代理人)
+ProcessEngine==>TaskService==>Query
+(Task,ProcessInstance,ProcessDefine,Execute)
+
+4)完成任务
+ProcessEngine==>TaskService==>complete(taskId)
+
+
+##数据库操作说明
+１)流程部署
+select * from act_re_deployment ##部署对象表,记录部署名字
+select * from act_re_procdef ##流程定义表（流程定义ID,流程定义name,流程version(相同流程定义ID,version会自增),流程ID(流程定义ID+version+自增数),关联部署表ID）
+select * from act_ge_bytearray ##资源文件表，资源文件名，关联部署表ID
+select * from act_ge_property ##资源表，主键生成器，act版本号记录
+
+2)流程定义删除
+ProcessEngine==>ResponseService==>DeleteDeplyment
+1.普通删除==>只能删除没有正在执行的流程定义
+2.级联删除==>全部删除
+
+3)流程图片查看
+ProcessEngine==>ResponseService==>getDeplymentResouce(DeplymentId)
+
+
+##流程运行
+select * from act_ru_execution  ##执行表,流程实例，执行对象，当前节点，办理人(一个流程实例可能有多个执行对象记录，只要有并发执行)
+select * from act_hi_proinst    ##历史流程实例表，开始时间，结束时间，耗时
+select * from act_ru_task       ##正执行任务表(UserTask),办理人
+select * from act_hi_taskinst   ##历史任务表,办理人，开始时间，结束时间，耗时
+select * from act_hi_actinst    ##历史活动表，办理人，开始时间，结束时间，耗时，所有的节点
+
+ps:检查流程是否完成1.act_ru_execution==>不存在 2.act_hi_proinst==>endTime有值
+
+
+##流程变量及类型
+1.runService.setV(executeId,param)            ==>指定执行对象
+2.taskService.setV(taskId,param)              ==>当前执行对象
+3.runService.startProcessIntance(key,param)   ===>启动流程实例加变量
+4.taskService.complete(param)                  ==>完成任务加变量
+
+select * from act_ru_variable ##正在执行的流程变量
+select * from act_hi_varinst  ##流程变量历史表
+
+1.localV==>限制某个任务中，执行任务完成，ru_v
+2.V==>限制在执行对象
+3.相同的名字会覆盖，在数据库表里面会体现出现
+4.序列化字段最终存在act_ge_bytearray表里面
+
+
+
+
+
