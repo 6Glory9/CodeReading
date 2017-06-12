@@ -41,3 +41,11 @@ receiveAndExecute
 4.executeListener ==>ps
 5.exception==>1.break;.if transactionManager rollbackOnExceptionIfNecessary && consumer.clearDeliveryTags() 
 6.commitIfNecessary==>channel.basicAck&&isLocallyTransacted
+
+executeListener
+1.IF afterReceivePostProcessors
+2.IF SPRING_BATCH_FORMAT
+3.invokeListener
+4.handleListenerException==>对于Listener异常处理
+
+invokeListener

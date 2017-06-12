@@ -1,0 +1,7 @@
+Channel
+1.queueDeclare==>创建队列,可以重复创建,必须所有参数相同
+2.queueDeclarePassive==>只是检查队列存在
+
+ps:org.springframework.amqp.rabbit.annotation.RabbitListener
+1.queues==>这个配置只是用queueDeclarePassive来检查存在队列
+2.QueueBinding==>Queue对象都会被Admin去创建queueDeclare
