@@ -16,3 +16,25 @@ ps:1.可重用的，你可以在一个线程中多次调用acquire,在线程拥�
 一个读写锁管理一对相关的锁。 一个负责读操作，另外一个负责写操作。 读操作在写锁没被使用时可同时由多个进程使用，
 而写锁使用时不允许读 (阻塞)。 此锁是可重入的。一个拥有写锁的线程可重入读锁，但是读锁却不能进入写锁。
 这也意味着写锁可以降级成读锁， 比如请求写锁 —>读锁 —->释放写锁
+
+4)信号量Shared Semaphore
+InterProcessSemaphoreV2 semaphore = new InterProcessSemaphoreV2(client, PATH, MAX_LEASE);
+
+##信号量
+public void returnAll(Collection<Lease> leases)
+public void returnLease(Lease lease)
+
+public Lease acquire()
+public Collection<Lease> acquire(int qty)
+public Lease acquire(long time, TimeUnit unit)
+public Collection<Lease> acquire(int qty, long time, TimeUnit unit)
+
+##多锁对象 Multi Shared Lock
+InterProcessLock lock1 = new InterProcessMutex(client, PATH1);
+InterProcessLock lock2 = new InterProcessSemaphoreMutex(client, PATH2);
+
+InterProcessMultiLock lock = new InterProcessMultiLock(Arrays.asList(lock1, lock2));
+
+
+
+
