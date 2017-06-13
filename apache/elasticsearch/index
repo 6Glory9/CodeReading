@@ -1,0 +1,175 @@
+index
+1.手动建立索引
+PUT /my_index
+{
+    "settings": { ... any settings ... },
+    "mappings": {
+        "type_one": { ... any mappings ... },
+        "type_two": { ... any mappings ... },
+        ...
+    }
+}
+
+ps:关闭自动建立索引配置config/elasticsearch.yml==>action.auto_create_index: false
+
+2.删除索引
+DELETE /my_index
+DELETE /index_one,index_two
+DELETE /index_*
+
+ps:elasticsearch.yml==>action.destructive_requires_name: true 必须明确名字
+
+3.设置主分片数和副本数
+PUT /my_temp_index
+{
+    "settings": {
+        "number_of_shards" :   1,
+        "number_of_replicas" : 0
+    }
+}
+ps:number_of_replicas可以更新
+PUT /my_temp_index/_settings
+{
+    "number_of_replicas": 1
+}
+
+4.配置分析器
+standard
+	1.分词器,通过单词边界分割输入的文本(String==>tokens)
+	2.语汇单元过滤器，目的是整理分词器触发的语汇单元（但是目前什么都没做）。
+	3.语汇单元过滤器，转换所有的语汇单元为小写。(tokens==>standard tokens)
+	4.删除停用词--对搜索相关性影响不大的常用词，如 a ， the ， and ， is(tokens filter==>real tokens)
+
+5.自定义分析器(1.字符过滤器 2.分词器 3.词单元过滤器)
+PUT /my_index
+{
+    "settings": {
+        "analysis": {
+            "char_filter": { ... custom character filters ... },
+            "tokenizer":   { ...    custom tokenizers     ... },
+            "filter":      { ...   custom token filters   ... },
+            "analyzer":    { ...    custom analyzers      ... }
+        }
+    }
+}
+
+
+PUT /my_index
+{
+    "settings": {
+        "analysis": {
+            "char_filter": {
+                "&_to_and": {
+                    "type":       "mapping",
+                    "mappings": [ "&=> and "]
+            }},
+            "filter": {
+                "my_stopwords": {
+                    "type":       "stop",
+                    "stopwords": [ "the", "a" ]
+            }},
+            "analyzer": {
+                "my_analyzer": {
+                    "type":         "custom",
+                    "char_filter":  [ "html_strip", "&_to_and" ],
+                    "tokenizer":    "standard",
+                    "filter":       [ "lowercase", "my_stopwords" ]
+            }}
+}}}
+
+GET /my_index/_analyze?analyzer=my_analyzer
+
+
+6.类型和映射
+多个类型可以在相同的索引中存在，只要它们的字段不冲突
+
+7.禁用字段
+PUT /my_index
+{
+    "mappings": {
+        "my_type": {
+            "_source": {
+                "enabled":  false
+            }
+        }
+    }
+}
+
+8._all的用法==>全文搜索
+PUT /my_index/my_type/_mapping
+{
+    "my_type": {
+        "include_in_all": false,
+        "properties": {
+            "title": {
+                "type":           "string",
+                "include_in_all": true ==>这个字段会包含中
+            },
+            ...
+        }
+    }
+}
+
+9.动态映射
+ps:默认是自动动态添加新的字段
+
+10.动态模板
+PUT /my_index
+{
+    "mappings": {
+        "my_type": {
+            "dynamic_templates": [
+                { "es": {
+                      "match":              "*_es", 
+                      "match_mapping_type": "string",
+                      "mapping": {
+                          "type":           "string",
+                          "analyzer":       "spanish"
+                      }
+                }},
+                { "en": {
+                      "match":              "*", 
+                      "match_mapping_type": "string",
+                      "mapping": {
+                          "type":           "string",
+                          "analyzer":       "english"
+                      }
+                }}
+            ]
+}}}
+
+
+11.缺省映射
+PUT /my_index
+{
+    "mappings": {
+        "_default_": {
+            "_all": { "enabled":  false }
+        },
+        "blog": {
+            "_all": { "enabled":  true  }
+        }
+    }
+}
+
+12.批量重新索引
+ps:增加新的类型到索引中，或者增加新的字段到类型中，但是不能添加新的分析器或者对现有的字段做改动。 如果你那么做的话，结果就是那些已经被索引的数据就不正确， 搜索也不能正常工作。
+
+为了有效的重新索引所有在旧的索引中的文档，用 scroll 从旧的索引检索批量文档 ， 然后用 bulk API 把文档推送到新的索引中。
+
+13.索引别名
+
+PUT /my_index_v1 
+PUT /my_index_v1/_alias/my_index ==> my_index alias is my_index_v1
+
+GET /*/_alias/my_index  ==>检查my_index的alias
+GET /my_index_v1/_alias/* ==>这个alias指向那个索引
+
+##批量别名
+POST /_aliases
+{
+    "actions": [
+        { "remove": { "index": "my_index_v1", "alias": "my_index" }},
+        { "add":    { "index": "my_index_v2", "alias": "my_index" }}
+    ]
+}

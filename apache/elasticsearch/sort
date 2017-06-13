@@ -1,0 +1,27 @@
+sort
+1.默认排序是 _score 降序
+2.用filter,就不存在_score
+3.多级排序
+"sort": [
+        { "date":   { "order": "desc" }},
+        { "_score": { "order": "desc" }}
+]
+4.字段多值的排序
+"sort": {
+    "dates": {
+        "order": "asc",
+        "mode":  "min"
+    }
+}
+
+5.想要一个字段又not_analyzed又analyzed,真正想要做的是传递一个 单字段 但是却用两种方式索引它
+"tweet": { 
+    "type":     "string",
+    "analyzer": "english",
+    "fields": {
+        "raw": { 
+            "type":  "string",
+            "index": "not_analyzed"
+        }
+    }
+}
