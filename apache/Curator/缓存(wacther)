@@ -1,0 +1,32 @@
+缓存
+Path Cache==>观察子女变化
+Node Cache==>观察自身变化
+Tree Cache==>观察子女和自身变化
+
+1)Path Cache
+用来监控一个ZNode的子节点. 当一个子节点增加， 更新，删除时， Path Cache会改变它的状态，
+会包含最新的子节点， 子节点的数据和状态。 这也正如它的名字表示的那样， 那监控path
+
+PathChildrenCache(CuratorFramework client, String path, boolean cacheData)
+PathChildrenCache.start()
+
+addListener(PathChildrenCacheListener listener)
+
+client.setData().forPath(path, bytes);
+client.create().creatingParentsIfNeeded().forPath(path, bytes);
+client.delete().forPath(path);
+
+
+2)Node Cache
+当节点的数据修改或者删除时，Node Cache能更新它的状态包含最新的改变
+
+cache = new NodeCache(client, PATH);
+cache.start();
+
+cache.getListenable().addListener(NodeCacheListener);
+
+
+3)Tree Node(Path Cache+Node Cache)
+TreeCache(CuratorFramework client, String path, boolean cacheData)
+addListener(TreeCacheListener listener)
+

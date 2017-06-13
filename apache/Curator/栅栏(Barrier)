@@ -1,0 +1,12 @@
+栅栏(Barrier)
+1)DistributedBarrier
+1.DistributedBarrier(CuratorFramework client, String barrierPath)
+2.setBarrier();==>设置栅栏
+3.waitOnBarrier()==>阻塞的线程调用(等待栅栏）
+4.removeBarrier()==>移除栅栏
+
+
+2)双栅栏(Double Barrier)
+1.DistributedDoubleBarrier(CuratorFramework client,String barrierPath,int memberQty)
+2.barrier.enter()==>所有memberQty的enter开跑
+3.barrier.leave()==>所有memberQty的leave结束

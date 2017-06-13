@@ -1,0 +1,22 @@
+Count
+1)SharedCount
+SharedCount baseCount = new SharedCount(client, PATH, 0);
+baseCount.addListener(example);
+baseCount.start();
+count.trySetCount(count.getVersionedValue(), count.getCount() + rand.nextInt(10))
+baseCount.close();
+
+ps:client更新了此计数值， 你的更新可能不成功， 但是这时你的client更新了最新的值，
+所以失败了你可以尝试再更新一次。 而setCount是强制更新计数器的值。
+注意计数器必须start,使用完之后必须调用close关闭它。
+
+2)DistributedAtomicLong
+final DistributedAtomicLong count = new DistributedAtomicLong(client, PATH, new RetryNTimes(10, 10));
+AtomicValue<Long> value = count.increment();
+get(): 获取当前值
+increment()： 加一
+decrement(): 减一
+add()： 增加特定的值
+subtract(): 减去特定的值
+trySet(): 尝试设置计数值
+forceSet(): 强制设置计数值

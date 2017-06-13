@@ -1,0 +1,37 @@
+队列
+ZooKeeper真心不适合做Queue，或者说ZK没有实现一个好的Queue
+1.ZK有1MB 的传输限制。 实践中ZNode必须相对较小，而队列包含成千上万的消息，非常的大。
+2.如果有很多节点，ZK启动时相当的慢。 而使用queue会导致好多ZNode. 你需要显著增大 initLimit 和 syncLimit.
+3.ZNode很大的时候很难清理。Netflix不得不创建了一个专门的程序做这事。
+4.当很大量的包含成千上万的子节点的ZNode时， ZK的性能变得不好
+5.ZK的数据库完全放在内存中。 大量的Queue意味着会占用很多的内存空间。
+
+
+1)DistributedQueue
+QueueBuilder.builder(client, consumer, serializer, path);
+DistributedQueue<String> queue = builder.buildQueue();
+queue.put(" test-" + i);
+
+2)DistributedIdQueue
+QueueBuilder.builder(client, consumer, serializer, path);
+DistributedQueue<String> queue = builder.buildIdQueue();
+queue.put(" test-" + i, "Id" + i);
+
+3)DistributedPriorityQueue
+QueueBuilder.builder(client, consumer, serializer, path);
+DistributedPriorityQueue<String> queue = builder.buildPriorityQueue(0);
+queue.put("test-" + i, priority);
+
+4)DistributedDelayQueue
+QueueBuilder.builder(client, consumer, serializer, path);
+DistributedDelayQueue<String> queue = builder.buildDelayQueue(0);
+queue.put(aMessage, delayUntilEpoch);
+
+5)SimpleDistributedQueue
+SimpleDistributedQueue(CuratorFramework client,String path)
+
+
+
+
+
+

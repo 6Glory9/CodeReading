@@ -1,0 +1,43 @@
+临时节点
+1)PersistentEphemeralNode.Mode的理解
+1.EPHEMERAL,以zk的EPHEMERAL方式创建临时节点
+2.EPHEMERAL_SEQUENTIAL,path exit,以zk的EPHEMERAL方式创建临时节点;否则,EPHEMERAL_SEQUENTIAL方式创建节点
+3.PROTECTED_EPHEMERAL,EPHEMERAL+提供保护
+4.PROTECTED_EPHEMERAL_SEQUENTIAL,EPHEMERAL_SEQUENTIAL+提供保护
+
+ps:提供保护==>一种很边缘的情况,当服务器将节点创建好，但是节点名还没有返回给client,这时候服务器可能崩溃了,然后此时ZK session仍然合法，
+所以此临时节点不会被删除。对于client来说， 它无法知道哪个节点是它们创建的
+
+
+##常见API
+##client的启动
+client = CuratorFrameworkFactory.newClient(server.getConnectString(), new ExponentialBackoffRetry(1000, 3));
+client.getConnectionStateListenable().addListener(new ConnectionStateListener() {
+                @Override
+                public void stateChanged(CuratorFramework client, ConnectionState newState) {
+                    System.out.println("client state:" + newState.name());
+
+                }
+            });
+client.start();
+
+##临时节点创建
+node = new PersistentEphemeralNode(client, Mode.EPHEMERAL,PATH, "test".getBytes());
+node.start();
+node.waitForInitialCreate(3, TimeUnit.SECONDS);
+
+##节点创建
+client.create().forPath(PATH2, "persistent node".getBytes());
+
+##断开会话
+KillSession.kill(client.getZookeeperClient().getZooKeeper(), server.getConnectString());
+
+##断开资源
+CloseableUtils.closeQuietly(node);
+CloseableUtils.closeQuietly(client);
+CloseableUtils.closeQuietly(server);
+
+
+
+
+
