@@ -1,0 +1,44 @@
+﻿1)maven配置
+M2_HOME:一般采用这个名字环境变量。jdk它采用JAVA_HOME
+echo %M2_HOME%
+
+maven的目录说明
+M2_HOME/bin===>启动脚本,其中m2.conf是plexus-classworlds配置文件
+M2_HOME/boot==>plexus-classworlds的jar
+M2_HOME/config==>用户配置文件: ~/.m2/setting.xml;全局配置文件：M2_HOME/config/setting.xml;日志文件配置
+M2_HOME/lib==>依赖的核心jar
+
+
+2)maven的约定==>指定目录搜文件
+src/main/java
+src/main/resource
+src/test/java
+src/test/resource
+
+
+3)gav
+groupId,artifactId,version==>坐标
+package
+classifier==>附件
+
+4)scop与classpath关系
+编译classpath 测试classpath 运行classpath
+
+compile==>三个classpath
+test==>测试classpath
+provided,system==>编译classpath 测试classpath,只是路径有所不同而已
+runtime==>测试classpath 运行classpath
+
+5)scop与传递关系==>查百度
+
+6)依赖原则
+1.路径短优先考虑
+2.路径相等优先考虑版本高
+
+7)依赖特性
+1.两个互斥选择jar==>最终选择一个
+2.排除jar
+
+8)jar分析
+mvn dependency:list
+mvn dependency:tree > a.txt

@@ -1,0 +1,15 @@
+1)仓库==>[本地仓库,远程仓库[中央仓库，私服，其它公共库]]
+1.maven-model-builder其中有超级pom==>配置文件里面方便查看
+2.pluginRepositories,repositories==>download jar(updatePolicy)
+3.distributionManagement==>upload jar(如果需要认证在server配置),pluginRepositories,repositories,distributionManagement都可以配置环境变量
+
+
+2)仓库加载原理
+1.scop为system直接查找本地jar
+2.显示版本(1.2,1.2-beta)这种如果不存在直接遍历所有仓库
+3.隐式版本[relaease,lastest]==>根据更新策略,update groupId/artifactId/maven-metadata.xml 得到最终version,mvn -u 强制更新，maven 3不支持
+4.隐式版本[snapshot]==>根据更新策略,update groupId/artifactId/version/maven-metadata.xml 得到最终version,mvn -u 强制更新
+
+
+3)镜像
+表示是某个仓库的镜像(proxy),私服就采用此方式，这样把所有仓库定向私服
