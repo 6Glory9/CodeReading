@@ -1,3 +1,19 @@
+插件
+1.插件全局变量(-Dmaven.test.skip=true,<target></target>)
+2.目标变量
+3.寻找好用的插件地址apache|codehaus plugins
+4.寻找机制,如果插件没有指定版本,会遍历所有仓库maven3会找到relaease版本，建议还是显示指定版本号
+5.插件简称，默认的groupId是apache|codehaus plugins/maven-metaDate.xml,也可以自定义自己的。里面有对应简称MAP 
+
+mvn [options] [<goal(s)>] [<phase(s)>] -DVar
+1.options 有二十几个
+2.goal目标
+3.phase
+
+ps:通用我们直接执行生命周期阶段,但有时有些目标是单独存在,不依赖其它。
+
+
+##常用的插件
 1.maven-compiler-plugin==>编译插件[*.java==>*.class;*.class==>run]
 2.maven-shade-plugin==>打包文件[生成META-INF/MANIFEST.MF],java -jar file.jar才知道运行文件
-3.
+3.maven-help-plugin==>查看plugin描述
