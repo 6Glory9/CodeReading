@@ -1,0 +1,125 @@
+1.内部过滤器==>单个过滤器
+constant_score 过滤器
+GET /my_store/products/_search
+{
+    "query" : {
+        "constant_score" : {====>内部过滤器
+            "filter" : {
+                "term" : {
+                    "productID" : "XHDK-A-1293-#fJ3"
+                }
+            }
+        }
+    }
+}
+ps:排查不出来，可以排查问题，通过分析tokens
+GET /my_store/_analyze
+{
+  "field": "productID",
+  "text": "XHDK-A-1293-#fJ3"
+}
+
+2.组合过滤器
+
+bool过滤器
+{
+   "bool" : {
+      "must" :     [],
+      "should" :   [],
+      "must_not" : [],
+   }
+}
+
+GET /my_store/products/_search
+{
+   "query" : {
+      "filtered" : { 
+         "filter" : {
+            "bool" : {
+              "should" : [
+                 { "term" : {"price" : 20}}, 
+                 { "term" : {"productID" : "XHDK-A-1293-#fJ3"}} 
+              ],
+              "must_not" : {
+                 "term" : {"price" : 30} 
+              }
+           }
+         }
+      }
+   }
+}
+
+
+
+GET /my_store/products/_search
+{
+   "query" : {
+      "filtered" : {
+         "filter" : {
+            "bool" : {
+              "should" : [
+                { "term" : {"productID" : "KDKE-B-9947-#kL5"}}, 
+                { "bool" : { 
+                  "must" : [
+                    { "term" : {"productID" : "JODL-X-1937-#pV7"}}, 
+                    { "term" : {"price" : 30}} 
+                  ]
+                }}
+              ]
+           }
+         }
+      }
+   }
+}
+
+3.范围
+gt: > 大于（greater than）
+lt: < 小于（less than）
+gte: >= 大于或等于（greater than or equal to）
+lte: <= 小于或等于（less than or equal to）
+GET /my_store/products/_search
+{
+    "query" : {
+        "constant_score" : {
+            "filter" : {
+                "range" : {
+                    "price" : {
+                        "gte" : 20,
+                        "lt"  : 40
+                    }
+                }
+            }
+        }
+    }
+}
+
+##日期
+"range" : {
+    "timestamp" : {
+    	"gt" : "now-1h",
+        "gt" : "2014-01-01 00:00:00",
+        "lt" : "2014-01-07 00:00:00",
+         "lt" : "2014-01-01 00:00:00||+1M" 
+    }
+}
+
+##字符串范围
+"range" : {
+    "title" : {
+        "gte" : "a",
+        "lt" :  "b"
+    }
+}
+
+##空值处理
+GET /my_index/posts/_search
+{
+    "query" : {
+        "constant_score" : {
+            "filter" : {
+                "exists" : { "field" : "tags" }
+                "missing" : { "field" : "tags" }
+            }
+        }
+    }
+}
