@@ -1,0 +1,24 @@
+hdfs
+nameNode==>项目经理,只有一个。元数据存储及元数据管理
+dataNode==>码农，许多个。以块的形式存储数据。
+
+ps:
+1.dataNode启动时，会向nameNode注册信息，并且周期性(1小时)上报块报告
+2.dataNode<==>nameNode,每隔3秒钟heart hit.nameNode也会响应给dataNode元数据管理命令。如果超过
+10钟nameNode没有收到心跳，就认为这个dataNode节点就死掉。
+
+
+##读写流程
+1.通过nameNode获取接下来需要操作dataNode.
+2.再从dataNode读写操作
+
+##副本存储策略,副本因子为3
+本地机架存两个节点,不同机架存一个节点
+
+
+##checksum
+1.当dataNode的数据被读之前,client会checksum数据完整性
+2.如果数据损坏，dataNode会向nameNode汇报,nameNode会把这部分数据定作废,后续会做相应复制操作。
+3.client再重复之前的操作，读取其它dataNode。
+4.dataNode的块三周过后没有被动checksum,它会主动checksum检查数据完整性
+

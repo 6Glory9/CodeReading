@@ -1,0 +1,22 @@
+基础
+1.cpu===>速度中心
+2.RAM===>如果不够大，往往用Hard Disk的swap来置换
+3.Hard Disk==>N个硬盘可以组成磁盘阵列(RAID)
+4.VGA==>命令行，作用不大。
+5.Network Interface Card==>入口关键性东西，10/100/1000Mbps
+
+ps:所有硬件都看成一个文档看待。
+1.IDE硬盘命名文件名为/dev/hd[a-d]
+2.SATA硬盘命名文件名为/dev/sd[a-p]
+
+
+磁盘分区表64byte==>只能分四个
+1.主要(Primary)分割和(Extended)分割槽，延伸分割目的是使用额外分割槽来记录分割信息，延伸分割本身并不拿来格式化(逻辑分割槽(logical partition))
+2.primary和extended最多只能分四个，这个由磁盘分区表决定。
+3.extended只能允许一个，这个由操作系统决定。
+4.logical和primary可以格式化，可以拿来数据存取，extended不能格式。
+5.IDE的max logical(5-63),SATA的max logical(5-15)
+
+挂载
+1.把分区槽的数据放到其目录下，这个动作叫做挂载。
+2.其目录就是分区槽数据读取的入口。
