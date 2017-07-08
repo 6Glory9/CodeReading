@@ -1,0 +1,70 @@
+Bash
+client====>(shell,kde)====>核心==>硬件
+PS:书到用时方恨少
+
+1.linux支持shell的查看cat /etc/shells,linux默认支持bash
+2.用户登陆时默认使用的Shell,cat /etc/passwd
+3.bash的history存放到/home/.bash_history文件中，但只存上次登陆操作记录，这次存的操作记录存留内存中,只有等
+注销，关机等操作才会保存到.bash_history。黑客也可以看这个东东
+4.type查看命令的类型(内部,别名,文件)，which查看命令的位置
+5.由于命令太长，可以用\换行
+
+
+##变量,只能在当前程序生效，子程序无法生效
+1.变量获取
+${varName}===>最佳
+
+2.变量设置
+varName = sdsd
+VarName = "xxxx"===>推荐使用这个
+VarName = 'xxx'==>只允许字符，特殊字符无法操作
+
+3.变量取消
+unset varName
+
+ls -l `locate crontab`===>ls -l ${locate crontab}建议采用这种方式,`容易看错，打错。
+
+
+##环境变量env,export
+set 查看所有变量(env+自定义变量)
+env,export 查看环境变量
+
+PS1==>提示符
+$$==>当前PID
+$?==>上个执行程序返回值，正常执行返回0
+export varNmae = varValue ===>可以把变量转成环境变量
+
+##输入信息
+read -p "Please keyin your name: " -t 30 named  ==>p后面是提示符，t是等待时间
+
+##定义变量
+declare [-aixr] variable
+a==>数组
+i==>interge
+x==>export,环境变量
+r==>only read
+
+##环境配置文件读取
+login shell ==>需要输入密码
+1./etc/profile  2.~/.bash_profile|~/.bash_login|~/.profile
+
+non-login shell   ==>~/.bashrc (non-login shell 会读)
+
+
+##配置文件读取，可以不启动
+source properties
+. properties
+
+
+
+##命令执行顺序
+指明路径-->alias-->bash 内置命令-->path
+
+##执行方式
+
+standard output
+find / -name xx > list.txt 2>&1  ==>全部输出到list.txt
+find / -name xx &> list.txt      ==>全部输出到list.txt
+find / -name xx 2> /dev/null     ==>输出到垃圾站
+
+
