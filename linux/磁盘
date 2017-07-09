@@ -42,3 +42,15 @@ block group主要说明
 
 3.Superblock (超级区块)
 1024bytes
+
+
+4.df磁盘使用情况
+df -ahT  ===>t类型
+df -h /etc/  ==>可以查看这个目录所挂载点
+
+5.du目录查看情况
+du -h --max-depth=3|sort -h
+
+6.sort用法
+sort -hv  ==>倒序
+sort -t ' ' -k 1.2 facebook.txt

@@ -1,0 +1,45 @@
+date
+date "+%Y-%m-%d %H:%M:%S %N"  ##查看时间
+date -s 07/13/2011 ##修改年月日,clock –w        
+date -s 11:12:00   ##修改时分秒,clock –w
+ps:如果马上重起机器,修改时间就有可能没有被写入CMOS,每隔11分钟写入cmos,强制写进clock –w
+
+
+ctrl+c==>停止当前命令
+ctrl+z==>暂停当前命令,把它放到后台
+ctrl+d==>exit
+
+
+##后台,前台
+find -name xxx / & ==>后台执行,后台执行
+登陆就有父进程，每个执行ssh都会子进程
+
+
+##jobs
+jobs -l ==>查看后台任务
+
+fg %number==>唤醒后台任务
+jobs;bg%number;jobs;==>后台执行任务
+
+
+##ps
+ps axu===>查看某个时刻进程状态
+
+##top
+top -d 0.5 -p pid    
+top -b -n 5 -p pid  > a.txt
+
+
+##nohup脱机管理
+nohup不支持bash内建指令;
+nohup script &  ==>后台任务
+nohup script  ==>前台任务
+
+
+##磁盘情况
+iostat 1
+
+##vmstat使用资源情况
+vmstat 1 
+
+
