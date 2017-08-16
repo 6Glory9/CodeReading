@@ -1,26 +1,26 @@
 ﻿1.look up object(EarlyBeanReference 循环依赖)
-2.FactoryBean==>beanPostProcessorsAfterInitialization==>return
+2.FactoryBean==>getObject==>beanPostProcessorsAfterInitialization==>return
 3.mergedBeanDefinition
 4.look up dependsOnBean
 
 createBean
 1.resolveBeforeInstantiation (实例化对象前)
 	1.beanPostProcessorsBeforeInstantiation 实例化之前
-	2.beanPostProcessorsAfterInitialization 初始化之后(AOP)
+	2.beanPostProcessorsAfterInitialization 初始化之后(AOP)==>return
 2.createBeanInstance (实例化对象)
 	1.工作方法实例化(静态,动态)
 	2.构造方法实例化
 	3.look-up-method,replace-method(LookupOverrideMethodInterceptor,ReplaceOverrideMethodInterceptor)
-3.MergedBeanDefinitionPostProcessor(修改BeanDefinition)
+3.MergedBeanDefinitionPostProcessor(修改BeanDefinition,autowired cache)
 4.addSingletonFactory(add EarlyBeanReference)
 5.population properties
 	1.beanPostProcessAfterInstantiation(实例化对象后)
-	2.autowireByName and autowireByType(自动加载)
-	3.InstantiationAwareBeanPostProcessor.postProcessPropertyValues(实例化属性后的处理,@Resource,@Autowird等注解就在这里处理,可以覆盖XML和自动加载操作)
-	4.applyPropertyValues(BeanDefinitionValueResolver)
+	2.autowireByName and autowireByType(XML自动加载,add properties(后面由applyPropertyValues操作))
+	3.InstantiationAwareBeanPostProcessor.postProcessPropertyValues(实例化属性后的处理,@Resource,@Autowired依赖加载,最终通过setter)
+	4.applyPropertyValues(BeanDefinitionValueResolver,BeanWrapper)
 6.initializeBean
-	1.ivokeAwareMethods
-	2.beanPostProcessorsBeforeInitialization(初始化前处理,dubbo refer)
+	1.invokeAwareMethods
+	2.beanPostProcessorsBeforeInitialization(初始化前处理,AOP(dubbo refer)包装)
 	3.afterPropertiesSet,initMethod
-	4.beanPostProcessorsAfterInitialization(初始化后处理,dubbo export)
-7.Singleton registerDisposableBean (scope.registerDestructionCallback)
+	4.beanPostProcessorsAfterInitialization(初始化后处理,AOP(dubbo export,@根据方法注解,@transactional)包装)
+7.Singleton registerDisposableBean (scope.registerDestructionCallback,destroy)

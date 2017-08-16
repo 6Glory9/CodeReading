@@ -38,7 +38,7 @@ SpringApplication.run(Main.class);
 		5.根据标示打印printBanner(OFF,CONSOLE,LOG)
 		5.createApplicationContext(1.指定2.根据Environment flat(AnnotationConfigEmbeddedWebApplicationContext|ConfigurableWebApplicationContext))
 		6.postProcessApplicationContext(setter(1.beanNameGenerator 2.resourceLoader))
-		7.initializers(ApplicationContextInitializer会把Generic做判断,最终initialize)application生命周期initialize
+		7.initialize(ApplicationContextInitializer会把Generic做判断,最终initialize)application生命周期initialize
 		8.listeners.contextPrepared(context)生命周期
 		9.打印标示决定(1.logStartupInfo 2.logStartupProfileInfo)
 	   10.注册参数ApplicationArguments
