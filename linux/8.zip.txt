@@ -1,0 +1,65 @@
+1.gzip（后缀.gz）
+gzip [-cdtv#] filename
+-c 将压缩的过程产生的数据输出到屏幕
+-d 解压
+-t 检查一个压缩文件一致性
+-v 显示压缩比
+-#压缩等级
+
+1）gzip -v man.config                             #man.config文件会删除
+2）gzip -d man.config.gz                        #man.config.gz 文件会删除
+3）gzip -9 -c man.config>man.config.gz   #man.config保留着
+
+
+2.bzip2(后缀 .bz2)
+bzip2[-cdkzv#] filename
+-c 将压缩的过程产生的数据输出到屏幕
+-d 解压缩
+-k 保留文件，而不会删除原档案
+-z 压缩的参数
+-v 可以显示出原档案压缩比等信息
+-#
+1)bzip2 -z man.config                                   #man.config文件会删除
+2)bzip2 -d man.config.bz2                            #man.config.gz 文件会删除
+3)bzip2 -9 -c man.config>man.config.bz2   #man.config保留着
+
+3.zip(后缀.zip)
+
+1)zip man.config.zip  man.config              ##压缩文件
+2)unzip man.config.zip                              ##解压文件
+
+4.tar打包
+-c 打包档案
+-x 解包档案
+-j  bzip2 ->bz2
+-z gzip  ->gz
+-v 在压缩与解压过程中，将正在处理文件名显示出来
+-f filename 后面要处理文档
+-C 在解压缩，特定目录解压
+-p 保留备份数据的权限与属性一致
+
+-t 察看打包档案
+-P 保留绝对路径
+--exclude = file 不要将file打包
+
+tar cvf   file.tar filename                 ##打包
+tar -jcv -f filename.tar.bz2  filename      ##要打包和压缩bz2
+tar -zcv -f filename.tar.gz  filename      ##要打包和压缩gz
+
+tar -tf    file.tar                                ##查看打包
+tar -ztf  file.tar.gz                                  ##查看tar.gz
+tar -jtf  file.tar.bz2                           ##查看tar.bz2
+
+tar -xvf  filename.tar  -C dir/               ##解包
+tar -zxvf  filename.tar.gz  -C dir/          #解压缩gz
+tar -jxvf   filename.tar.bz2 -C dir/          #解压缩bz2
+
+tar -jtv  -f filename.tar.bz2                 #查看
+tar -jxv -f filename.tar.bz2 -C dir       #解压与解包
+tar -cv -f  filename.tar  xx                  #要打包xx文件
+
+##打包压缩
+tar -zpcv -f  /root/etc.tar.gz   /etc   ##保持权限与属性一致
+tar -zpcv -f  /root/etc.tar.gz   /etc   --remove-files       ##原文件不会保留
+tar -jcv  -f /root/system.tar.bz2  --exclude=/root/etc*\--exclude=/root/system.tar.bz2   /etc/root    ##排除某些文件打包和压缩
+tar -jcv -f /root/etc.newer.then.tar.bz2 \ --newer-mtime="2008/09/29" /etc/*
