@@ -1,0 +1,64 @@
+﻿1.checkEditLock(检查编辑锁)==>last conf_version_info(operation_user_id)(1.用户拥有锁-3.2 2.用户无锁-2.1)
+2 getEditLock(获取编辑锁)==>last conf_version_info(operation_user_id)
+(1.null==>update operation_user_id获取编辑锁==>3)
+(2.getOperationUserId().equals(userId)==>获取编辑锁==>3)
+(3.!getOperationUserId().equals(userId)==>END)
+(4.!getOperationUserId().equals(userId)&&ower==>强制获取编辑锁==>3.1)
+
+3.1 forceReleaseUserLock==>强制释放锁外,将临时数据还原为最新版本的数据..conf_version_info(operation_user_id)==>3.2
+
+3.2 queryConfigVersions,queryModule,queryEditingConfig,queryCommonProjectConfig
+
+4.doConfig ==>编辑==>修改临时表
+
+只有baseProfile才能add,delete
+
+modify(admin才能修改隐藏的)
+1.1 查询出来为null==>error
+1.2 查询出来值opType为delete==>error
+1.3 查询出来值opType为add==>opType为add
+1.4 查询出来值opType为modify==>opType为modify
+1.5 查询出来值opType为null==>opType为modify【对比old值,不然opType不会修改】
+
+2.add
+1.1 查询出来为null==>opType为add
+1.2 查询出来值opType为delete==>opType为modify
+1.3 查询出来值opType为add==>error
+1.4 查询出来值opType为modify==>error
+1.5 查询出来值opType为null==>error
+
+1.1 查询出来值为type为delete==>modify
+1.2 查询出来值为type为modify,add,没有操作类型==>error
+1.3 查询出来null==>temp add Operation type add
+
+3.delete
+1.1 查询出来为null==>error,临时表中不存在此key
+1.2 查询出来值opType为delete==>error,临时表中不存在此key
+1.3 查询出来值opType为add==>直接删除这个值
+1.4 查询出来值opType为modify==>opType为delete
+1.5 查询出来值opType为null==>opType为delete
+
+
+5.commit
+1.1 查询opType都为null==>LatestVersionInfo做ResetOperationUserId
+1.2 查询opType部分有值==>2
+
+有三种情况（2.1==2.3）
+2.1 查询出来值opType为delete
+		1.base profile==>other profile[tempConfVersionData,confVersionData delete value],base profile[2.1,2.2,tempConfVersionData delete,new confVersionData noOp,delete value操作]
+		2.other profile==>1.LatestVersionInfo做ResetOperationUserId 2.add versionInfo 3.[tempConfVersionData delete,new confVersionData noOp,delete value操作]
+2.2 查询出来值opType为add
+		1.base profile==>other profile[tempConfVersionData,confVersionData add value],base profile[2.1,2.2,tempConfVersionData的opType为null, new confVersionData的opType为add]
+		2.other profile==>1.LatestVersionInfo做ResetOperationUserId 2.add versionInfo 3.[tempConfVersionData的opType为null,new confVersionData的opType为add]
+2.3 查询出来值opType为modify
+		1.base profile==>other profile[tempConfVersionData,confVersionData only modify ModuleId|ConfDes|Hide],base profile[2.1,2.2,tempConfVersionData的opType为null,new confVersionData的opType为modify]
+		2.other profile==>1.LatestVersionInfo做ResetOperationUserId 2.add versionInfo 3.[tempConfVersionData的opType为null,new confVersionData的opType为modify]
+
+3. 操作zk[projectId,profileId]值
+   1.all profile ==> set 0
+   2.other profile ==> set last version
+   
+6.cancle
+cancelConfig
+1. [3.1]forceReleaseUserLock==>强制释放锁外,将临时数据还原为最新版本的数据
+2. releaseOperationLock ==>LatestVersionInfo做ResetOperationUserId
