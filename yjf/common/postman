@@ -1,17 +1,57 @@
-postman(rop)
-1.获取ServiceMethodHandler的timeout
-2.threadPoolExecutor.submit(ServiceRunnable)
-3.future.get(serviceMethodTimeout)==>response
-4.响应
+postman(server==rop)
+rop.impl.AnnotationServletServiceRouter#service
+1.生成RequestId,根据method和version获取serviceMethodTimeout,jsonpCallback
+2.运行一个业务模板
+2.1 builderSimpleRopRequestContext(1.httpServletRequest 2.RequestId 3.ip 4.all header 5.FileItem|param 6.get ServiceMethodHandler)
+2.2 validateSystemParameters
+		1.if check delay
+		2.check AppKey是否存在，自己实现
+		3.if check sessionId
+		4.check method and version是否存在
+		5.checkSign
+		6.check 服务是否过期
+		7.check httpAction
+2.3 bindBusinessParams(convert ServiceRequest param,apache doBind)
+2.4 validateOther(1.checkServiceAccessAllow 2.checkInvokeTimesLimit 3.checkUploadFileSize 4.spring valildate)
+2.5 fireServiceStartedEvent【异步】
+2.6 pre interceptors==>可以返回结果
+2.7 serviceMethod,fireBusinessExceptionEvent
+2.8 caculateInvokeTimes
+2.9 fireServiceFinishedEvent【异步】
+		
+3.serviceMethodTimeout时间内获取result
+4.json RopResponse【outContent】【outContentjsonpCallback(outContent);】
+
 5.异常处理
+5.1 RejectedExecutionException
+	1.json RejectedServiceResponse【outContent】【outContentjsonpCallback(outContent);】
+	2.fire ServiceRejectedEvent【异步】
+5.2 TimeoutException
+	1.json ServiceTimeoutErrorResponse
+	2.fire fireServiceTimeoutEvent【异步】
+5.3 throwable
+	1.json ServiceUnavailableErrorResponse
+	2.fire fireServiceUnavailableEvent【异步】
+	
+	
+postman(PostmanClient)
+1.sendSms
+	1.serviceRequest==>string map
+	2.sign
+	3.post
+	4.unmarshaller
+	
+	ps:只是requestService response不同而已
+2.sendTemplateSmsAsync
+3.sendCaptchaSmsAsync
+4.resendCaptcha
+5.resendCaptchaAsync
 
 
-ServiceRunnable
-1.router check
-2.jms send queue
 
+业务逻辑
+1.SmsApiService==>普通短信
+2.SmsTemplateApiService==>模板短信
+3.SmsCaptchaApiService==>验证码短信
 
-jms recevid message
-1.router check==>根据权重选择;随即选择
-2.selected channel
-3.SmsChannelClientService.send==>smsSendReportExtService
+SmsApiService
