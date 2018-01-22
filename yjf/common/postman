@@ -48,6 +48,8 @@ postman(PostmanClient)
 5.resendCaptchaAsync
 
 
+app----subcodeName(中间表标识,开关)----sign(n:n,开关)----中间表(n:n,开关,类型)----router
+app----中间表(n:n,开关)----template----templateParam(1:n)
 
 业务逻辑
 1.SmsApiService==>普通短信
@@ -55,3 +57,6 @@ postman(PostmanClient)
 3.SmsCaptchaApiService==>验证码短信
 
 SmsApiService
+
+
+

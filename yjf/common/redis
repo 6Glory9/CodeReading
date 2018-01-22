@@ -1,0 +1,112 @@
+﻿key
+
+1)set bar 1 ##设置barkey
+2)keys *    ##遍历所有的key
+ps:
+1.keys命令需要遍历redis中的所有键,当键多的时候会影响redis性能
+2.redis不区分命令大小写
+
+3)exists bar ##检查bar的key是否存在
+4)del bar ##删除bar的key
+ps:删除不支持通配符，keys "user:*"|xargs redis-cli del
+5)type key  ##数据类型
+string(字符串类型)|hash(散列类型)|list(列表类型)|set(集合类型)|zset(有序集合类型)
+
+数据类型
+1.string(字符串类型)-512MB
+SET KEY VALUE
+GET KEY
+
+##原子操作
+INCR NUM  ##如果不存在num的key，默认返回0
+INCR string ##key不是整形的字符串，会报错
+INCRBY NUM 2 ##指定加2
+DECR KEY     ##原子减1
+DECRBY KEY 2 ##指定减2
+INCRBYFLOAT bar 2.7 ##指定加浮点数2.7
+APPEND KEY VALUE ##向尾部增加Value,如果key值不存在相当于SET KEY VALUE
+STRLEN KEY ##获取字符串长度
+MGET KEY,KEY2.... ##同时获取多个键
+MSET key value key2 value2 ##同时设置多个键
+
+2.hash  ##值只能是字符串
+HSET key field value  ##设置map某个field,update返回0,inser返回1
+HGET key field        ##获取map某个field
+HMSET key field value field2 value2 ##设置map多个field
+HMGET key field field2##获取map多个field
+HGETALL KEY           ##获取所有值
+HEXITSTS KEY field    ##判断字段是否存在
+HSETNX KEY field value ##字段不存在设置默认值
+HDEL KEY field         ##删除字段
+HKEYS KEY              ##获取所有字段名称
+HVALS KEY              ##获取所有字段的值
+HLEN  KEY              ##获取所有字段的长度
+
+原子操作
+HINCRBY KEY field increment
+
+3.list(列表类型)
+LPUSH KEY value,value2,value3 ##向左边增加元素
+RPUSH KEY value,value2,value3 ##向右边增加元素
+LPOP KEY  ##左边弹出一个元素
+RPOP KEY  ##右边弹出一个元素
+LLEN KEY  ##元素列表的个数
+LRANGE KEY start stop  ##获取部分元素,redis列表从0开始
+LRANGE KEY -1 -2  ##-1负数表示最右边开始
+LRANGE KEY 0 -1   ##所有的元素
+LREM KEY count value ##删除value值
+	count>0,从左边起删除count个前的Value的值
+	count<0,从右边起删除count个前的value的值
+	count=0,删除所有value的值
+
+LINDEX key index  ##获取某个index的值
+LSET KEY index value ##设置某个index的值
+LTRIM KEY count value ##与LRANGE KEY start stop用法一样的，删除之外的元素
+LINSERT KEY before|after pivot value ##先从左到右找到pivot值，再根据before|after的值判断插入value方位
+RPOPLPUSH SOURCE DESTINATION ##从一个列表到另外一个列表
+
+4.set(集合类型)
+SADD KEY member,member2  ##增加成员
+SRAM KEY member,member2  ##删除成员
+SMEMBERS KEY             ##获取集合中的所有元素
+SISMEMBER KEY  member    ##判断集合中的成员存在不
+
+#集合运算
+SDIFF KEY,KEY2 (A-B)   
+SINTER KEY,KEY2 (A$$B)
+SUNION KEY,KEY2 (A+B)  
+
+SCARD KEY    ##集合中元素个数
+
+##集合运算产生新的集合
+SDIFFSTORE destination KEY,KEY2
+SINTERSTORE destination KEY,KEY2
+SUNIONSTORE destination KEY,KEY2
+
+##随机获取元素
+STRANDMEMBER KEY [count]
+STRANDMEMBER KEY  ##随机获取一个元素
+	count>0,随机获取count个不重复元素
+	count<0,随机获取count个可能重复元素
+SPOP KEY    ##从集合弹出一个元素
+    
+5.zset(有序集合类型)
+ZADD KEY score member score2 member2  ##增加元素
+ZSCORE KEY member    ##获取元素的分数
+ZRANGE KEY start stop[WITHSCORES]  ##-1表示最后一个，从小到大
+ZREVRANGE KEY start stop[WITHSCORES] ##从大到小
+ZRANGEBYSCORE KEY min max[WITHSCORES][LIMIT OFFSET] 
+ZRANGEBYSCORE KEY 80 +info 0 5
+ZREVRANGEBYSCORE KEY max min [WITHSCORES][LIMIT OFFSET]
+ZINCRBY KEY  increment member  ##增加某个元素分数
+ZCARD KEY   ##获取集合中元素的个数
+ZCOUNT KEY min max ##获取指定分数范围内的元素个数
+ZREM KEY member  member2 ##删除一个元素
+ZREMRANGEBYRANK KEY start stop ##按照排名范围删除元素
+ZREMRANGEBYSCORE key min max ##按照分数范围删除元素
+ZRANK KEY member ##获取元素的排名
+ZREVRANK key member 
+ZINTERSTORE destination numkeys[WEIGHTS weight,weight2][AGGERGATE|SUM|MIN|MAX]
+
+
+事务
