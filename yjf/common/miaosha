@@ -1,0 +1,43 @@
+1.getMiaoshaGoodsLink【goodsId==>goodsRandomName(相同的goodsId获取相同种的goodsRandomName,有效期是3天)】
+	1.cache exit==>直接返回【cache[goodsId,goods]】
+	2.cache no exit==>直接从数据获取==>cache[goodsId,goods,3天]
+2.miaosha【mobile,goodsRandomName】
+	1.查询cache【cache[goodsRandomName,String]】判断这种商品秒杀结束
+	2.检查消息队列是否大于这种商品的库存(cache goods.limit <> cache message.length)
+	3.检查处理列表hash(key[goodsRandomName],field[mobile]),是否存在正在处理的
+	4.添加消息队列，处理列表数据
+	
+	后台线程
+		1.阻塞获取message,消息队列delete message
+		2.线程池来处理
+			 1.黑名称的判断
+			 2.判断该商品抢购是否结束
+			 3.cache 库存 减少1,失败库存加1，抛异常重试
+			 4.生成token==>根据mobile,goodsRandomName=>key+token==>key,System.currentTimeMillis()
+			 5.打印token生成各部分时间分区
+		3.业务异常处理
+			 1.大于最大重试次数==>错误处理
+			 2.加一个错误次数==>重新添加消息队列
+		4.线程池线程池已满==>重新添加消息队列
+		
+3.查询秒杀结果isMiaoshaSuccess(mobile,goodsRandomName)
+mobile,goodsRandomName==>mobile+goodsRandomName=key==>keys(key*)==>截取获取token
+
+4.下订单order(mobile,goodsId,token)
+1.goodsId==>cache获取goods
+2.获取生成token保存的时间,来检查token是否过期(3分钟)
+		1.没有过期,delete token cache 没过期正常返回直接走4步
+		2.如果过期1.delete token cache 2.cache 库存加1 3.删除处理列表数据
+3.检查数据库库存是否没有，如果没设置该商品抢购结束
+4.调用存储过程1.insert order  2.update goods 3.返回order_id,下订结果
+
+
+UserInterceptor==>N分钟内请求超过次数
+1.先检查cache黑名单
+2.获取请求队列最大次数-1的请求信息List<UserRequestRecord>
+3.检查请求次数是否达到limit&&UserRequestRecord[limit-1]<规定时间内
+	 1.达标==>1.增加黑名单 2.delete all UserRequestRecord
+	 2.不达标==>add UserRequestRecord
+
+
+
