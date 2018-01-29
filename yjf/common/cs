@@ -28,3 +28,32 @@ fail->processing->success
 1.通过外部定时任务拉起错误任务;并修改任务状态;===>避免重复拉起
 2.通过MQ分流到其它应用。
 3.正常任务通过MQ分流到其它应用==>快速响应客服端
+
+
+##web
+1.boss/cs/admin/index 后台管理
+1.配置管理 2.配置详细管理 3.邮件模板管理
+
+2.boss/cs/admin/indexResult 查询统计页面
+
+3.boss/cs/admin/indexMessage 通知查询页面
+
+##配置管理
+4.config/getAllConfig.json 获取所有配置
+
+5.config/getConfigByKey.json 通过某个key查询
+
+6.config/updateConfig.json 更新某个config
+
+7.config/addConfig.json  增加某个config
+
+
+##邮件模板管理
+8.email/template/findByPage.json  分页查询邮件列表
+9.email/template/update.json  更新邮件模板
+10.email/template/persist.json 增加邮件模板
+11.report/failedMost      查询通知失败次数最多的
+
+12.shunt/justDoIt.json   异步执行
+13.shunt/notify.json    同步执行
+14.shunt/justDespachtExcOrders  通过日志json获取对象
